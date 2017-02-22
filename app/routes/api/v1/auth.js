@@ -153,6 +153,7 @@ router.use(function (req, res) {
  * @param {Error} err - The error recieved.
  * @returns {String} 
  */
+
 const handleError = err => {
     let msg = err.toString();
     if (err.code == 11000) {
