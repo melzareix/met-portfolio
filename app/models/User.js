@@ -3,6 +3,21 @@ const bcrypt = require('bcrypt-nodejs');
 const validator = require('validator');
 
 let userSchema = mongoose.Schema({
+    firstName: {
+        type: String,
+        required: true
+    },
+    lastName: {
+        type: String,
+        required: true
+    },
+    gucId: {
+        type: String,
+        required: true
+    },
+    profilePic: {
+        type: String
+    },
     email: {
         type: String,
         required: true,
@@ -30,6 +45,8 @@ let userSchema = mongoose.Schema({
         default: Date.now
     }
 });
+
+userSchema.virtual('fullName').get(() => this.firstName + ' ' + this.lastName);
 
 userSchema.pre('save', function (done) {
     var user = this;
