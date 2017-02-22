@@ -23,9 +23,18 @@ const swaggerSpec = swaggerJSDoc(options);
 
 const app = express();
 
+
 passport.use(authMiddleware.strategy);
 app.use(passport.initialize());
 
+
+/**
+ * DEBUG MODE MIDDLEWARES
+ */
+
+if (process.env.DEBUG_MODE) {
+    app.use(logger('dev'));
+}
 
 /**
  * API ROUTES
