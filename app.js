@@ -10,19 +10,14 @@ const authAPIv1 = require('./app/routes/api/v1/auth');
 
 const swaggerUi = require('swagger-ui-express');
 const swaggerJSDoc = require('swagger-jsdoc');
-const options = {
-    swaggerDefinition: {
-        info: {
-            title: 'MET Portfolio', // Title (required)
-            version: '2.0.0', // Version (required)
-        },
-    },
-    apis: ['./app/routes/api/v1/*.js', './app/swagger/*.js'], // Path to the API docs
-};
-const swaggerSpec = swaggerJSDoc(options);
+
 
 const app = express();
 
+
+/**
+ * Passport Initialization
+ */
 
 passport.use(authMiddleware.strategy);
 app.use(passport.initialize());
@@ -39,13 +34,30 @@ if (process.env.DEBUG_MODE) {
 /**
  * API ROUTES
  */
+
+
+/**
+ * Swagger Configuration
+ */
+
+const options = {
+    swaggerDefinition: {
+        info: {
+            title: 'MET Portfolio',
+            version: '2.0.0',
+        },
+    },
+    apis: ['./app/routes/api/v1/*.js', './app/swagger/*.js'], // Path to the API docs
+};
+
+const swaggerSpec = swaggerJSDoc(options);
 app.use('/api/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, true));
+
 app.use('/api/v1/auth', authAPIv1);
 
 /**
- * Error Handling Middlewares.
+ * Generic Error Handling Middlewares.
  */
-
 app.use(function (err, req, res, next) {
     return res.status(500).json({
         message: err.toString()
