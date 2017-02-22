@@ -21,8 +21,49 @@ mongoose.connect(DB_URL);
 
 router.use(bodyParser.json());
 
+
 /**
  * User Signup Route.
+ */
+
+/**
+ * @swagger
+ * /api/v1/auth/signup:
+ *   post:
+ *     summary: Student Signup
+ *     produces:
+ *       - application/json
+ *     consumes:
+ *       - application/json
+ *     parameters:
+ *       - name: body
+ *         description: The new student details.
+ *         in: body
+ *         required: true
+ *         type: string
+ *         schema:
+ *            $ref: '#/definitions/SignUpParameters'
+ *     responses:
+ *       200:
+ *         description: users
+ *         schema:
+ *          $ref: '#/definitions/SignUpResponse'
+ *         examples:
+ *           application/json:
+ *             {
+ *                status: 1,
+ *                message: Signed Up Successfully.
+ *            }
+ *       400:
+ *         description: Invalid/Missing User data. 
+ *         schema:
+ *          $ref: '#/definitions/SignUpFailure'
+ *         examples:
+ *           application/json:
+ *             {
+ *                status: 1,
+ *                message: Signed Up Successfully.
+ *            }
  */
 
 router.post('/signup', function (req, res, next) {
@@ -87,6 +128,7 @@ router.post('/signup', function (req, res, next) {
             return next(err);
         }
         return res.json({
+            status: 1,
             message: Strings.SIGNUP_SUCCESS
         });
     });
@@ -100,6 +142,7 @@ router.post('/signup', function (req, res, next) {
 
 router.use(function (err, req, res, next) {
     return res.status(400).json({
+        status: 0,
         message: handleError(err)
     });
 });

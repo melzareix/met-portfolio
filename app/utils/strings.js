@@ -1,6 +1,6 @@
 const Strings = {
     // General
-    INVALID_ROUTE: 'Invalid Route, Please check API Documentation for valid routes.',
+    INVALID_ROUTE: 'Invalid Route, Please check API Documentation /api/v1/docs for valid routes.',
 
     // Signup Errors
     INCOMPLETE_INFORMATION: 'Please fill out all the required information.',
