@@ -1,7 +1,6 @@
 MET Profolio MiniProject
 ============
 
-This is a node.js chat application powered by SockJS and Express that provides the main functions you'd expect from a chat, such as emojis, private messages, an admin system, etc.
 
 ## Demo
 
