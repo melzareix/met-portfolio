@@ -43,7 +43,7 @@ router.post('/signup', function (req, res, next) {
 
     const mailRegex = /^[a-zA-Z0-9_.+-]+@(?:(?:[a-zA-Z0-9-]+\.)?[a-zA-Z]+\.)?(student)\.guc.edu.eg$/;
     if (!mailRegex.test(email)) {
-        return next(new Error(Strings.NON_GUC_MAIL));
+        return next(Strings.NON_GUC_MAIL);
     }
 
     const passwordRegex = /(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
@@ -65,6 +65,7 @@ router.post('/signup', function (req, res, next) {
     // Check for valid GUC ID
     // http://stackoverflow.com/questions/9742074/
     // TODO: Validate that HE IS MET/BI Final Year Student
+    // TODO: Validate that no duplicate IDs
 
     const gucIdRegex = /^[0-9]{2}-[0-9]{4,6}$/
     if (!gucIdRegex.test(gucId)) {
@@ -105,9 +106,10 @@ router.use(function (err, req, res, next) {
 
 router.use(function (req, res) {
     return res.status(404).json({
-        message: 'Invalid or Missing Data'
+        message: Strings.INVALID_ROUTE
     });
 });
+
 
 /**
  * Returns a human readable error message.
