@@ -64,6 +64,7 @@ router.post('/signup', function (req, res, next) {
 
     // Check for valid GUC ID
     // http://stackoverflow.com/questions/9742074/
+    // TODO: Validate that HE IS MET/BI Final Year Student
 
     const gucIdRegex = /^[0-9]{2}-[0-9]{4,6}$/
     if (!gucIdRegex.test(gucId)) {
@@ -98,7 +99,7 @@ router.post('/signup', function (req, res, next) {
 
 router.use(function (err, req, res, next) {
     return res.status(400).json({
-        message: err.toString()
+        message: handleError(err)
     });
 });
 
@@ -107,5 +108,18 @@ router.use(function (req, res) {
         message: 'Invalid or Missing Data'
     });
 });
+
+/**
+ * Returns a human readable error message.
+ * @param {Error} err - The error recieved.
+ * @returns {String} 
+ */
+const handleError = err => {
+    let msg = err.toString();
+    if (err.code == 11000) {
+        msg = Strings.USER_ALREADY_EXISTS;
+    }
+    return msg;
+}
 
 module.exports = router;
