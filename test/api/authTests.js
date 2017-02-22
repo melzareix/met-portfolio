@@ -4,6 +4,7 @@ const app = require('../../app');
 const mongoose = require('mongoose');
 const User = require('../../app/models/User');
 const expect = chai.expect;
+const Strings = require('../../app/utils/strings');
 
 describe('API Auth Main', function () {
     var req;
@@ -12,28 +13,28 @@ describe('API Auth Main', function () {
             .get('/api/v1/auth')
     })
 
-    it('should return json/text response', function (done) {
+    it('should return json/text response.', function (done) {
         req
             .expect('Content-Type', /json/, done)
     });
 
-    it('should return bad request with Invalid or Missing Data', function (done) {
+    it('should return Not found with error message.', function (done) {
         req
-            .expect(400, {
-                message: 'Invalid or Missing Data'
+            .expect(404, {
+                message: Strings.INVALID_ROUTE
             }, done)
     });
 });
 
 describe('Auth Signup API', function () {
-    const zarei = {
-        email: 'mohamedelzarei@gmail.com',
-        password: 'helloworld'
-    };
 
-    const mazen = {
-        email: 'youcantseemee@gmail.com',
-        password: 'imagineme'
+    const johnSnow = {
+        firstName: 'John',
+        lastName: 'Snow',
+        gucId: '28-1234',
+        email: 'john.snow@student.guc.edu.eg',
+        password: 'The$tarks0',
+        confirmPassword: 'The$tarks0'
     };
 
     var req;
@@ -49,12 +50,21 @@ describe('Auth Signup API', function () {
             .set('Accept', 'application/json')
     });
 
-    it('should register a new user', function (done) {
+    it('should register a new user.', function (done) {
+        const kingslayer = {
+            firstName: 'Jimmy',
+            lastName: 'Lannister',
+            gucId: '28-14613',
+            email: 'cersi.lannister@student.guc.edu.eg',
+            password: 'burnth#town1',
+            confirmPassword: 'burnth#town1'
+        };
+
         req
-            .send(zarei)
+            .send(kingslayer)
             .expect('Content-Type', /json/)
             .expect(200, {
-                message: 'Signed Up Successfully'
+                message: Strings.SIGNUP_SUCCESS
             })
             .end(function (err, res) {
                 if (err) {
@@ -62,7 +72,7 @@ describe('Auth Signup API', function () {
                 }
 
                 User.find({
-                    email: zarei.email
+                    email: kingslayer.email
                 }, function (err, data) {
                     if (err) {
                         done(err);
@@ -75,19 +85,102 @@ describe('Auth Signup API', function () {
 
     });
 
-    it('should not have more than one user with same email', function (done) {
+    it('should not have more than one user with same email.', function (done) {
+        const kingslayer = {
+            firstName: 'Jimmy',
+            lastName: 'Lannister',
+            gucId: '28-14613',
+            email: 'cersi.lannister@student.guc.edu.eg',
+            password: 'burnth#town1',
+            confirmPassword: 'burnth#town1'
+        };
+
         req
-            .send(zarei)
+            .send(kingslayer)
             .expect('Content-Type', /json/)
-            .expect(400, done);
+            .expect(400, {
+                message: Strings.USER_ALREADY_EXISTS
+            }, done);
     });
 
-    it('should register more than one user', function (done) {
+    it('should not allow registration with non-guc mails.', function (done) {
+        const kingslayer = {
+            firstName: 'Jimmy',
+            lastName: 'Lannister',
+            gucId: '28-14613',
+            email: 'balabizo@gmail.com',
+            password: 'burnth#town1',
+            confirmPassword: 'burnth#town1'
+        };
+
         req
-            .send(mazen)
+            .send(kingslayer)
+            .expect('Content-Type', /json/)
+            .expect(400, {
+                message: Strings.NON_GUC_MAIL
+            }, done);
+    });
+
+    it('should not allow registration with invalid GUC ID.', function (done) {
+        const kingslayer = {
+            firstName: 'Jimmy',
+            lastName: 'Lannister',
+            gucId: '28-12',
+            email: 'cersi.lannister@student.guc.edu.eg',
+            password: 'burnth#town1',
+            confirmPassword: 'burnth#town1'
+        };
+
+        req
+            .send(kingslayer)
+            .expect('Content-Type', /json/)
+            .expect(400, {
+                message: Strings.INVALID_GUC_ID
+            }, done);
+    });
+
+    it('should not allow registration with weak password.', function (done) {
+        const kingslayer = {
+            firstName: 'Jimmy',
+            lastName: 'Lannister',
+            gucId: '28-14613',
+            email: 'cersi.lannister@student.guc.edu.eg',
+            password: 'easyOne',
+            confirmPassword: 'easyOne'
+        };
+
+        req
+            .send(kingslayer)
+            .expect('Content-Type', /json/)
+            .expect(400, {
+                message: Strings.INVALID_PASSWORD
+            }, done);
+    });
+
+    it('should not allow registration with mis-matching passwords.', function (done) {
+        const kingslayer = {
+            firstName: 'Jimmy',
+            lastName: 'Lannister',
+            gucId: '28-14613',
+            email: 'cersi.lannister@student.guc.edu.eg',
+            password: 'hello$world1',
+            confirmPassword: 'hell$oworld2'
+        };
+
+        req
+            .send(kingslayer)
+            .expect('Content-Type', /json/)
+            .expect(400, {
+                message: Strings.PASSWORD_MISMATCH
+            }, done);
+    });
+
+    it('should allow registrations of multiple users.', function (done) {
+        req
+            .send(johnSnow)
             .expect('Content-Type', /json/)
             .expect(200, {
-                message: 'Signed Up Successfully'
+                message: Strings.SIGNUP_SUCCESS
             }, done);
     });
 });
