@@ -58,12 +58,6 @@ router.use(bodyParser.json());
  *         description: Invalid/Missing User data. 
  *         schema:
  *          $ref: '#/definitions/SignUpFailure'
- *         examples:
- *           application/json:
- *             {
- *                status: 1,
- *                message: Signed Up Successfully.
- *            }
  */
 
 router.post('/signup', function (req, res, next) {
