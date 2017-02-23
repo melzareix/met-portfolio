@@ -26,10 +26,10 @@ var strategy = new JWTStrategy(JWTOptions, function (req, payload, done) {
             return done(err);
         }
         if (!user) {
-            return done(null, false, new Error('Invalid Credentials.'));
+            return done(null, false, 'Invalid Credentials.');
         }
 
-        const tokenCreationTime = new Date(parseInt(payload.iat) * 1000)
+        const tokenCreationTime = new Date(parseInt(payload.iat) * 1000);
         const lastPasswordChangeTime = user.passwordChangeDate;
         const reqToken = parseAuthHeader(req.headers['authorization']).value;
         // Check if token is blacklisted.
@@ -40,11 +40,11 @@ var strategy = new JWTStrategy(JWTOptions, function (req, payload, done) {
                 return done(err);
             }
             if (token) {
-                return done(null, false, new Error('Invalid Token.'));
+                return done(null, false, 'Invalid Token.');
             } else {
                 // Check if user changed password after generating token.
                 if (tokenCreationTime.getTime() < lastPasswordChangeTime.getTime()) {
-                    return done(null, false, new Error('Invalid Token.'));
+                    return done(null, false, 'Invalid Token.');
                 }
                 return done(null, user);
             }
@@ -82,6 +82,7 @@ var authMiddleware = function (req, res, next) {
         }
         if (!user) {
             return res.json({
+                status: 0,
                 message: info.toString()
             });
         }

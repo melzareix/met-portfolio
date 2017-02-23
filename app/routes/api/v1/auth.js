@@ -290,6 +290,7 @@ router.post('/logout', authHelper.authMiddleware, function (req, res, next) {
             return next(err);
         }
         return res.json({
+            status: 1,
             message: 'Logged out successfully.'
         });
     });

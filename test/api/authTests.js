@@ -339,6 +339,7 @@ describe('Auth Logout API', function () {
                         if (err) {
                             return done(err);
                         }
+                        expect(res.body.status).to.equal(1);
                         expect(res.body.message).to.equal('Logged out successfully.');
                         InvalidToken.findOne({
                             token: JWTtoken
