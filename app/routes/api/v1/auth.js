@@ -79,7 +79,6 @@ router.post('/signup', function (req, res, next) {
         return next(Strings.NON_GUC_MAIL);
     }
 
-    const passwordRegex = /(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
 
     // Check if password and confirmation mismatch
     if (password !== confirmPassword) {
@@ -91,6 +90,7 @@ router.post('/signup', function (req, res, next) {
     //  and a special character.
     // http://stackoverflow.com/questions/19605150/
 
+    const passwordRegex = /(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
     if (!passwordRegex.test(password)) {
         return next(Strings.INVALID_PASSWORD);
     }
@@ -232,8 +232,11 @@ router.post('/forgot', function (req, res, next) {
         }
 
         if (!user) { // User not found, Invalid mail
-            return next(new Error('You should recieve an email to reset your\
-                    password, if the email exists.'));
+            // Not using middleware due to status
+            return res.json({
+                status: 1,
+                message: Strings.CHECK_YOU_EMAIL
+            });
         }
 
         user.passwordResetTokenDate = iat * 1000;
@@ -246,7 +249,8 @@ router.post('/forgot', function (req, res, next) {
             // Send mail
             mailer.forgotPassword(email, req.headers.host, resetToken, function (err, result) {
                 return res.json({
-                    message: 'You should recieve an email to reset your password, if the email exists.'
+                    status: 1,
+                    message: Strings.CHECK_YOU_EMAIL
                 });
             });
         });
@@ -259,14 +263,32 @@ router.post('/forgot', function (req, res, next) {
  * User Reset Password Route.
  */
 
-router.post('/reset/:token', function (req, res, next) {
-    const resetToken = req.params.token;
+router.post('/reset/', function (req, res, next) {
 
+    const resetToken = req.body.token;
     const password = req.body.password;
-    const verPassword = req.body.verPassword;
+    const confirmPassword = req.body.confirmPassword;
 
-    if (!(password && verPassword) || password !== verPassword) {
-        return next(new Error('Password verification mismatch.'));
+
+    // Check If any required field are missing
+    if (!(password && confirmPassword && resetToken)) {
+        return next(Strings.INVALID_RESET_TOKEN);
+    }
+
+    // Check if password and confirmation mismatch
+    if (password !== confirmPassword) {
+        return next(Strings.PASSWORD_MISMATCH);
+    }
+
+
+    // Check that password satisfies password conditions
+    // The password must be at least 8 characters and includes at least a digit
+    //  and a special character.
+    // http://stackoverflow.com/questions/19605150/
+
+    const passwordRegex = /(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
+    if (!passwordRegex.test(password)) {
+        return next(Strings.INVALID_PASSWORD);
     }
 
     jwt.verify(resetToken, JWT_KEY, function (err, payload) {
@@ -288,7 +310,7 @@ router.post('/reset/:token', function (req, res, next) {
             }
 
             if (!user) {
-                return next(new Error('Invalid reset token.'));
+                return next(Strings.INVALID_RESET_TOKEN);
             }
 
             user.passwordResetTokenDate = undefined; // Disable the token
@@ -301,7 +323,8 @@ router.post('/reset/:token', function (req, res, next) {
                 }
 
                 return res.json({
-                    message: 'Password Changed Successfully.'
+                    status: 1,
+                    message: Strings.PASSWORD_RESET_SUCCESS
                 });
             });
         });

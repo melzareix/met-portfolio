@@ -8,7 +8,7 @@ const Strings = {
     PASSWORD_MISMATCH: 'Password and password confirmation mismatch.',
     INVALID_PASSWORD: 'The password must be at least 8 characters and includes at least a digit.',
     INVALID_GUC_ID: 'Please enter a Valid GUC ID.',
-    USER_ALREADY_EXISTS: 'Email already exists.',
+    USER_ALREADY_EXISTS: 'User already exists.',
 
     // Signup Success
     SIGNUP_SUCCESS: 'Signed Up Successfully.',
@@ -22,6 +22,7 @@ const Strings = {
 
     // Password Reset Errors
     CHECK_YOU_EMAIL: 'You should recieve an email to reset your password, if the email exists.',
+    INVALID_RESET_TOKEN: 'Invalid reset token.',
 
     // Password Reset Success
     PASSWORD_RESET_SUCCESS: 'Password Changed Successfully.'
