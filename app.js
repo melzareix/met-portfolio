@@ -8,8 +8,6 @@ const passport = require('passport');
 const authMiddleware = require('./app/middlewares/authMiddleware');
 const authAPIv1 = require('./app/routes/api/v1/auth');
 
-const swaggerUi = require('swagger-ui-express');
-
 const app = express();
 require('dotenv').config();
 
@@ -32,14 +30,6 @@ if (process.env.DEBUG_MODE) {
 /**
  * API ROUTES
  */
-
-
-/**
- * Swagger Configuration
- */
-
-const swaggerJSON = require('./app/swagger/restlet-swagger.json');
-app.use('/api/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerJSON));
 
 app.use('/api/v1/auth', authAPIv1);
 
