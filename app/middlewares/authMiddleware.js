@@ -2,7 +2,6 @@ const passport = require('passport');
 const passportJWT = require('passport-jwt');
 const ExtractJWT = passportJWT.ExtractJwt;
 const JWTStrategy = passportJWT.Strategy;
-const config = require('dotenv').config();
 const User = require('../models/User');
 const InvalidToken = require('../models/InvalidToken');
 const JWT_KEY = process.env.JWT_KEY;

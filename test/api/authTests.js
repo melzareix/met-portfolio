@@ -1,7 +1,6 @@
 const chai = require('chai');
 const supertest = require('supertest');
 const app = require('../../app');
-const mongoose = require('mongoose');
 const User = require('../../app/models/User');
 const expect = chai.expect;
 const Strings = require('../../app/utils/strings');
@@ -10,12 +9,12 @@ describe('API Auth Main', function () {
     var req;
     beforeEach(function () {
         req = supertest(app)
-            .get('/api/v1/auth')
-    })
+            .get('/api/v1/auth');
+    });
 
     it('should return json/text response.', function (done) {
         req
-            .expect('Content-Type', /json/, done)
+            .expect('Content-Type', /json/, done);
     });
 
     it('should return Not found with error message.', function (done) {
@@ -23,7 +22,7 @@ describe('API Auth Main', function () {
             .expect(404, {
                 status: 0,
                 message: Strings.INVALID_ROUTE
-            }, done)
+            }, done);
     });
 });
 
@@ -39,7 +38,7 @@ describe('Auth Signup API', function () {
     beforeEach(function () {
         req = supertest(app)
             .post('/api/v1/auth/signup')
-            .set('Accept', 'application/json')
+            .set('Accept', 'application/json');
     });
 
     it('should register a new user.', function (done) {
@@ -203,7 +202,7 @@ describe('Auth Login API', function () {
     beforeEach(function () {
         req = supertest(app)
             .post('/api/v1/auth/login')
-            .set('Accept', 'application/json')
+            .set('Accept', 'application/json');
     });
 
     it('should login using email and password', function (done) {
@@ -246,7 +245,7 @@ describe('Auth Login API', function () {
             .expect(400, {
                 status: 0,
                 message: Strings.INVALID_CREDIENTIALS
-            }, done)
+            }, done);
     });
 
     it('should not login with wrong password', function (done) {
@@ -259,7 +258,7 @@ describe('Auth Login API', function () {
             .expect(400, {
                 status: 0,
                 message: Strings.INVALID_CREDIENTIALS
-            }, done)
+            }, done);
     });
 
     it('should not login with wrong email and password', function (done) {
@@ -272,7 +271,7 @@ describe('Auth Login API', function () {
             .expect(400, {
                 status: 0,
                 message: Strings.INVALID_CREDIENTIALS
-            }, done)
+            }, done);
     });
 
     it('should not login with empty email', function (done) {
@@ -284,7 +283,7 @@ describe('Auth Login API', function () {
             .expect(400, {
                 status: 0,
                 message: Strings.MISSING_CREDIENTIALS
-            }, done)
+            }, done);
     });
 
     it('should not login with empty passsword', function (done) {
@@ -296,6 +295,6 @@ describe('Auth Login API', function () {
             .expect(400, {
                 status: 0,
                 message: Strings.MISSING_CREDIENTIALS
-            }, done)
+            }, done);
     });
 });

@@ -3,10 +3,8 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt-nodejs');
 const User = require('../../../models/User');
 const InvalidToken = require('../../../models/InvalidToken');
-const config = require('dotenv').config();
 const authHelper = require('../../../middlewares/authMiddleware');
 const mailer = require('../../../utils/mailer');
 

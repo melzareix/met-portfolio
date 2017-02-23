@@ -19,6 +19,6 @@ const Strings = {
 
     // Login Success
     LOGIN_SUCCESS: 'Logged In Successfully.'
-}
+};
 
 module.exports = Strings;
