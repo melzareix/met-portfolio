@@ -304,7 +304,39 @@ router.post('/forgot', function (req, res, next) {
 /**
  * User Reset Password Route.
  */
-
+/**
+ * @swagger
+ * /api/v1/auth/reset:
+ *   post:
+ *     summary: Student Reset password
+ *     produces:
+ *       - application/json
+ *     consumes:
+ *       - application/json
+ *     parameters:
+ *       - name: body
+ *         description: The reset token and password.
+ *         in: body
+ *         required: true
+ *         type: string
+ *         schema:
+ *            $ref: '#/definitions/ResetPwdParameters'
+ *     responses:
+ *       200:
+ *         description: The password was reset successfully.
+ *         schema:
+ *          $ref: '#/definitions/PwdResetSuccess'
+ *         examples:
+ *           application/json:
+ *             {
+ *                status: 1,
+ *                message: 'Password Changed Successfully.'
+ *            }
+ *       400:
+ *         description: Invalid/Missing Data. 
+ *         schema:
+ *          $ref: '#/definitions/SignUpFailure'
+ */
 
 router.post('/reset/', function (req, res, next) {
 
@@ -336,7 +368,7 @@ router.post('/reset/', function (req, res, next) {
 
     jwt.verify(resetToken, JWT_KEY, function (err, payload) {
         if (err) {
-            return next(err);
+            return next(Strings.INVALID_RESET_TOKEN);
         }
 
         const email = payload.email;
@@ -407,6 +439,6 @@ const handleError = err => {
         msg = Strings.USER_ALREADY_EXISTS;
     }
     return msg;
-}
+};
 
 module.exports = router;
