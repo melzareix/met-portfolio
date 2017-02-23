@@ -3,10 +3,8 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt-nodejs');
 const User = require('../../../models/User');
 const InvalidToken = require('../../../models/InvalidToken');
-const config = require('dotenv').config();
 const authHelper = require('../../../middlewares/authMiddleware');
 const mailer = require('../../../utils/mailer');
 
@@ -16,6 +14,7 @@ const Strings = require('../../../utils/strings');
 const JWT_KEY = process.env.JWT_KEY;
 const DB_URL = process.env.DB_URL;
 
+require('dotenv').config();
 mongoose.connect(DB_URL);
 
 
@@ -45,9 +44,9 @@ router.use(bodyParser.json());
  *            $ref: '#/definitions/SignUpParameters'
  *     responses:
  *       200:
- *         description: users
+ *         description: Successful Signup
  *         schema:
- *          $ref: '#/definitions/SignUpResponse'
+ *          $ref: '#/definitions/SignUpSuccessResponse'
  *         examples:
  *           application/json:
  *             {
@@ -131,6 +130,87 @@ router.post('/signup', function (req, res, next) {
 
 
 /**
+ * User Login Route.
+ */
+
+/**
+ * @swagger
+ * /api/v1/auth/login:
+ *   post:
+ *     summary: Student Login
+ *     produces:
+ *       - application/json
+ *     consumes:
+ *       - application/json
+ *     parameters:
+ *       - name: body
+ *         description: Login information for the student.
+ *         in: body
+ *         required: true
+ *         type: string
+ *         schema:
+ *            $ref: '#/definitions/LoginParameters'
+ *     responses:
+ *       200:
+ *         description: Successful Login
+ *         schema:
+ *          $ref: '#/definitions/LoginSuccessResponse'
+ *         examples:
+ *           application/json:
+ *             {
+ *                status: 1,
+ *                token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU4YWU5N2E3ZDdkMzY0MDhlZmU0NmViNSIsImlhdCI6MTQ4,
+ *                message: Logged In Successfully.
+ *            }
+ *       400:
+ *         description: Invalid/Missing User data. 
+ *         schema:
+ *          $ref: '#/definitions/LoginFailureResponse'
+ */
+
+router.post('/login', function (req, res, next) {
+    let email = req.body.email,
+        password = req.body.password;
+
+    if (!email || !password)
+        return next(Strings.MISSING_CREDIENTIALS);
+
+    User.findOne({
+        email
+    }, function (err, result) {
+        if (err) {
+            return next(err);
+        }
+        if (!result) {
+            return next(Strings.INVALID_CREDIENTIALS);
+        }
+        result.checkPassword(password, function (err, match) {
+            if (err) {
+                return next(err);
+            }
+
+            //Wrong Password
+            if (!match) {
+                return next(Strings.INVALID_CREDIENTIALS);
+            }
+
+            let token = jwt.sign({
+                id: result._id
+            }, JWT_KEY, {
+                expiresIn: '10d'
+            });
+
+            return res.json({
+                status: 1,
+                message: Strings.LOGIN_SUCCESS,
+                token: token
+            });
+        });
+
+    });
+});
+
+/**
  * Error Handling Middlewares.
  */
 
@@ -143,6 +223,7 @@ router.use(function (err, req, res, next) {
 
 router.use(function (req, res) {
     return res.status(404).json({
+        status: 0,
         message: Strings.INVALID_ROUTE
     });
 });

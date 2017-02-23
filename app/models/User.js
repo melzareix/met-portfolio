@@ -13,7 +13,8 @@ let userSchema = mongoose.Schema({
     },
     gucId: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     profilePic: {
         type: String

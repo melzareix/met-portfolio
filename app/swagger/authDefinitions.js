@@ -1,7 +1,13 @@
+// ===============================================================================================================
+/**
+ *  SIGNUP DEFINITIONS
+ */
+// ===============================================================================================================
+
 /**
  * @swagger
  * definitions:
- *   SignUpResponse:
+ *   SignUpSuccessResponse:
  *     type: object
  *     required:
  *       - status
@@ -11,7 +17,6 @@
  *         type: integer
  *       message:
  *         type: string
- *         format: password
  */
 
 /**
@@ -27,8 +32,13 @@
  *         type: integer
  *       message:
  *         type: string
- *         format: password
  */
+
+// ===============================================================================================================
+/**
+ *  LOGIN DEFINITIONS
+ */
+// ===============================================================================================================
 
 /**
  * @swagger
@@ -72,5 +82,60 @@
  *         description: The Student GUC ID.
  *         in: body
  *         required: true
+ *         type: string
+ */
+
+
+/**
+ * @swagger
+ * definitions:
+ *   LoginParameters:
+ *     type: object
+ *     required:
+ *       - email
+ *       - password
+ *     properties:
+ *      email:
+ *         description: Student GUC Email.
+ *         in: body
+ *         required: true
+ *         type: string
+ *      password:
+ *         description: Student Password.
+ *         in: body
+ *         required: true
+ *         type: string
+ */
+
+/**
+ * @swagger
+ * definitions:
+ *   LoginSuccessResponse:
+ *     type: object
+ *     required:
+ *       - status
+ *       - token
+ *       - message
+ *     properties:
+ *       status:
+ *         type: integer
+ *       token:
+ *         type: string
+ *       message:
+ *         type: string
+ */
+
+/**
+ * @swagger
+ * definitions:
+ *   LoginFailureResponse:
+ *     type: object
+ *     required:
+ *       - status
+ *       - message
+ *     properties:
+ *       status:
+ *         type: integer
+ *       message:
  *         type: string
  */

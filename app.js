@@ -13,7 +13,7 @@ const swaggerJSDoc = require('swagger-jsdoc');
 
 
 const app = express();
-
+require('dotenv').config();
 
 /**
  * Passport Initialization
