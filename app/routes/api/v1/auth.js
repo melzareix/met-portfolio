@@ -1,7 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const User = require('../../../models/User');
 const InvalidToken = require('../../../models/InvalidToken');
@@ -209,6 +208,107 @@ router.post('/login', function (req, res, next) {
 
     });
 });
+
+
+/**
+ * User Forgot Password Route.
+ */
+
+router.post('/forgot', function (req, res, next) {
+    const email = req.body.email;
+    const iat = Math.floor(Date.now() / 1000);
+    const resetToken = jwt.sign({
+        email,
+        iat
+    }, JWT_KEY, {
+        expiresIn: '1h'
+    });
+
+    User.findOne({
+        email
+    }, function (err, user) {
+        if (err) {
+            return next(err);
+        }
+
+        if (!user) { // User not found, Invalid mail
+            return next(new Error('You should recieve an email to reset your\
+                    password, if the email exists.'));
+        }
+
+        user.passwordResetTokenDate = iat * 1000;
+
+        user.save(function (err) {
+            if (err) {
+                return next(err);
+            }
+
+            // Send mail
+            mailer.forgotPassword(email, req.headers.host, resetToken, function (err, result) {
+                return res.json({
+                    message: 'You should recieve an email to reset your password, if the email exists.'
+                });
+            });
+        });
+
+    });
+});
+
+
+/**
+ * User Reset Password Route.
+ */
+
+router.post('/reset/:token', function (req, res, next) {
+    const resetToken = req.params.token;
+
+    const password = req.body.password;
+    const verPassword = req.body.verPassword;
+
+    if (!(password && verPassword) || password !== verPassword) {
+        return next(new Error('Password verification mismatch.'));
+    }
+
+    jwt.verify(resetToken, JWT_KEY, function (err, payload) {
+        if (err) {
+            return next(err);
+        }
+
+        const email = payload.email;
+        const creationDate = new Date(parseInt(payload.iat) * 1000);
+
+        User.findOne({
+            email,
+            passwordResetTokenDate: {
+                $lte: creationDate
+            }
+        }, function (err, user) {
+            if (err) {
+                return next(err);
+            }
+
+            if (!user) {
+                return next(new Error('Invalid reset token.'));
+            }
+
+            user.passwordResetTokenDate = undefined; // Disable the token
+            user.passwordChangeDate = Date.now(); // Invalidate Login Tokens
+            user.password = password; // Reset password
+
+            user.save(function (err) {
+                if (err) {
+                    return next(err);
+                }
+
+                return res.json({
+                    message: 'Password Changed Successfully.'
+                });
+            });
+        });
+    });
+});
+
+
 
 /**
  * Error Handling Middlewares.
