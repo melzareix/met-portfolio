@@ -2,6 +2,7 @@ const chai = require('chai');
 const supertest = require('supertest');
 const app = require('../../app');
 const User = require('../../app/models/User');
+const InvalidToken = require('../../app/models/InvalidToken');
 const expect = chai.expect;
 const Strings = require('../../app/utils/strings');
 
@@ -296,5 +297,60 @@ describe('Auth Login API', function () {
                 status: 0,
                 message: Strings.MISSING_CREDIENTIALS
             }, done);
+    });
+});
+
+describe('Auth Logout API', function () {
+
+    before(function (done) {
+        InvalidToken.collection.drop();
+        InvalidToken.ensureIndexes(done); // Create indexes after droping the collection
+    });
+
+    it('should add token to Invalid Tokens after logout', (done) => {
+        const johnSnow = {
+            email: 'john.snow@student.guc.edu.eg',
+            password: 'The$tarks0',
+        };
+        let JWTtoken;
+        supertest(app)
+            .post('/api/v1/auth/login')
+            .set('Accept', 'application/json')
+            .send(johnSnow)
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .end(function (err, res) {
+
+                if (err) {
+                    return done(err);
+                }
+
+                JWTtoken = res.body.token;
+                const JWS_REGEX = /^[a-zA-Z0-9\-_]+?\.[a-zA-Z0-9\-_]+?\.([a-zA-Z0-9\-_]+)?$/;
+                expect(JWTtoken).to.match(JWS_REGEX);
+
+                expect(res.body.status).to.equal(1);
+                expect(res.body.message).to.equal(Strings.LOGIN_SUCCESS);
+
+                supertest(app)
+                    .post('/api/v1/auth/logout')
+                    .set('Authorization', 'JWT ' + JWTtoken)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err);
+                        }
+                        expect(res.body.status).to.equal(1);
+                        expect(res.body.message).to.equal('Logged out successfully.');
+                        InvalidToken.findOne({
+                            token: JWTtoken
+                        }, function (err, data) {
+                            if (err) {
+                                return done(err);
+                            }
+                            expect(data).not.to.equal(undefined);
+                            done();
+                        });
+                    });
+            });
     });
 });
