@@ -139,3 +139,54 @@
  *       message:
  *         type: string
  */
+
+// ===============================================================================================================
+/**
+ *  FORGOT PASSWORD DEFINITIONS
+ */
+// ===============================================================================================================
+
+/**
+ * @swagger
+ * definitions:
+ *   ForgotPwdParameters:
+ *     type: object
+ *     required:
+ *       - email
+ *     properties:
+ *       email:
+ *         type: string
+ */
+
+/**
+ * @swagger
+ * definitions:
+ *   PwdResetSuccess:
+ *     type: object
+ *     required:
+ *       - status
+ *       - message
+ *     properties:
+ *       status:
+ *         type: integer
+ *       message:
+ *         type: string
+ */
+
+/**
+ * @swagger
+ * definitions:
+ *   ResetPwdParameters:
+ *     type: object
+ *     required:
+ *       - token
+ *       - password
+ *       - confirmPassword
+ *     properties:
+ *       token:
+ *         type: string
+ *       password:
+ *         type: string
+ *       confirmPassword:
+ *         type: string
+ */

@@ -1,7 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const User = require('../../../models/User');
 const InvalidToken = require('../../../models/InvalidToken');
@@ -80,7 +79,6 @@ router.post('/signup', function (req, res, next) {
         return next(Strings.NON_GUC_MAIL);
     }
 
-    const passwordRegex = /(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
 
     // Check if password and confirmation mismatch
     if (password !== confirmPassword) {
@@ -92,6 +90,7 @@ router.post('/signup', function (req, res, next) {
     //  and a special character.
     // http://stackoverflow.com/questions/19605150/
 
+    const passwordRegex = /(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
     if (!passwordRegex.test(password)) {
         return next(Strings.INVALID_PASSWORD);
     }
@@ -210,6 +209,205 @@ router.post('/login', function (req, res, next) {
     });
 });
 
+
+/**
+ * User Forgot Password Route.
+ */
+
+/**
+ * @swagger
+ * /api/v1/auth/forgot:
+ *   post:
+ *     summary: Student Forgot password
+ *     produces:
+ *       - application/json
+ *     consumes:
+ *       - application/json
+ *     parameters:
+ *       - name: body
+ *         description: The email associated with the student.
+ *         in: body
+ *         required: true
+ *         type: string
+ *         schema:
+ *            $ref: '#/definitions/ForgotPwdParameters'
+ *     responses:
+ *       200:
+ *         description: An email is sent to the user with a password reset link if the email exists in the system.
+ *         schema:
+ *          $ref: '#/definitions/LoginFailureResponse'
+ *         examples:
+ *           application/json:
+ *             {
+ *                status: 1,
+ *                message: 'You should recieve an email to reset your password, if the email exists'
+ *            }
+ *       400:
+ *         description: Invalid Email. 
+ *         schema:
+ *          $ref: '#/definitions/SignUpFailure'
+ */
+router.post('/forgot', function (req, res, next) {
+    const email = req.body.email;
+
+    // Check that it's GUC mail
+    // http://www.regexpal.com/94044
+
+    const mailRegex = /^[a-zA-Z0-9_.+-]+@(?:(?:[a-zA-Z0-9-]+\.)?[a-zA-Z]+\.)?(student)\.guc.edu.eg$/;
+    if (!mailRegex.test(email)) {
+        return next(Strings.NON_GUC_MAIL);
+    }
+
+    const iat = Math.floor(Date.now() / 1000);
+    const resetToken = jwt.sign({
+        email,
+        iat
+    }, JWT_KEY, {
+        expiresIn: '1h'
+    });
+
+    User.findOne({
+        email
+    }, function (err, user) {
+        if (err) {
+            return next(err);
+        }
+
+        if (!user) { // User not found, Invalid mail
+            // Not using middleware due to status
+            return res.json({
+                status: 1,
+                message: Strings.CHECK_YOU_EMAIL
+            });
+        }
+
+        user.passwordResetTokenDate = iat * 1000;
+
+        user.save(function (err) {
+            if (err) {
+                return next(err);
+            }
+
+            // Send mail
+            mailer.forgotPassword(email, req.headers.host, resetToken, function (err, result) {
+                return res.json({
+                    status: 1,
+                    message: Strings.CHECK_YOU_EMAIL
+                });
+            });
+        });
+
+    });
+});
+
+
+/**
+ * User Reset Password Route.
+ */
+/**
+ * @swagger
+ * /api/v1/auth/reset:
+ *   post:
+ *     summary: Student Reset password
+ *     produces:
+ *       - application/json
+ *     consumes:
+ *       - application/json
+ *     parameters:
+ *       - name: body
+ *         description: The reset token and password.
+ *         in: body
+ *         required: true
+ *         type: string
+ *         schema:
+ *            $ref: '#/definitions/ResetPwdParameters'
+ *     responses:
+ *       200:
+ *         description: The password was reset successfully.
+ *         schema:
+ *          $ref: '#/definitions/PwdResetSuccess'
+ *         examples:
+ *           application/json:
+ *             {
+ *                status: 1,
+ *                message: 'Password Changed Successfully.'
+ *            }
+ *       400:
+ *         description: Invalid/Missing Data. 
+ *         schema:
+ *          $ref: '#/definitions/SignUpFailure'
+ */
+
+router.post('/reset/', function (req, res, next) {
+
+    const resetToken = req.body.token;
+    const password = req.body.password;
+    const confirmPassword = req.body.confirmPassword;
+
+
+    // Check If any required field are missing
+    if (!(password && confirmPassword && resetToken)) {
+        return next(Strings.INVALID_RESET_TOKEN);
+    }
+
+    // Check if password and confirmation mismatch
+    if (password !== confirmPassword) {
+        return next(Strings.PASSWORD_MISMATCH);
+    }
+
+
+    // Check that password satisfies password conditions
+    // The password must be at least 8 characters and includes at least a digit
+    //  and a special character.
+    // http://stackoverflow.com/questions/19605150/
+
+    const passwordRegex = /(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
+    if (!passwordRegex.test(password)) {
+        return next(Strings.INVALID_PASSWORD);
+    }
+
+    jwt.verify(resetToken, JWT_KEY, function (err, payload) {
+        if (err) {
+            return next(Strings.INVALID_RESET_TOKEN);
+        }
+
+        const email = payload.email;
+        const creationDate = new Date(parseInt(payload.iat) * 1000);
+
+        User.findOne({
+            email,
+            passwordResetTokenDate: {
+                $lte: creationDate
+            }
+        }, function (err, user) {
+            if (err) {
+                return next(err);
+            }
+
+            if (!user) {
+                return next(Strings.INVALID_RESET_TOKEN);
+            }
+
+            user.passwordResetTokenDate = undefined; // Disable the token
+            user.passwordChangeDate = Date.now(); // Invalidate Login Tokens
+            user.password = password; // Reset password
+
+            user.save(function (err) {
+                if (err) {
+                    return next(err);
+                }
+
+                return res.json({
+                    status: 1,
+                    message: Strings.PASSWORD_RESET_SUCCESS
+                });
+            });
+        });
+    });
+});
+
+
+
 /**
  * Error Handling Middlewares.
  */
@@ -241,6 +439,6 @@ const handleError = err => {
         msg = Strings.USER_ALREADY_EXISTS;
     }
     return msg;
-}
+};
 
 module.exports = router;
