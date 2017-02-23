@@ -307,6 +307,11 @@ router.post('/forgot', function (req, res, next) {
 /**
  * @swagger
  * /api/v1/auth/reset:
+ *   security:
+ *     apikey:
+ *       type: apiKey
+ *       name: server_token
+ *       in: query
  *   post:
  *     summary: Student Reset password
  *     produces:

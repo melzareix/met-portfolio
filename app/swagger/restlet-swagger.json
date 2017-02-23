@@ -1,0 +1,288 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "A department portfolio for final year MET and BI students to showcase their work to potential employers,\nthe mini-project of **SE Course 2017** at the German University in Cairo.",
+        "version": "1.0.0",
+        "title": "MET Portfolio",
+        "contact": {},
+        "license": {
+            "name": "MIT",
+            "url": "https://github.com/melzareix/met-portfolio/blob/master/LICENSE"
+        }
+    },
+    "tags": [{
+        "name": "Authentication",
+        "description": "API Endpoints for the authentication of Students."
+    }],
+    "paths": {
+        "/api/v1/auth/forgot": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Forgot password",
+                "description": "The endpoint to allow a registered student to reset its own password and get emailed a password reset link with special token.\n",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [{
+                    "in": "body",
+                    "name": "body",
+                    "required": false,
+                    "schema": {
+                        "$ref": "#/definitions/Email"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "An email is sent to the user with a password reset link if the email exists in the system.",
+                        "schema": {
+                            "$ref": "#/definitions/Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Status 400",
+                        "schema": {
+                            "$ref": "#/definitions/Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/login": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Student Login",
+                "description": "The endpoint for authenticating a registered student into the system.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [{
+                    "in": "body",
+                    "name": "body",
+                    "required": false,
+                    "schema": {
+                        "$ref": "#/definitions/Login"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Status 200",
+                        "schema": {
+                            "$ref": "#/definitions/SuccessfulLogin"
+                        }
+                    },
+                    "400": {
+                        "description": "Status 400",
+                        "schema": {
+                            "$ref": "#/definitions/Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/reset": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Password Reset",
+                "description": "The endpoint for resetting a registered student using a previously generated JWT.\n",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [{
+                    "in": "body",
+                    "name": "body",
+                    "required": false,
+                    "schema": {
+                        "$ref": "#/definitions/Reset Token"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Status 200",
+                        "schema": {
+                            "$ref": "#/definitions/Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Status 400",
+                        "schema": {
+                            "$ref": "#/definitions/Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/signup": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Student Signup",
+                "description": "The endpoint for registering a new student into the system.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [{
+                    "in": "body",
+                    "name": "body",
+                    "required": false,
+                    "schema": {
+                        "$ref": "#/definitions/Student"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Status 200",
+                        "schema": {
+                            "$ref": "#/definitions/Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Status 400",
+                        "schema": {
+                            "$ref": "#/definitions/Response"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Student": {
+            "type": "object",
+            "required": [
+                "confirmPassword",
+                "email",
+                "firstName",
+                "gucId",
+                "lastName",
+                "password"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "firstName": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "confirmPassword": {
+                    "type": "string"
+                },
+                "gucId": {
+                    "type": "string"
+                }
+            }
+        },
+        "Email": {
+            "type": "object",
+            "required": [
+                "email"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "description": "Valid GUC email."
+                }
+            }
+        },
+        "Login": {
+            "type": "object",
+            "required": [
+                "email",
+                "password"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            },
+            "description": ""
+        },
+        "Reset Token": {
+            "type": "object",
+            "required": [
+                "token"
+            ],
+            "properties": {
+                "token": {
+                    "type": "string",
+                    "description": "JWT token"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "confirmPassword": {
+                    "type": "string"
+                }
+            },
+            "description": ""
+        },
+        "Response": {
+            "type": "object",
+            "required": [
+                "message",
+                "status"
+            ],
+            "properties": {
+                "status": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "The status of the request, 1 in case of success 0 otherwise."
+                },
+                "message": {
+                    "type": "string",
+                    "description": "The message associated with the response."
+                }
+            },
+            "description": "The general response object."
+        },
+        "SuccessfulLogin": {
+            "type": "object",
+            "required": [
+                "message",
+                "status"
+            ],
+            "properties": {
+                "status": {
+                    "type": "string",
+                    "description": "The status of the request."
+                },
+                "token": {
+                    "type": "string",
+                    "description": "JWT token generated for the user, valid for 10 days."
+                },
+                "message": {
+                    "type": "string",
+                    "description": "A message indicating successful login."
+                }
+            },
+            "description": "Successful login response."
+        }
+    }
+}

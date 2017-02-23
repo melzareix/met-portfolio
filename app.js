@@ -9,8 +9,6 @@ const authMiddleware = require('./app/middlewares/authMiddleware');
 const authAPIv1 = require('./app/routes/api/v1/auth');
 
 const swaggerUi = require('swagger-ui-express');
-const swaggerJSDoc = require('swagger-jsdoc');
-
 
 const app = express();
 require('dotenv').config();
@@ -40,18 +38,8 @@ if (process.env.DEBUG_MODE) {
  * Swagger Configuration
  */
 
-const options = {
-    swaggerDefinition: {
-        info: {
-            title: 'MET Portfolio',
-            version: '2.0.0',
-        },
-    },
-    apis: ['./app/routes/api/v1/*.js', './app/swagger/*.js'], // Path to the API docs
-};
-
-const swaggerSpec = swaggerJSDoc(options);
-app.use('/api/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+const swaggerJSON = require('./app/swagger/restlet-swagger.json');
+app.use('/api/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerJSON));
 
 app.use('/api/v1/auth', authAPIv1);
 

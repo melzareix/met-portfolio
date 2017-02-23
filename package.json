@@ -19,7 +19,6 @@
     "passport": "^0.3.2",
     "passport-jwt": "^2.2.1",
     "supertest": "^3.0.0",
-    "swagger-jsdoc": "^1.9.2",
     "swagger-ui-express": "^1.0.4",
     "underscore": "^1.8.3"
   },
