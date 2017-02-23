@@ -15,8 +15,8 @@ var forgotPasswordMail = function (email, host, resetToken, cb) {
 
 
     const emailVars = {
-        reset_url: 'http://' + host + '/api/v1/auth/reset/' + resetToken,
-        host_url: 'http://google.com', // TO BE CHANGED AT DEPLOYMENT
+        reset_url: 'http://' + host + '/auth/reset/' + resetToken,
+        host_url: 'http://' + host + '/',
         title: 'MET Portfolio'
     };
 
