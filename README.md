@@ -4,6 +4,9 @@ MET Profolio MiniProject
 
 ## Demo
 
+###### Live Demo
+[https://met-portfolio.herokuapp.com/](https://met-portfolio.herokuapp.com/)
+
 ---
 
 ## Features
@@ -26,6 +29,12 @@ MET Profolio MiniProject
 ## Usage
 
 Run `npm start` to start in **production** mode, `npm run debug` to run using [nodemon](https://nodemon.io/) in debug mode.
+
+---
+
+## Docs
+API **V1** Documentation
+[https://met-portfolio.restlet.io/](https://met-portfolio.restlet.io/)
 
 ---
 
