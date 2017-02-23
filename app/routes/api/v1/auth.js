@@ -214,8 +214,50 @@ router.post('/login', function (req, res, next) {
  * User Forgot Password Route.
  */
 
+/**
+ * @swagger
+ * /api/v1/auth/forgot:
+ *   post:
+ *     summary: Student Forgot password
+ *     produces:
+ *       - application/json
+ *     consumes:
+ *       - application/json
+ *     parameters:
+ *       - name: body
+ *         description: The email associated with the student.
+ *         in: body
+ *         required: true
+ *         type: string
+ *         schema:
+ *            $ref: '#/definitions/ForgotPwdParameters'
+ *     responses:
+ *       200:
+ *         description: An email is sent to the user with a password reset link if the email exists in the system.
+ *         schema:
+ *          $ref: '#/definitions/LoginFailureResponse'
+ *         examples:
+ *           application/json:
+ *             {
+ *                status: 1,
+ *                message: 'You should recieve an email to reset your password, if the email exists'
+ *            }
+ *       400:
+ *         description: Invalid Email. 
+ *         schema:
+ *          $ref: '#/definitions/SignUpFailure'
+ */
 router.post('/forgot', function (req, res, next) {
     const email = req.body.email;
+
+    // Check that it's GUC mail
+    // http://www.regexpal.com/94044
+
+    const mailRegex = /^[a-zA-Z0-9_.+-]+@(?:(?:[a-zA-Z0-9-]+\.)?[a-zA-Z]+\.)?(student)\.guc.edu.eg$/;
+    if (!mailRegex.test(email)) {
+        return next(Strings.NON_GUC_MAIL);
+    }
+
     const iat = Math.floor(Date.now() / 1000);
     const resetToken = jwt.sign({
         email,
@@ -262,6 +304,7 @@ router.post('/forgot', function (req, res, next) {
 /**
  * User Reset Password Route.
  */
+
 
 router.post('/reset/', function (req, res, next) {
 

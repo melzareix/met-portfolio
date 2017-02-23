@@ -51,7 +51,7 @@ const options = {
 };
 
 const swaggerSpec = swaggerJSDoc(options);
-app.use('/api/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, true));
+app.use('/api/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use('/api/v1/auth', authAPIv1);
 
