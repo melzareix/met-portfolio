@@ -4,8 +4,10 @@ const ExtractJWT = passportJWT.ExtractJwt;
 const JWTStrategy = passportJWT.Strategy;
 const User = require('../models/User');
 const InvalidToken = require('../models/InvalidToken');
-const JWT_KEY = process.env.JWT_KEY;
 
+require('dotenv').config();
+
+const JWT_KEY = process.env.JWT_KEY;
 const JWTOptions = {
     jwtFromRequest: ExtractJWT.fromAuthHeader(),
     secretOrKey: JWT_KEY,

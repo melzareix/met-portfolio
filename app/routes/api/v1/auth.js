@@ -14,6 +14,7 @@ const Strings = require('../../../utils/strings');
 const JWT_KEY = process.env.JWT_KEY;
 const DB_URL = process.env.DB_URL;
 
+require('dotenv').config();
 mongoose.connect(DB_URL);
 
 
