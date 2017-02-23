@@ -11,7 +11,14 @@ const Strings = {
     USER_ALREADY_EXISTS: 'Email already exists.',
 
     // Signup Success
-    SIGNUP_SUCCESS: 'Signed Up Successfully.'
+    SIGNUP_SUCCESS: 'Signed Up Successfully.',
+
+    // Login Errors
+    INVALID_CREDIENTIALS: 'Invalid Username/Password.',
+    MISSING_CREDIENTIALS: 'Please Enter both the username and password.',
+
+    // Login Success
+    LOGIN_SUCCESS: 'Logged In Successfully.'
 }
 
 module.exports = Strings;
