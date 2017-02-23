@@ -24,40 +24,6 @@ router.use(bodyParser.json());
  * User Signup Route.
  */
 
-/**
- * @swagger
- * /api/v1/auth/signup:
- *   post:
- *     summary: Student Signup
- *     produces:
- *       - application/json
- *     consumes:
- *       - application/json
- *     parameters:
- *       - name: body
- *         description: The new student details.
- *         in: body
- *         required: true
- *         type: string
- *         schema:
- *            $ref: '#/definitions/SignUpParameters'
- *     responses:
- *       200:
- *         description: Successful Signup
- *         schema:
- *          $ref: '#/definitions/SignUpSuccessResponse'
- *         examples:
- *           application/json:
- *             {
- *                status: 1,
- *                message: Signed Up Successfully.
- *            }
- *       400:
- *         description: Invalid/Missing User data. 
- *         schema:
- *          $ref: '#/definitions/SignUpFailure'
- */
-
 router.post('/signup', function (req, res, next) {
     let email = req.body.email,
         password = req.body.password,
@@ -132,41 +98,6 @@ router.post('/signup', function (req, res, next) {
  * User Login Route.
  */
 
-/**
- * @swagger
- * /api/v1/auth/login:
- *   post:
- *     summary: Student Login
- *     produces:
- *       - application/json
- *     consumes:
- *       - application/json
- *     parameters:
- *       - name: body
- *         description: Login information for the student.
- *         in: body
- *         required: true
- *         type: string
- *         schema:
- *            $ref: '#/definitions/LoginParameters'
- *     responses:
- *       200:
- *         description: Successful Login
- *         schema:
- *          $ref: '#/definitions/LoginSuccessResponse'
- *         examples:
- *           application/json:
- *             {
- *                status: 1,
- *                token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU4YWU5N2E3ZDdkMzY0MDhlZmU0NmViNSIsImlhdCI6MTQ4,
- *                message: Logged In Successfully.
- *            }
- *       400:
- *         description: Invalid/Missing User data. 
- *         schema:
- *          $ref: '#/definitions/LoginFailureResponse'
- */
-
 router.post('/login', function (req, res, next) {
     let email = req.body.email,
         password = req.body.password;
@@ -214,39 +145,6 @@ router.post('/login', function (req, res, next) {
  * User Forgot Password Route.
  */
 
-/**
- * @swagger
- * /api/v1/auth/forgot:
- *   post:
- *     summary: Student Forgot password
- *     produces:
- *       - application/json
- *     consumes:
- *       - application/json
- *     parameters:
- *       - name: body
- *         description: The email associated with the student.
- *         in: body
- *         required: true
- *         type: string
- *         schema:
- *            $ref: '#/definitions/ForgotPwdParameters'
- *     responses:
- *       200:
- *         description: An email is sent to the user with a password reset link if the email exists in the system.
- *         schema:
- *          $ref: '#/definitions/LoginFailureResponse'
- *         examples:
- *           application/json:
- *             {
- *                status: 1,
- *                message: 'You should recieve an email to reset your password, if the email exists'
- *            }
- *       400:
- *         description: Invalid Email. 
- *         schema:
- *          $ref: '#/definitions/SignUpFailure'
- */
 router.post('/forgot', function (req, res, next) {
     const email = req.body.email;
 
@@ -303,44 +201,6 @@ router.post('/forgot', function (req, res, next) {
 
 /**
  * User Reset Password Route.
- */
-/**
- * @swagger
- * /api/v1/auth/reset:
- *   security:
- *     apikey:
- *       type: apiKey
- *       name: server_token
- *       in: query
- *   post:
- *     summary: Student Reset password
- *     produces:
- *       - application/json
- *     consumes:
- *       - application/json
- *     parameters:
- *       - name: body
- *         description: The reset token and password.
- *         in: body
- *         required: true
- *         type: string
- *         schema:
- *            $ref: '#/definitions/ResetPwdParameters'
- *     responses:
- *       200:
- *         description: The password was reset successfully.
- *         schema:
- *          $ref: '#/definitions/PwdResetSuccess'
- *         examples:
- *           application/json:
- *             {
- *                status: 1,
- *                message: 'Password Changed Successfully.'
- *            }
- *       400:
- *         description: Invalid/Missing Data. 
- *         schema:
- *          $ref: '#/definitions/SignUpFailure'
  */
 
 router.post('/reset/', function (req, res, next) {
@@ -431,6 +291,29 @@ router.use(function (req, res) {
     });
 });
 
+
+/**
+ * Authenticated Users Routes.
+ */
+
+/**
+ * Logout Route.
+ * http://stackoverflow.com/questions/3521290/logout-get-or-post
+ */
+
+router.post('/logout', authHelper.authMiddleware, function (req, res, next) {
+    const jwtToken = authHelper.parseAuthHeader(req.headers['authorization']).value;
+    new InvalidToken({
+        token: jwtToken
+    }).save(function (err) {
+        if (err) {
+            return next(err);
+        }
+        return res.json({
+            message: 'Logged out successfully.'
+        });
+    });
+});
 
 /**
  * Returns a human readable error message.
