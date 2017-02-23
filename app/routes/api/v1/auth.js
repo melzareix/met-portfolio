@@ -272,26 +272,6 @@ router.post('/reset/', function (req, res, next) {
 });
 
 
-
-/**
- * Error Handling Middlewares.
- */
-
-router.use(function (err, req, res, next) {
-    return res.status(400).json({
-        status: 0,
-        message: handleError(err)
-    });
-});
-
-router.use(function (req, res) {
-    return res.status(404).json({
-        status: 0,
-        message: Strings.INVALID_ROUTE
-    });
-});
-
-
 /**
  * Authenticated Users Routes.
  */
@@ -314,6 +294,26 @@ router.post('/logout', authHelper.authMiddleware, function (req, res, next) {
         });
     });
 });
+
+
+/**
+ * Error Handling Middlewares.
+ */
+
+router.use(function (err, req, res, next) {
+    return res.status(400).json({
+        status: 0,
+        message: handleError(err)
+    });
+});
+
+router.use(function (req, res) {
+    return res.status(404).json({
+        status: 0,
+        message: Strings.INVALID_ROUTE
+    });
+});
+
 
 /**
  * Returns a human readable error message.
