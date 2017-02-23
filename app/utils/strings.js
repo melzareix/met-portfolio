@@ -18,7 +18,13 @@ const Strings = {
     MISSING_CREDIENTIALS: 'Please Enter both the username and password.',
 
     // Login Success
-    LOGIN_SUCCESS: 'Logged In Successfully.'
+    LOGIN_SUCCESS: 'Logged In Successfully.',
+
+    // Password Reset Errors
+    CHECK_YOU_EMAIL: 'You should recieve an email to reset your password, if the email exists.',
+
+    // Password Reset Success
+    PASSWORD_RESET_SUCCESS: 'Password Changed Successfully.'
 };
 
 module.exports = Strings;
