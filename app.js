@@ -7,6 +7,7 @@ const passport = require('passport');
 
 const authMiddleware = require('./app/middlewares/authMiddleware');
 const authAPIv1 = require('./app/routes/api/v1/auth');
+const portfolioAPIv1 = require('./app/routes/api/v1/portfolio');
 
 const app = express();
 require('dotenv').config();
@@ -32,6 +33,7 @@ if (process.env.DEBUG_MODE) {
  */
 
 app.use('/api/v1/auth', authAPIv1);
+app.use('/api/v1/portfolio', portfolioAPIv1);
 
 /**
  * Generic Error Handling Middlewares.
