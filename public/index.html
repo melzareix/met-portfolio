@@ -2,89 +2,78 @@
 <html lang="en">
 
 <head>
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="css/bootstrap.min.css" />
-    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/bulma.css"/>
+    <link rel="stylesheet" href="css/styles.css"/>
 </head>
 
 <body>
-    <div class="container-fluid">
-        <nav class="navbar navbar-toggleable-md">
-            <a class="navbar-brand mr-auto" href="#"><img src="assets/imgs/logo.png" width="109" alt="logo"></a>
-            <ul class="navbar-nav">
-                <a class="nav-item nav-link" href="#">Signup</a>
-                <a class="nav-item nav-link disabled" href="#">Login</a>
-            </ul>
+<div class="container" id="root">
+    <navbar logo="assets/imgs/logo.png" width="109">
+        <li><a class="nav-item nav-link" href="">Signup</a></li>
+        <li><a class="nav-item nav-link" href="#">Login</a></li>
+    </navbar>
+    <hr>
 
-        </nav>
+    <form class="control has-addons has-addons-centered" method="get">
+        <input type="text" class="input search-txt"
+               placeholder="Search by keyword ...">
+        <a class="button is-outlined is-success">Search</a>
+    </form>
 
-        <div class="card-deck">
-            <div class="post-gallery card">
-                <img class="card-img-top" src="assets/imgs/sample1.png">
-                <div class="card-block">
-
-                    <div class="portfolio-content">
-                        <h4 class="card-title">Ask a fellow</h4>
-                        <p class="card-text">A social network for GUC Students to communicate together and ask the doctors to get good answers.</p>
-                        <span class="author">MOHAMED EL ZAREI</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="post-gallery card">
-                <img class="card-img-top" src="assets/imgs/profile.jpg">
-                <div class="card-block">
-
-                    <div class="portfolio-content">
-                        <h4 class="card-title"><a href="#">Ask a fellow</a></h4>
-                        <p class="card-text">A social network for GUC Students to communicate together and ask the doctors to get good answers.</p>
-                        <span class="author">MOHAMED EL ZAREI</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="post-gallery card">
-                <img class="card-img-top" src="assets/imgs/sample1.png">
-                <div class="card-block">
-
-                    <div class="portfolio-content">
-                        <h4 class="card-title">Ask a fellow</h4>
-                        <p class="card-text">A social network for GUC Students to communicate together and ask the doctors to get good answers.</p>
-                        <span class="author">MOHAMED EL ZAREI</span>
-                    </div>
-                </div>
-            </div>
+    <hr>
 
 
-            <div class="post-gallery card">
-                <img class="card-img-top" src="assets/imgs/sample1.png">
-                <div class="card-block">
-
-                    <div class="portfolio-content">
-                        <h4 class="card-title">Ask a fellow</h4>
-                        <p class="card-text">A social network for GUC Students to communicate together and ask the doctors to get good answers.</p>
-                        <span class="author">MOHAMED EL ZAREI</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="post-gallery card">
-                <img class="card-img-top" src="assets/imgs/sample1.png">
-                <div class="card-block">
-
-                    <div class="portfolio-content">
-                        <h4 class="card-title">Ask a fellow</h4>
-                        <p class="card-text">A social network for GUC Students to communicate together and ask the doctors to get good answers.</p>
-                        <span class="author">MOHAMED EL ZAREI</span>
-                    </div>
-                </div>
-            </div>
+    <div class="columns is-multiline" style="margin-bottom: 0">
+        <div class="column is-one-quarter">
+            <card cover="https://placebear.com/200/200">
+                <p slot="title">John Appleseed</p>
+                <p class="subtitle">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque eos ex iure minima porro saepe
+                    tempora
+                    tempore ullam voluptatum? Esse perspiciatis, quidem. Beatae, delectus deserunt hic laudantium maxime
+                    veritatis vitae.
+                </p>
+                <p slot="footer" class="author card-footer-item">
+                    Mohamed El Zarei
+                </p>
+            </card>
         </div>
+        <div class="column is-one-quarter">
+            <card cover="https://placebear.com/200/200">
+                <p slot="title">John Appleseed</p>
+                <p class="subtitle">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque eos ex iure minima porro saepe
+                    tempora
+                    tempore ullam voluptatum? Esse perspiciatis, quidem. Beatae, delectus deserunt hic laudantium maxime
+                    veritatis vitae.
+                </p>
+                <div class="menu">
+                    <p class="menu-label">
+                        Top Work
+                    </p>
+                    <ul class="menu-list">
+                        <li><a href="#">DMET 501</a></li>
+                        <li><a href="#">Networks TCP Client</a></li>
+                    </ul>
+                </div>
+                <p slot="footer" class="author card-footer-item">
+                    Rate me
+                </p>
+            </card>
+        </div>
+
     </div>
+
+</div>
+
+<footer class="footer dark">
+    <div class="container">
+        <p class="has-text-centered"><br>The source code is licensed MIT.</p>
+    </div>
+</footer>
+<script src="dist/js/app.js"></script>
 </body>
 
 </html>
