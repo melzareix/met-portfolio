@@ -8,6 +8,7 @@ let portfolioSchema = mongoose.Schema({
     },
     displayURL: {
         type: String,
+        unique: true,
         required: true
     },
     works: [{

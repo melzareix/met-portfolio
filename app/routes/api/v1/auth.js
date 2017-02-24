@@ -10,10 +10,11 @@ const mailer = require('../../../utils/mailer');
 const router = express.Router();
 const Strings = require('../../../utils/strings');
 
+require('dotenv').config();
+
 const JWT_KEY = process.env.JWT_KEY;
 const DB_URL = process.env.DB_URL;
 
-require('dotenv').config();
 mongoose.connect(DB_URL);
 
 
@@ -86,7 +87,6 @@ router.post('/signup', function (req, res, next) {
             return next(err);
         }
         return res.json({
-            status: 1,
             message: Strings.SIGNUP_SUCCESS
         });
     });
@@ -131,7 +131,6 @@ router.post('/login', function (req, res, next) {
             });
 
             return res.json({
-                status: 1,
                 message: Strings.LOGIN_SUCCESS,
                 token: token
             });
@@ -174,7 +173,6 @@ router.post('/forgot', function (req, res, next) {
         if (!user) { // User not found, Invalid mail
             // Not using middleware due to status
             return res.json({
-                status: 1,
                 message: Strings.CHECK_YOU_EMAIL
             });
         }
@@ -189,7 +187,6 @@ router.post('/forgot', function (req, res, next) {
             // Send mail
             mailer.forgotPassword(email, req.headers.host, resetToken, function (err, result) {
                 return res.json({
-                    status: 1,
                     message: Strings.CHECK_YOU_EMAIL
                 });
             });
@@ -263,7 +260,6 @@ router.post('/reset/', function (req, res, next) {
                 }
 
                 return res.json({
-                    status: 1,
                     message: Strings.PASSWORD_RESET_SUCCESS
                 });
             });
@@ -290,8 +286,7 @@ router.post('/logout', authHelper.authMiddleware, function (req, res, next) {
             return next(err);
         }
         return res.json({
-            status: 1,
-            message: 'Logged out successfully.'
+            message: Strings.LOGOUT_SUCCESS
         });
     });
 });
@@ -303,14 +298,12 @@ router.post('/logout', authHelper.authMiddleware, function (req, res, next) {
 
 router.use(function (err, req, res, next) {
     return res.status(400).json({
-        status: 0,
         message: handleError(err)
     });
 });
 
 router.use(function (req, res) {
     return res.status(404).json({
-        status: 0,
         message: Strings.INVALID_ROUTE
     });
 });

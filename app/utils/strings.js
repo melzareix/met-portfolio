@@ -25,7 +25,18 @@ const Strings = {
     INVALID_RESET_TOKEN: 'Invalid reset token.',
 
     // Password Reset Success
-    PASSWORD_RESET_SUCCESS: 'Password Changed Successfully.'
+    PASSWORD_RESET_SUCCESS: 'Password Changed Successfully.',
+
+    // Logout Success
+    LOGOUT_SUCCESS: 'Logged out successfully.',
+
+    // Add Work Erros
+    EMPTY_TITLE: 'The title field is required.',
+    EMPTY_WORK: 'You must upload an image of your work, add a demo or repo.',
+    NO_PORTFOLIO: 'You need to create a portfolio first.',
+
+    // Add Work Success
+    WORK_ADDED: 'Item Added!',
 };
 
 module.exports = Strings;
