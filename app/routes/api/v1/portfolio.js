@@ -4,10 +4,11 @@ const mongoose = require('mongoose');
 const authHelper = require('../../../middlewares/authMiddleware');
 const multer = require('multer');
 const Strings = require('../../../utils/strings');
-
+const path = require('path');
 const User = require('../../../models/User');
 const WorkItem = require('../../../models/WorkItem');
 const Portfolio = require('../../../models/Portfolio');
+const crypto = require('crypto');
 
 const router = express.Router();
 require('dotenv').config();
@@ -16,6 +17,25 @@ router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({
     extended: false
 }));
+
+
+/**
+ * Multer Configuration
+ */
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './public/uploads/');
+    },
+    filename: function (req, file, cb) {
+        const buf = crypto.randomBytes(48);
+        cb(null, Date.now() + buf.toString('hex') + path.extname(file.originalname));
+    }
+});
+
+
+const upload = multer({
+    storage: storage
+});
 
 /**
  * Create a new portfolio
@@ -49,7 +69,9 @@ router.get('/', authHelper.authMiddleware, function (req, res, next) {
 /**
  * Add new portfolio item
  */
-router.post('/add', authHelper.authMiddleware, function (req, res, next) {
+
+
+router.post('/add', upload.single('cover'), authHelper.authMiddleware, function (req, res, next) {
     const title = req.body.title,
         description = req.body.description,
         liveDemo = req.body.link,
@@ -79,7 +101,7 @@ router.post('/add', authHelper.authMiddleware, function (req, res, next) {
     const portfolioItem = new WorkItem({
         title,
         description,
-        coverImage,
+        coverImage: coverImage.path,
         liveDemo,
         githubRepo
     });
