@@ -30,6 +30,10 @@ let userSchema = mongoose.Schema({
             message: '{VALUE} is an invalid email.'
         }
     },
+    portfolio: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Portfolio'
+    },
     password: {
         type: String,
         required: true

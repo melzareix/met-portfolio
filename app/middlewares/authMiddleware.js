@@ -67,7 +67,7 @@ var parseAuthHeader = function (hdrValue) {
         scheme: matches[1],
         value: matches[2]
     };
-}
+};
 
 /**
  * Middleware for JWT authentication validation.

@@ -14,7 +14,7 @@ let workItemSchema = mongoose.Schema({
         type: String
     },
     description: {
-        type: Text
+        type: String
     }
 });
 
