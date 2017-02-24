@@ -1,11 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
 const authHelper = require('../../../middlewares/authMiddleware');
 const multer = require('multer');
 const Strings = require('../../../utils/strings');
 const path = require('path');
-const User = require('../../../models/User');
 const WorkItem = require('../../../models/WorkItem');
 const Portfolio = require('../../../models/Portfolio');
 const crypto = require('crypto');
@@ -41,7 +39,7 @@ const upload = multer({
  * Create a new portfolio
  */
 
-router.post('/create', authHelper.authMiddleware, function (req, res) {
+router.post('/create', authHelper.authMiddleware, function (req, res, next) {
 
 });
 
@@ -90,7 +88,7 @@ router.post('/add', upload.single('cover'), authHelper.authMiddleware, function 
         }
         Portfolio.findOne({ // Add the item to the corresponding portfolio
             _id: student.portfolio
-        }, function (err, data) {
+        }, (err, data) => {
             data.works.push(newItem._id);
             data.save((err) => {
                 if (err) {

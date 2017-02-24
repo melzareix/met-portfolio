@@ -286,7 +286,7 @@ router.post('/logout', authHelper.authMiddleware, function (req, res, next) {
             return next(err);
         }
         return res.json({
-            message: 'Logged out successfully.'
+            message: Strings.LOGOUT_SUCCESS
         });
     });
 });
