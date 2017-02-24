@@ -7,9 +7,6 @@ const Strings = require('../../../utils/strings');
 
 const router = express.Router();
 require('dotenv').config();
-const DB_URL = process.env.DB_URL;
-
-mongoose.connect(DB_URL);
 
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({
@@ -20,14 +17,14 @@ router.use(bodyParser.urlencoded({
  * Create a new portfolio
  */
 
-router.post('/create', authHelper.strategy, function (req, res) {
+router.post('/create', authHelper.authMiddleware, function (req, res) {
 
 });
 
 /**
  * Add new portfolio item
  */
-router.get('/add', authHelper.strategy, function (req, res, next) {
+router.get('/add', function (req, res, next) {
     const title = req.body.title,
         desc = req.body.description,
         link = req.body.link,
@@ -41,6 +38,12 @@ router.get('/add', authHelper.strategy, function (req, res, next) {
 
     return next(errs);
 
+});
+
+router.use(function (err, req, res, next) {
+    return res.json({
+        err
+    });
 });
 
 module.exports = router;

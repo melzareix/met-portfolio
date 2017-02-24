@@ -21,7 +21,6 @@ describe('API Auth Main', function () {
     it('should return Not found with error message.', function (done) {
         req
             .expect(404, {
-                status: 0,
                 message: Strings.INVALID_ROUTE
             }, done);
     });
@@ -56,7 +55,6 @@ describe('Auth Signup API', function () {
             .send(kingslayer)
             .expect('Content-Type', /json/)
             .expect(200, {
-                status: 1,
                 message: Strings.SIGNUP_SUCCESS
             })
             .end(function (err, res) {
@@ -92,7 +90,6 @@ describe('Auth Signup API', function () {
             .send(kingslayer)
             .expect('Content-Type', /json/)
             .expect(400, {
-                status: 0,
                 message: Strings.USER_ALREADY_EXISTS
             }, done);
     });
@@ -111,7 +108,7 @@ describe('Auth Signup API', function () {
             .send(kingslayer)
             .expect('Content-Type', /json/)
             .expect(400, {
-                status: 0,
+
                 message: Strings.NON_GUC_MAIL
             }, done);
     });
@@ -129,7 +126,6 @@ describe('Auth Signup API', function () {
             .send(kingslayer)
             .expect('Content-Type', /json/)
             .expect(400, {
-                status: 0,
                 message: Strings.INVALID_GUC_ID
             }, done);
     });
@@ -148,7 +144,7 @@ describe('Auth Signup API', function () {
             .send(kingslayer)
             .expect('Content-Type', /json/)
             .expect(400, {
-                status: 0,
+
                 message: Strings.INVALID_PASSWORD
             }, done);
     });
@@ -167,7 +163,7 @@ describe('Auth Signup API', function () {
             .send(kingslayer)
             .expect('Content-Type', /json/)
             .expect(400, {
-                status: 0,
+
                 message: Strings.PASSWORD_MISMATCH
             }, done);
     });
@@ -186,7 +182,6 @@ describe('Auth Signup API', function () {
             .send(johnSnow)
             .expect('Content-Type', /json/)
             .expect(200, {
-                status: 1,
                 message: Strings.SIGNUP_SUCCESS
             }, done);
     });
@@ -212,7 +207,6 @@ describe('Auth Login API', function () {
             .expect('Content-Type', /json/)
             .expect(200)
             .end(function (err, res) {
-                expect(res.body.status).to.equal(1);
                 expect(res.body.message).to.equal(Strings.LOGIN_SUCCESS);
                 done();
             });
@@ -230,7 +224,6 @@ describe('Auth Login API', function () {
                 const JWS_REGEX = /^[a-zA-Z0-9\-_]+?\.[a-zA-Z0-9\-_]+?\.([a-zA-Z0-9\-_]+)?$/;
                 expect(JWTtoken).to.match(JWS_REGEX);
 
-                expect(res.body.status).to.equal(1);
                 expect(res.body.message).to.equal(Strings.LOGIN_SUCCESS);
                 done();
             });
@@ -244,7 +237,7 @@ describe('Auth Login API', function () {
             })
             .expect('Content-Type', /json/)
             .expect(400, {
-                status: 0,
+
                 message: Strings.INVALID_CREDIENTIALS
             }, done);
     });
@@ -257,7 +250,7 @@ describe('Auth Login API', function () {
             })
             .expect('Content-Type', /json/)
             .expect(400, {
-                status: 0,
+
                 message: Strings.INVALID_CREDIENTIALS
             }, done);
     });
@@ -270,7 +263,7 @@ describe('Auth Login API', function () {
             })
             .expect('Content-Type', /json/)
             .expect(400, {
-                status: 0,
+
                 message: Strings.INVALID_CREDIENTIALS
             }, done);
     });
@@ -282,7 +275,7 @@ describe('Auth Login API', function () {
             })
             .expect('Content-Type', /json/)
             .expect(400, {
-                status: 0,
+
                 message: Strings.MISSING_CREDIENTIALS
             }, done);
     });
@@ -294,7 +287,7 @@ describe('Auth Login API', function () {
             })
             .expect('Content-Type', /json/)
             .expect(400, {
-                status: 0,
+
                 message: Strings.MISSING_CREDIENTIALS
             }, done);
     });
@@ -329,7 +322,6 @@ describe('Auth Logout API', function () {
                 const JWS_REGEX = /^[a-zA-Z0-9\-_]+?\.[a-zA-Z0-9\-_]+?\.([a-zA-Z0-9\-_]+)?$/;
                 expect(JWTtoken).to.match(JWS_REGEX);
 
-                expect(res.body.status).to.equal(1);
                 expect(res.body.message).to.equal(Strings.LOGIN_SUCCESS);
 
                 supertest(app)
@@ -339,7 +331,6 @@ describe('Auth Logout API', function () {
                         if (err) {
                             return done(err);
                         }
-                        expect(res.body.status).to.equal(1);
                         expect(res.body.message).to.equal('Logged out successfully.');
                         InvalidToken.findOne({
                             token: JWTtoken
