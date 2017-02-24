@@ -1,3 +1,54 @@
-.main{
-    margin: 15px;
+body {
+    background: #fefefe;
+}
+
+.featured,
+.card-deck {
+    padding-left: 16px;
+}
+
+.post-gallery {
+    margin-bottom: 10px;
+}
+
+.card,
+.card-img-top {
+    border-radius: 0;
+}
+
+.card {
+    display: inline-block;
+}
+
+.card-img-top {
+    max-height: 30vh;
+}
+
+.card-title a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.card-block {
+    background: #f2f2f2;
+    transition: background 0.5s;
+    -webkit-transition: background 0.5s;
+}
+
+.portfolio-content {
+    margin: 10px;
+}
+
+.card-block:hover {
+    background: #5CB85C;
+    color: #fff;
+}
+
+.card-text {
+    font-size: 0.8em;
+}
+
+.author {
+    font-size: 0.7em;
+    letter-spacing: 3px;
 }

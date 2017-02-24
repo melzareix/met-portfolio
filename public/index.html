@@ -1,192 +1,90 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <title>MET Portfolio</title>
-    <link rel="stylesheet" href="css/bulma.css">
-    <link rel="stylesheet" href="css/styles.css">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/styles.css" />
 </head>
+
 <body>
-<div class="container-fluid">
-    <nav class="nav">
-        <div class="nav-left">
-            <a class="nav-item">
-                <img src="http://bulma.io/images/bulma-logo.png" alt="Bulma logo">
-            </a>
-        </div>
-        <div class="nav-right nav-menu">
-            <a class="nav-item">Signup</a>
-            <a class="nav-item">Login</a>
-            <p class="control has-addons nav-item">
-                <input class="input" type="text" placeholder="Search portfolios">
-                <a class="button">Search</a>
-            </p>
-        </div>
-    </nav>
-    <section class="hero is-info">
-        <div class="hero-body">
-            <div class="container">
-                <h1 class="title">MET Portfolio</h1>
-                <h2 class="subtitle"> Department portfolio for final year MET and BI students to showcase their work to
-                    potential employers.</h2>
-                <button class="button">Learn more</button>
-            </div>
-        </div>
-    </section>
+    <div class="container-fluid">
+        <nav class="navbar navbar-toggleable-md">
+            <a class="navbar-brand mr-auto" href="#"><img src="assets/imgs/logo.png" width="109" alt="logo"></a>
+            <ul class="navbar-nav">
+                <a class="nav-item nav-link" href="#">Signup</a>
+                <a class="nav-item nav-link disabled" href="#">Login</a>
+            </ul>
 
-    <main class="container-fluid main">
-        <section class="columns">
-            <div class="column is-one-quarter">
-                <div class="card">
-                    <div class="card-image">
-                        <figure class="image is-4by3">
-                            <img src="https://placebear.com/1280/960" alt="Image">
-                        </figure>
-                    </div>
-                    <div class="card-content">
-                        <div class="media">
-                            <div class="media-left">
-                                <figure class="image" style="height: 40px; width: 40px;">
-                                    <img src="http://bulma.io/images/placeholders/96x96.png" alt="Image">
-                                </figure>
-                            </div>
-                            <div class="media-content">
-                                <p class="title is-4">John Smith</p>
-                                <p class="subtitle is-6">@johnsmith</p>
-                            </div>
-                        </div>
+        </nav>
 
-                        <div class="content">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                            Phasellus nec iaculis mauris. <a>@bulmaio</a>.
-                            <a>#css</a> <a>#responsive</a>
-                            <br>
-                            <small>11:09 PM - 1 Jan 2016</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="column is-one-quarter">
-                <div class="card">
-                    <div class="card-image">
-                        <figure class="image is-4by3">
-                            <img src="https://placebear.com/1280/960" alt="Image">
-                        </figure>
-                    </div>
-                    <div class="card-content">
-                        <div class="media">
-                            <div class="media-left">
-                                <figure class="image" style="height: 40px; width: 40px;">
-                                    <img src="http://bulma.io/images/placeholders/96x96.png" alt="Image">
-                                </figure>
-                            </div>
-                            <div class="media-content">
-                                <p class="title is-4">John Smith</p>
-                                <p class="subtitle is-6">@johnsmith</p>
-                            </div>
-                        </div>
+        <div class="card-deck">
+            <div class="post-gallery card">
+                <img class="card-img-top" src="assets/imgs/sample1.png">
+                <div class="card-block">
 
-                        <div class="content">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                            Phasellus nec iaculis mauris. <a>@bulmaio</a>.
-                            <a>#css</a> <a>#responsive</a>
-                            <br>
-                            <small>11:09 PM - 1 Jan 2016</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="column is-one-quarter">
-                <div class="card">
-                    <div class="card-image">
-                        <figure class="image is-4by3">
-                            <img src="https://placebear.com/1280/960" alt="Image">
-                        </figure>
-                    </div>
-                    <div class="card-content">
-                        <div class="media">
-                            <div class="media-left">
-                                <figure class="image" style="height: 40px; width: 40px;">
-                                    <img src="http://bulma.io/images/placeholders/96x96.png" alt="Image">
-                                </figure>
-                            </div>
-                            <div class="media-content">
-                                <p class="title is-4">John Smith</p>
-                                <p class="subtitle is-6">@johnsmith</p>
-                            </div>
-                        </div>
-
-                        <div class="content">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                            Phasellus nec iaculis mauris. <a>@bulmaio</a>.
-                            <a>#css</a> <a>#responsive</a>
-                            <br>
-                            <small>11:09 PM - 1 Jan 2016</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="column is-one-quarter">
-                <div class="card">
-                    <div class="card-image">
-                        <figure class="image is-4by3">
-                            <img src="https://placebear.com/1280/960" alt="Image">
-                        </figure>
-                    </div>
-                    <div class="card-content">
-                        <div class="media">
-                            <div class="media-left">
-                                <figure class="image" style="height: 40px; width: 40px;">
-                                    <img src="http://bulma.io/images/placeholders/96x96.png" alt="Image">
-                                </figure>
-                            </div>
-                            <div class="media-content">
-                                <p class="title is-4">John Smith</p>
-                                <p class="subtitle is-6">@johnsmith</p>
-                            </div>
-                        </div>
-
-                        <div class="content">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                            Phasellus nec iaculis mauris. <a>@bulmaio</a>.
-                            <a>#css</a> <a>#responsive</a>
-                            <br>
-                            <small>11:09 PM - 1 Jan 2016</small>
-                        </div>
+                    <div class="portfolio-content">
+                        <h4 class="card-title">Ask a fellow</h4>
+                        <p class="card-text">A social network for GUC Students to communicate together and ask the doctors to get good answers.</p>
+                        <span class="author">MOHAMED EL ZAREI</span>
                     </div>
                 </div>
             </div>
 
-        </section>
-    </main>
+            <div class="post-gallery card">
+                <img class="card-img-top" src="assets/imgs/profile.jpg">
+                <div class="card-block">
 
-    <nav class="pagination is-centered">
-        <ul class="pagination-list">
-            <li><a class="pagination-link">1</a></li>
-            <li><span class="pagination-ellipsis">&hellip;</span></li>
-            <li><a class="pagination-link">45</a></li>
-            <li><a class="pagination-link is-current">46</a></li>
-            <li><a class="pagination-link">47</a></li>
-            <li><span class="pagination-ellipsis">&hellip;</span></li>
-            <li><a class="pagination-link">86</a></li>
-        </ul>
-        <br />
-        <br />
-    </nav>
+                    <div class="portfolio-content">
+                        <h4 class="card-title"><a href="#">Ask a fellow</a></h4>
+                        <p class="card-text">A social network for GUC Students to communicate together and ask the doctors to get good answers.</p>
+                        <span class="author">MOHAMED EL ZAREI</span>
+                    </div>
+                </div>
+            </div>
 
-    <footer class="footer">
-        <div class="container">
-            <div class="content has-text-centered">
-                <p>
-                    <strong>Bulma</strong> by <a href="http://jgthms.com">Jeremy Thomas</a>. The source code is licensed
-                    <a href="http://opensource.org/licenses/mit-license.php">MIT</a>. The website content
-                    is licensed <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC ANS 4.0</a>.
-                </p>
+            <div class="post-gallery card">
+                <img class="card-img-top" src="assets/imgs/sample1.png">
+                <div class="card-block">
+
+                    <div class="portfolio-content">
+                        <h4 class="card-title">Ask a fellow</h4>
+                        <p class="card-text">A social network for GUC Students to communicate together and ask the doctors to get good answers.</p>
+                        <span class="author">MOHAMED EL ZAREI</span>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="post-gallery card">
+                <img class="card-img-top" src="assets/imgs/sample1.png">
+                <div class="card-block">
+
+                    <div class="portfolio-content">
+                        <h4 class="card-title">Ask a fellow</h4>
+                        <p class="card-text">A social network for GUC Students to communicate together and ask the doctors to get good answers.</p>
+                        <span class="author">MOHAMED EL ZAREI</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="post-gallery card">
+                <img class="card-img-top" src="assets/imgs/sample1.png">
+                <div class="card-block">
+
+                    <div class="portfolio-content">
+                        <h4 class="card-title">Ask a fellow</h4>
+                        <p class="card-text">A social network for GUC Students to communicate together and ask the doctors to get good answers.</p>
+                        <span class="author">MOHAMED EL ZAREI</span>
+                    </div>
+                </div>
             </div>
         </div>
-    </footer>
-</div>
+    </div>
 </body>
+
 </html>
