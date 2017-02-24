@@ -46,30 +46,8 @@ router.post('/create', authHelper.authMiddleware, function (req, res) {
 });
 
 /**
- * Testing
- */
-router.get('/', authHelper.authMiddleware, function (req, res, next) {
-    new Portfolio({
-        _creator: req.user.id,
-        displayURL: 'helloworld'
-    }).save(function (err, data) {
-        if (err) {
-            return next(err);
-        }
-        let student = req.user;
-        student.portfolio = data.id;
-        student.save(err => {
-            if (err) {
-                return next(err);
-            }
-        });
-    });
-});
-
-/**
  * Add new portfolio item
  */
-
 
 router.post('/add', upload.single('cover'), authHelper.authMiddleware, function (req, res, next) {
     const title = req.body.title,
