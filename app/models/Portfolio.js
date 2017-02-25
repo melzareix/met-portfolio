@@ -6,9 +6,8 @@ let portfolioSchema = mongoose.Schema({
         required: true,
         ref: 'User'
     },
-    displayURL: {
+    description: {
         type: String,
-        unique: true,
         required: true
     },
     works: [{
