@@ -44,7 +44,8 @@ let userSchema = mongoose.Schema({
         required: true
     },
     passwordResetTokenDate: {
-        type: Date
+        type: Date,
+        default: Date.now
     },
     passwordChangeDate: {
         type: Date,

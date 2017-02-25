@@ -2287,10 +2287,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 var results = data.results;
                 results.forEach(function (item) {
                     var newItem = {
-                        cover: item._creator.profilePic,
-                        title: item._creator.firstName + ' ' + item._creator.lastName,
-                        desc: item.description,
-                        works: item.works.map(function (i) {
+                        profilePic: 'dist/assets/imgs/' + item.profilePic,
+                        title: item.firstName + ' ' + item.lastName,
+                        desc: item.bio,
+                        works: item.portfolio.map(function (i) {
                             return { title: i.title };
                         })
                     };
@@ -2412,7 +2412,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v("Fuck You")])]), _vm._v(" "), _vm._l((_vm.items), function(item) {
     return _c('card', {
       attrs: {
-        "cover": item.cover
+        "cover": item.profilePic
       }
     }, [_c('p', {
       slot: "title"

@@ -55,7 +55,7 @@ router.get('/summary/:offset', function (req, res, next) {
                     $size: 0
                 }
             }
-        }, null, {
+        }, ['-password', '-passwordChangeDate', '-passwordResetTokenDate'], {
             skip: (offset - 1) * 10,
             limit: 10
         }).populate('portfolio', null, null, {
@@ -100,13 +100,7 @@ router.post('/add', upload.single('cover'), authHelper.authMiddleware, function 
         return next(errors);
     }
 
-    let student = req.user;
-    // Student doesn't have a portfolio
-
-    if (!student.portfolio) {
-        return next(Strings.NO_PORTFOLIO);
-    }
-
+    const student = req.user;
     const portfolioItem = new WorkItem({
         title,
         description,
@@ -119,8 +113,8 @@ router.post('/add', upload.single('cover'), authHelper.authMiddleware, function 
         if (err) {
             return next(err);
         }
-        req.user.portfolio.push(newItem);
-        req.user.save((err) => {
+        student.portfolio.push(newItem);
+        student.save((err) => {
             if (err) {
                 return next(err);
             }
