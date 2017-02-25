@@ -18,7 +18,7 @@ let userSchema = mongoose.Schema({
     },
     profilePic: {
         type: String,
-        default: 'public/dist/assets/default-pic.png'
+        default: 'public/dist/assets/imgs/default-pic.png'
     },
     email: {
         type: String,
