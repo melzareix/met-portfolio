@@ -4,35 +4,76 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="css/bulma.min.css"/>
-    <link rel="stylesheet" href="css/styles.css"/>
+    <link rel="stylesheet" href="css/bulma.min.css" />
+    <link rel="stylesheet" href="css/styles.css" />
 </head>
 
 <body>
-<div class="container" id="root">
-    <navbar logo="assets/imgs/logo.png" width="109">
-        <li><a class="nav-item nav-link" href="#">Signup</a></li>
-        <li><a class="nav-item nav-link" href="#">Login</a></li>
-    </navbar>
-    <hr>
+    <div class="container" id="root">
+        <navbar logo="assets/imgs/logo.png" width="109">
+            <li><a class="nav-item nav-link" href="#">Signup</a></li>
+            <li><a class="nav-item nav-link" href="#">Login</a></li>
+        </navbar>
+        <hr>
 
-    <form class="control has-addons has-addons-centered" method="get">
-        <input type="text" class="input search-txt" placeholder="Search by keyword ...">
-        <a class="button is-outlined is-success">Search</a>
-    </form>
+        <h2 class="title is-2">Signup</h2>
+        <hr>
+        <form>
+            <div class="control">
+                <label class="label">First Name</label>
+                <p class="control">
+                    <input class="input" type="text" placeholder="Slim">
+                </p>
 
-    <hr>
+                <label class="label">Last Name</label>
+                <p class="control has-icon has-icon-right">
+                    <input class="input" type="text" placeholder="Abdelnader">
+                </p>
 
-    <summary-cards></summary-cards>
+                <label class="label">Profile Picture</label>
+                <p class="control has-icon has-icon-right">
+                    <input type="file" placeholder="Abdelnader">
+                </p>
 
-</div>
+                <label class="label">Email</label>
+                <p class="control has-icon has-icon-right">
+                    <input class="input" type="text" placeholder="balabizo@student.guc.edu.eg">
+                </p>
 
-<footer class="footer dark">
-    <div class="container">
-        <p class="has-text-centered"><br>The source code is licensed MIT.</p>
+                <label class="label">Password</label>
+                <p class="control has-icon has-icon-right">
+                    <input class="input" type="password">
+                </p>
+
+                <label class="label">Confirm Password</label>
+                <p class="control has-icon has-icon-right">
+                    <input class="input" type="password">
+                </p>
+
+                <label class="label">GUC ID</label>
+                <p class="control has-icon has-icon-right">
+                    <input class="input" type="text" placeholder="XX-XXXX">
+                </p>
+
+                <label class="label">Bio</label>
+                <p class="control">
+                    <textarea class="textarea"></textarea>
+                </p>
+
+                <p class="control">
+                    <button class="button is-primary">Submit</button>
+                </p>
+            </div>
+        </form>
     </div>
-</footer>
-<script src="dist/js/app.js"></script>
+
+    <footer class="footer dark">
+        <div class="container">
+            <p class="has-text-centered"><br>The source code is licensed MIT.</p>
+        </div>
+    </footer>
+
+    <script src="dist/js/app.js"></script>
 </body>
 
 </html>

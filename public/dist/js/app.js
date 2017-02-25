@@ -1321,6 +1321,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Navbar_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_Navbar_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_SummaryCards_vue__ = __webpack_require__(37);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_SummaryCards_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_SummaryCards_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__views_home_vue__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__views_home_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__views_home_vue__);
+
 
 
 
@@ -1331,7 +1334,10 @@ new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     data: {
         name: ''
     },
-    components: { Navbar: __WEBPACK_IMPORTED_MODULE_2__components_Navbar_vue___default.a, Card: __WEBPACK_IMPORTED_MODULE_1__components_Card_vue___default.a, 'summary-cards': __WEBPACK_IMPORTED_MODULE_3__components_SummaryCards_vue___default.a }
+    components: {
+        Navbar: __WEBPACK_IMPORTED_MODULE_2__components_Navbar_vue___default.a,
+        Home: __WEBPACK_IMPORTED_MODULE_4__views_home_vue___default.a
+    }
 });
 
 /***/ }),
@@ -2500,7 +2506,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "alt": "logo"
     }
   })])]), _vm._v(" "), _c('ul', {
-    staticClass: "nav-right nav-menu is-active"
+    staticClass: "nav-right"
   }, [_vm._t("default")], 2)])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
@@ -11205,6 +11211,99 @@ module.exports = g;
 
 module.exports = __webpack_require__(12);
 
+
+/***/ }),
+/* 47 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_SummaryCards_vue__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_SummaryCards_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_SummaryCards_vue__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = {
+    components: {
+        SummaryCards: __WEBPACK_IMPORTED_MODULE_0__components_SummaryCards_vue___default.a
+    }
+};
+
+/***/ }),
+/* 48 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(3)(
+  /* script */
+  __webpack_require__(47),
+  /* template */
+  __webpack_require__(49),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/Users/melzarei/Desktop/met-portfolio/public/js/views/home.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] home.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-12fb8dc6", Component.options)
+  } else {
+    hotAPI.reload("data-v-12fb8dc6", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 49 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [_vm._m(0), _vm._v(" "), _c('hr'), _vm._v(" "), _c('summary-cards')], 1)
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('form', {
+    staticClass: "control has-addons has-addons-centered",
+    attrs: {
+      "method": "get"
+    }
+  }, [_c('input', {
+    staticClass: "input search-txt",
+    attrs: {
+      "type": "text",
+      "placeholder": "Search by keyword ..."
+    }
+  }), _vm._v(" "), _c('a', {
+    staticClass: "button is-outlined is-success"
+  }, [_vm._v("Search")])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-12fb8dc6", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);
