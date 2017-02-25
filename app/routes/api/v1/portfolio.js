@@ -72,7 +72,74 @@ router.get('/summary/:offset', function (req, res, next) {
  * Create a new portfolio
  */
 
-router.post('/create', authHelper.authMiddleware, function (req, res, next) {
+router.post('/create', upload.single('cover'), authHelper.authMiddleware, function (req, res, next) {
+    const title = req.body.title,
+        workDescription = req.body.wdescription,
+        liveDemo = req.body.link,
+        githubRepo = req.body.repo,
+        coverImage = req.file,
+        portfolioDescription = req.body.pdescription;
+
+    // TODO: Use express-validator
+    let errors = [];
+
+    if (req.user.portfolio) {
+        return next(Strings.ACTIVE_PORTFOLIO);
+    }
+
+    if (!title) {
+        errors.push(Strings.EMPTY_TITLE);
+    }
+    if (!portfolioDescription) {
+        errors.push(Strings.EMPTY_PDESC);
+    }
+    if (!liveDemo && !githubRepo && !coverImage) { // User left all three fields empty
+        errors.push(Strings.EMPTY_WORK);
+    }
+
+    if (errors.length > 0) {
+        return next(errors);
+    }
+
+    // TODO: Create Portfolio with work Item
+    const firstItem = new WorkItem({
+        title,
+        description: workDescription,
+        coverImage: coverImage.path,
+        liveDemo,
+        githubRepo
+    });
+
+    // Save the item
+    firstItem.save((err, data) => {
+        if (err) {
+            return next(err);
+        }
+
+        const firstItemID = data._id;
+
+        const userPorfolio = new Portfolio({
+            _creator: req.user._id,
+            description: portfolioDescription,
+            works: [firstItemID]
+        });
+
+        userPorfolio.save((err, result) => {
+            if (err) {
+                return next(err);
+            }
+            req.user.portfolio = result._id;
+            req.user.save((err) => {
+                if (err) {
+                    return next(err);
+                }
+
+                return res.json({
+                    message: Strings.PORTFOLIO_CREATED
+                });
+            });
+        });
+    });
 
 });
 

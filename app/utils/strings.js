@@ -37,6 +37,13 @@ const Strings = {
 
     // Add Work Success
     WORK_ADDED: 'Item Added!',
+
+    // Create portfolio Error
+    EMPTY_PDESC: 'The description field is required.',
+    EMPTY_PDISURL: 'The Display Url field is required.',
+    URL_EXISTS: 'The URL is already taken.',
+    ACTIVE_PORTFOLIO: 'You already have an active portfolio.',
+    PORTFOLIO_CREATED: 'Portfolio Created.',
 };
 
 module.exports = Strings;
