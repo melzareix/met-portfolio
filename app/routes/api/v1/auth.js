@@ -57,7 +57,7 @@ router.post('/signup', upload.single('profilePic'), function (req, res, next) {
 
     let errors = [];
     // Check If any required field are missing
-    if (!email || !password || !password || !confirmPassword || !firstName || !lastName || !gucId || !bio) {
+    if (!email || !password || !confirmPassword || !firstName || !lastName || !gucId || !bio) {
         errors.push(Strings.INCOMPLETE_INFORMATION);
     }
 
@@ -69,6 +69,14 @@ router.post('/signup', upload.single('profilePic'), function (req, res, next) {
         errors.push(Strings.NON_GUC_MAIL);
     }
 
+    // Check for valid GUC ID
+    // http://stackoverflow.com/questions/9742074/
+    // TODO: Validate that HE IS MET/BI Final Year Student
+
+    const gucIdRegex = /^[0-9]{2}-[0-9]{4,6}$/
+    if (!gucIdRegex.test(gucId)) {
+        errors.push(Strings.INVALID_GUC_ID);
+    }
 
     // Check if password and confirmation mismatch
     if (password !== confirmPassword) {
@@ -85,15 +93,6 @@ router.post('/signup', upload.single('profilePic'), function (req, res, next) {
         errors.push(Strings.INVALID_PASSWORD);
     }
 
-    // Check for valid GUC ID
-    // http://stackoverflow.com/questions/9742074/
-    // TODO: Validate that HE IS MET/BI Final Year Student
-    // TODO: Validate that no duplicate IDs
-
-    const gucIdRegex = /^[0-9]{2}-[0-9]{4,6}$/
-    if (!gucIdRegex.test(gucId)) {
-        errors.push(Strings.INVALID_GUC_ID);
-    }
 
     if (errors.length > 0) {
         return next(errors);
