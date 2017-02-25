@@ -41,25 +41,31 @@ const upload = multer({
  */
 router.get('/summary/:offset', function (req, res, next) {
     const offset = req.params.offset;
-    // Portfolio.count((err, cnt) => console.log(cnt));
-
-    Portfolio.find(null, null, {
-            skip: (offset - 1) * 10,
-            limit: 10
-        })
-        .populate('works', null, null, {
-            sort: {
-                rating: -1
-            },
-            limit: 2,
-        })
-        .populate('_creator', ['firstName', 'lastName'])
-        .exec((err, portfolios) => {
-            if (err) {
-                return next(err);
-            }
-            return res.json(portfolios);
-        });
+    Portfolio.count((err, cnt) => {
+        if (err) {
+            return next(err);
+        }
+        Portfolio.find(null, null, {
+                skip: (offset - 1) * 10,
+                limit: 10
+            })
+            .populate('works', null, null, {
+                sort: {
+                    rating: -1
+                },
+                limit: 2,
+            })
+            .populate('_creator', ['firstName', 'lastName'])
+            .exec((err, portfolios) => {
+                if (err) {
+                    return next(err);
+                }
+                return res.json({
+                    count: cnt,
+                    results: portfolios
+                });
+            });
+    });
 });
 
 /**
