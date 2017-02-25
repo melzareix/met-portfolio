@@ -15,6 +15,10 @@ let workItemSchema = mongoose.Schema({
     },
     description: {
         type: String
+    },
+    rating: {
+        type: Number,
+        default: 0
     }
 });
 
