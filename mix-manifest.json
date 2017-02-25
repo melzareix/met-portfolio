@@ -1,3 +1,4 @@
 {
-  "/public/dist/js/app.js": "/public/dist/js/app.js"
+  "/public/dist/js/app.js": "/public/dist/js/app.js",
+  "public/css/bulma.min.css": "public/css/bulma.min.css"
 }
