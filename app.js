@@ -36,8 +36,11 @@ if (process.env.DEBUG_MODE) {
 app.use('/api/v1/auth', authAPIv1);
 app.use('/api/v1/portfolio', portfolioAPIv1);
 
-app.use(express.static(path.join(__dirname,'./public/')));
+app.use(express.static(path.join(__dirname, './public/')));
 
+app.get('/:q', function (req, res) {
+    res.redirect('/#/' + req.params.q);
+});
 /**
  * Generic Error Handling Middlewares.
  */
