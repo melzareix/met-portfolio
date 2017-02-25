@@ -32,11 +32,13 @@ router.post('/signup', function (req, res, next) {
         firstName = req.body.firstName,
         lastName = req.body.lastName,
         gucId = req.body.gucId,
-        bio = req.body.bio;
+        bio = req.body.bio,
+        profilePic = req.file;
 
+    let errors = [];
     // Check If any required field are missing
     if (!email || !password || !password || !confirmPassword || !firstName || !lastName || !gucId || !bio) {
-        return next(Strings.INCOMPLETE_INFORMATION);
+        errors.push(Strings.INCOMPLETE_INFORMATION);
     }
 
     // Check that it's GUC mail
@@ -44,13 +46,13 @@ router.post('/signup', function (req, res, next) {
 
     const mailRegex = /^[a-zA-Z0-9_.+-]+@(?:(?:[a-zA-Z0-9-]+\.)?[a-zA-Z]+\.)?(student)\.guc.edu.eg$/;
     if (!mailRegex.test(email)) {
-        return next(Strings.NON_GUC_MAIL);
+        errors.push(Strings.NON_GUC_MAIL);
     }
 
 
     // Check if password and confirmation mismatch
     if (password !== confirmPassword) {
-        return next(Strings.PASSWORD_MISMATCH);
+        errors.push(Strings.PASSWORD_MISMATCH);
     }
 
     // Check that password satisfies password conditions
@@ -60,7 +62,7 @@ router.post('/signup', function (req, res, next) {
 
     const passwordRegex = /(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
     if (!passwordRegex.test(password)) {
-        return next(Strings.INVALID_PASSWORD);
+        errors.push(Strings.INVALID_PASSWORD);
     }
 
     // Check for valid GUC ID
@@ -70,7 +72,11 @@ router.post('/signup', function (req, res, next) {
 
     const gucIdRegex = /^[0-9]{2}-[0-9]{4,6}$/
     if (!gucIdRegex.test(gucId)) {
-        return next(Strings.INVALID_GUC_ID);
+        errors.push(Strings.INVALID_GUC_ID);
+    }
+
+    if (errors.length > 0) {
+        return next(errors);
     }
 
     // Information is valid
@@ -93,7 +99,6 @@ router.post('/signup', function (req, res, next) {
         });
     });
 });
-
 
 
 /**
@@ -314,15 +319,19 @@ router.use(function (req, res) {
 /**
  * Returns a human readable error message.
  * @param {Error} err - The error recieved.
- * @returns {String} 
+ * @returns {String}
  */
 
 const handleError = err => {
+    if (err instanceof Array) {
+        return err;
+    }
+
     let msg = err.toString();
     if (err.code == 11000) {
         msg = Strings.USER_ALREADY_EXISTS;
     }
-    return msg;
+    return [msg];
 };
 
 module.exports = router;

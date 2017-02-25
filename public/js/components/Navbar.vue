@@ -26,7 +26,6 @@
     .nav a {
         font-weight: bold;
         font-size: 1.2em;
-        color: #5CB85C;
     }
     
     .nav a:hover {

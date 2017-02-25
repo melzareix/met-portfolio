@@ -1323,6 +1323,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_SummaryCards_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_SummaryCards_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__views_home_vue__ = __webpack_require__(48);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__views_home_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__views_home_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_Signup_vue__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_Signup_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__components_Signup_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_Login_vue__ = __webpack_require__(54);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_Login_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__components_Login_vue__);
+
+
 
 
 
@@ -1336,7 +1342,9 @@ new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     },
     components: {
         Navbar: __WEBPACK_IMPORTED_MODULE_2__components_Navbar_vue___default.a,
-        Home: __WEBPACK_IMPORTED_MODULE_4__views_home_vue___default.a
+        Home: __WEBPACK_IMPORTED_MODULE_4__views_home_vue___default.a,
+        'signup-form': __WEBPACK_IMPORTED_MODULE_5__components_Signup_vue___default.a,
+        'login-form': __WEBPACK_IMPORTED_MODULE_6__components_Login_vue___default.a
     }
 });
 
@@ -2321,7 +2329,7 @@ exports.push([module.i, "\n.card-title a {\n    color: inherit;\n    text-decora
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(9)();
-exports.push([module.i, "\n.nav ul {\n    padding: 10px;\n}\n.nav a {\n    font-weight: bold;\n    font-size: 1.2em;\n    color: #5CB85C;\n}\n.nav a:hover {\n    text-decoration: underline;\n}\n", ""]);
+exports.push([module.i, "\n.nav ul {\n    padding: 10px;\n}\n.nav a {\n    font-weight: bold;\n    font-size: 1.2em;\n}\n.nav a:hover {\n    text-decoration: underline;\n}\n", ""]);
 
 /***/ }),
 /* 36 */
@@ -11302,6 +11310,688 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
      require("vue-hot-reload-api").rerender("data-v-12fb8dc6", module.exports)
+  }
+}
+
+/***/ }),
+/* 50 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = {
+    data: function data() {
+        return {
+            firstName: '',
+            lastName: '',
+            gucId: '',
+            bio: '',
+            email: '',
+            password: '',
+            confirmPassword: '',
+            profilePic: '',
+            hasErrors: false,
+            formErrors: [],
+            signedUp: false
+        };
+    },
+
+    methods: {
+        onSubmit: function onSubmit() {
+            var _this = this;
+
+            this.formErrors = [];
+            this.signedUp = false;
+            __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post('/api/v1/auth/signup', {
+                "firstName": this.firstName,
+                "lastName": this.lastName,
+                "gucId": this.gucId,
+                "bio": this.bio,
+                "email": this.email,
+                "password": this.password,
+                "confirmPassword": this.confirmPassword
+            }).then(function (res) {
+                _this.signedUp = true;
+            }).catch(function (res) {
+                res.response.data.message.forEach(function (err) {
+                    _this.formErrors.push(err);
+                });
+            });
+        },
+        fileChanged: function fileChanged(e) {
+            var files = e.target.files || e.dataTransfer.files;
+            if (files.length > 0) {
+                this.profilePic = files[0];
+            }
+        }
+    }
+};
+
+/***/ }),
+/* 51 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(3)(
+  /* script */
+  __webpack_require__(50),
+  /* template */
+  __webpack_require__(52),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/Users/melzarei/Desktop/met-portfolio/public/js/components/Signup.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Signup.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-6ca2595b", Component.options)
+  } else {
+    hotAPI.reload("data-v-6ca2595b", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 52 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [_c('h2', {
+    staticClass: "title is-2"
+  }, [_vm._v("Signup")]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.formErrors.length > 0),
+      expression: "formErrors.length > 0"
+    }],
+    staticClass: "message is-danger"
+  }, [_c('div', {
+    staticClass: "message-body"
+  }, [_vm._m(0), _vm._v(" "), _c('ul', _vm._l((_vm.formErrors), function(err) {
+    return _c('li', {
+      staticClass: "padding-left-10",
+      domProps: {
+        "textContent": _vm._s(err)
+      }
+    })
+  }))])]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.signedUp),
+      expression: "signedUp"
+    }],
+    staticClass: "message is-success"
+  }, [_vm._m(1)]), _vm._v(" "), _c('form', {
+    attrs: {
+      "method": "post"
+    },
+    on: {
+      "submit": function($event) {
+        $event.preventDefault();
+        _vm.onSubmit($event)
+      }
+    }
+  }, [_c('div', {
+    staticClass: "control"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("First Name*")]), _vm._v(" "), _c('p', {
+    staticClass: "control"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.firstName),
+      expression: "firstName"
+    }],
+    staticClass: "input",
+    attrs: {
+      "type": "text",
+      "name": "firstName",
+      "placeholder": "Slim"
+    },
+    domProps: {
+      "value": _vm._s(_vm.firstName)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.firstName = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('label', {
+    staticClass: "label"
+  }, [_vm._v("Last Name*")]), _vm._v(" "), _c('p', {
+    staticClass: "control has-icon has-icon-right"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.lastName),
+      expression: "lastName"
+    }],
+    staticClass: "input",
+    attrs: {
+      "type": "text",
+      "name": "lastName",
+      "placeholder": "Abdelnader"
+    },
+    domProps: {
+      "value": _vm._s(_vm.lastName)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.lastName = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('label', {
+    staticClass: "label"
+  }, [_vm._v("Profile Picture")]), _vm._v(" "), _c('p', {
+    staticClass: "control has-icon has-icon-right"
+  }, [_c('input', {
+    attrs: {
+      "type": "file",
+      "name": "profilePic",
+      "accept": "image/*"
+    },
+    on: {
+      "change": _vm.fileChanged
+    }
+  })]), _vm._v(" "), _c('label', {
+    staticClass: "label"
+  }, [_vm._v("Email*")]), _vm._v(" "), _c('p', {
+    staticClass: "control has-icon has-icon-right"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.email),
+      expression: "email"
+    }],
+    staticClass: "input",
+    attrs: {
+      "type": "text",
+      "name": "email",
+      "placeholder": "balabizo@student.guc.edu.eg"
+    },
+    domProps: {
+      "value": _vm._s(_vm.email)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.email = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('label', {
+    staticClass: "label"
+  }, [_vm._v("Password*")]), _vm._v(" "), _c('p', {
+    staticClass: "control has-icon has-icon-right"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.password),
+      expression: "password"
+    }],
+    staticClass: "input",
+    attrs: {
+      "name": "password",
+      "type": "password"
+    },
+    domProps: {
+      "value": _vm._s(_vm.password)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.password = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('label', {
+    staticClass: "label"
+  }, [_vm._v("Confirm Password*")]), _vm._v(" "), _c('p', {
+    staticClass: "control has-icon has-icon-right"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.confirmPassword),
+      expression: "confirmPassword"
+    }],
+    staticClass: "input",
+    attrs: {
+      "name": "confirmPassword",
+      "type": "password"
+    },
+    domProps: {
+      "value": _vm._s(_vm.confirmPassword)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.confirmPassword = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('label', {
+    staticClass: "label"
+  }, [_vm._v("GUC ID*")]), _vm._v(" "), _c('p', {
+    staticClass: "control has-icon has-icon-right"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.gucId),
+      expression: "gucId"
+    }],
+    staticClass: "input",
+    attrs: {
+      "type": "text",
+      "placeholder": "XX-XXXX",
+      "name": "gucId"
+    },
+    domProps: {
+      "value": _vm._s(_vm.gucId)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.gucId = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('label', {
+    staticClass: "label"
+  }, [_vm._v("Bio*")]), _vm._v(" "), _c('p', {
+    staticClass: "control"
+  }, [_c('textarea', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.bio),
+      expression: "bio"
+    }],
+    staticClass: "textarea",
+    attrs: {
+      "name": "bio"
+    },
+    domProps: {
+      "value": _vm._s(_vm.bio)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.bio = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _vm._m(2)])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('h3', [_c('strong', [_vm._v("Please Correct the following errors :-")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "message-body"
+  }, [_c('h3', [_c('strong', [_vm._v(" Signup Successful")])])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('p', {
+    staticClass: "control"
+  }, [_c('button', {
+    staticClass: "button is-primary",
+    attrs: {
+      "type": "submit"
+    }
+  }, [_vm._v("Submit")])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-6ca2595b", module.exports)
+  }
+}
+
+/***/ }),
+/* 53 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = {
+    data: function data() {
+        return {
+            firstName: '',
+            lastName: '',
+            gucId: '',
+            bio: '',
+            email: '',
+            password: '',
+            confirmPassword: '',
+            profilePic: '',
+            hasErrors: false,
+            formErrors: [],
+            signedUp: false
+        };
+    },
+
+    methods: {
+        onSubmit: function onSubmit() {
+            var _this = this;
+
+            this.formErrors = [];
+            this.signedUp = false;
+            __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post('/api/v1/auth/signup', {
+                "firstName": this.firstName,
+                "lastName": this.lastName,
+                "gucId": this.gucId,
+                "bio": this.bio,
+                "email": this.email,
+                "password": this.password,
+                "confirmPassword": this.confirmPassword
+            }).then(function (res) {
+                _this.signedUp = true;
+            }).catch(function (res) {
+                res.response.data.message.forEach(function (err) {
+                    _this.formErrors.push(err);
+                });
+            });
+        },
+        fileChanged: function fileChanged(e) {
+            var files = e.target.files || e.dataTransfer.files;
+            if (files.length > 0) {
+                this.profilePic = files[0];
+            }
+        }
+    }
+};
+
+/***/ }),
+/* 54 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(3)(
+  /* script */
+  __webpack_require__(53),
+  /* template */
+  __webpack_require__(55),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/Users/melzarei/Desktop/met-portfolio/public/js/components/Login.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Login.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-b3983b14", Component.options)
+  } else {
+    hotAPI.reload("data-v-b3983b14", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 55 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [_c('h2', {
+    staticClass: "title is-2"
+  }, [_vm._v("Login")]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.formErrors.length > 0),
+      expression: "formErrors.length > 0"
+    }],
+    staticClass: "message is-danger"
+  }, [_c('div', {
+    staticClass: "message-body"
+  }, [_c('ul', _vm._l((_vm.formErrors), function(err) {
+    return _c('li', {
+      staticClass: "padding-left-10",
+      domProps: {
+        "textContent": _vm._s(err)
+      }
+    })
+  }))])]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.signedUp),
+      expression: "signedUp"
+    }],
+    staticClass: "message is-success"
+  }, [_vm._m(0)]), _vm._v(" "), _c('form', {
+    attrs: {
+      "method": "post"
+    },
+    on: {
+      "submit": function($event) {
+        $event.preventDefault();
+        _vm.onSubmit($event)
+      }
+    }
+  }, [_c('div', {
+    staticClass: "control"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Email")]), _vm._v(" "), _c('p', {
+    staticClass: "control has-icon has-icon-right"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.email),
+      expression: "email"
+    }],
+    staticClass: "input",
+    attrs: {
+      "type": "text",
+      "name": "email",
+      "placeholder": "balabizo@student.guc.edu.eg"
+    },
+    domProps: {
+      "value": _vm._s(_vm.email)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.email = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('label', {
+    staticClass: "label"
+  }, [_vm._v("Password*")]), _vm._v(" "), _c('p', {
+    staticClass: "control has-icon has-icon-right"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.password),
+      expression: "password"
+    }],
+    staticClass: "input",
+    attrs: {
+      "name": "password",
+      "type": "password"
+    },
+    domProps: {
+      "value": _vm._s(_vm.password)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.password = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _vm._m(1)])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "message-body"
+  }, [_c('h3', [_c('strong', [_vm._v(" Login Successful")])])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('p', {
+    staticClass: "control"
+  }, [_c('button', {
+    staticClass: "button is-primary",
+    attrs: {
+      "type": "submit"
+    }
+  }, [_vm._v("Submit")])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-b3983b14", module.exports)
   }
 }
 

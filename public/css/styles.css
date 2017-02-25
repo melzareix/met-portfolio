@@ -36,17 +36,6 @@ body {
     min-width: 50%;
 }
 
-.input:focus,
-.input.is-focused,
-.input:active,
-.input.is-active,
-.textarea:focus,
-.textarea.is-focused,
-.textarea:active,
-.textarea.is-active {
-    border-color: #7fc77f;
-}
-
 .menu {
     list-style: none;
 }
@@ -60,4 +49,8 @@ body {
 .content ul {
     list-style: none;
     margin: 0;
+}
+
+.padding-left-10 {
+    padding-left: 10px;
 }
