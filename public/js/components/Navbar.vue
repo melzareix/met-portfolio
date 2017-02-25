@@ -2,7 +2,7 @@
 <template>
     <nav class="nav">
         <div class="nav-left">
-            <a class="nav-item" href="#"><img :src="logo" :width="width" alt="logo"></a>
+            <a class="nav-item" href="/"><img :src="logo" :width="width" alt="logo"></a>
         </div>
         <ul class="nav-right nav-menu is-active">
             <slot></slot>

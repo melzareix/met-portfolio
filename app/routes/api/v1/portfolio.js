@@ -55,7 +55,7 @@ router.get('/summary/:offset', function (req, res, next) {
                 },
                 limit: 2,
             })
-            .populate('_creator', ['firstName', 'lastName'])
+            .populate('_creator', ['firstName', 'lastName', 'profilePic'])
             .exec((err, portfolios) => {
                 if (err) {
                     return next(err);
@@ -105,7 +105,7 @@ router.post('/create', upload.single('cover'), authHelper.authMiddleware, functi
     const firstItem = new WorkItem({
         title,
         description: workDescription,
-        coverImage: coverImage.path,
+        coverImage: coverImage ? coverImage.path : undefined,
         liveDemo,
         githubRepo
     });
@@ -177,7 +177,7 @@ router.post('/add', upload.single('cover'), authHelper.authMiddleware, function 
     const portfolioItem = new WorkItem({
         title,
         description,
-        coverImage: coverImage.path,
+        coverImage: coverImage ? coverImage.path : undefined,
         liveDemo,
         githubRepo
     });
@@ -207,6 +207,7 @@ router.post('/add', upload.single('cover'), authHelper.authMiddleware, function 
  * Error Handling Middleware
  */
 router.use(function (err, req, res, next) {
+    console.log(err);
     return res.status(400).json({
         message: err
     });

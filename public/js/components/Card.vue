@@ -1,19 +1,24 @@
 <!--suppress HtmlUnknownTarget -->
 <template>
-    <div class="card">
-        <div class="card-image">
-            <figure class="image">
-                <img :src="cover" alt="Portfolio Item">
-            </figure>
-        </div>
-        <div class="card-content">
-            <div class="content">
-                <p class="title"><slot name="title"></slot></p>
-                <slot></slot>
+    <div class="column is-one-quarter">
+        <div class="card">
+            <div class="card-image">
+                <figure class="image">
+                    <img :src="cover" alt="Card Item">
+                </figure>
             </div>
+            <div class="card-content">
+                <div class="content">
+                    <p class="title">
+                        <slot name="title"></slot>
+                    </p>
+                    <slot name="desc"></slot>
+                    <slot name="top-work"></slot>
+                </div>
 
-            <div class="card-footer">
-                <slot name="footer"></slot>
+                <div class="card-footer">
+                    <slot name="footer"></slot>
+                </div>
             </div>
         </div>
     </div>

@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
+const path = require('path');
 const passport = require('passport');
 
 
@@ -34,6 +35,8 @@ if (process.env.DEBUG_MODE) {
 
 app.use('/api/v1/auth', authAPIv1);
 app.use('/api/v1/portfolio', portfolioAPIv1);
+
+app.use(express.static(path.join(__dirname,'./public/')));
 
 /**
  * Generic Error Handling Middlewares.
