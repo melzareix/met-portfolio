@@ -11422,15 +11422,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.formErrors = [];
             this.signedUp = false;
-            __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post('/api/v1/auth/signup', {
-                "firstName": this.firstName,
-                "lastName": this.lastName,
-                "gucId": this.gucId,
-                "bio": this.bio,
-                "email": this.email,
-                "password": this.password,
-                "confirmPassword": this.confirmPassword
-            }).then(function (res) {
+            var data = new FormData();
+
+            data.append('firstName', this.firstName);
+            data.append('lastName', this.lastName);
+            data.append('gucId', this.gucId);
+            data.append('bio', this.bio);
+            data.append('email', this.email);
+            data.append('password', this.password);
+            data.append('confirmPassword', this.confirmPassword);
+            data.append('profilePic', this.profilePic);
+
+            console.log(this.profilePic);
+            __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post('/api/v1/auth/signup', data).then(function (res) {
                 _this.signedUp = true;
             }).catch(function (res) {
                 res.response.data.message.forEach(function (err) {
@@ -11515,7 +11519,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "message is-success"
   }, [_vm._m(1)]), _vm._v(" "), _c('form', {
     attrs: {
-      "method": "post"
+      "method": "post",
+      "enctype": "multipart/form-data"
     },
     on: {
       "submit": function($event) {

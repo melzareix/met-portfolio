@@ -23,7 +23,7 @@
             </div>
         </div>
 
-        <form method="post" @submit.prevent="onSubmit">
+        <form method="post" @submit.prevent="onSubmit"  enctype="multipart/form-data">
             <div class="control">
                 <label class="label">First Name*</label>
                 <p class="control">
@@ -96,15 +96,19 @@
             onSubmit(){
                 this.formErrors = [];
                 this.signedUp = false;
-                axios.post('/api/v1/auth/signup', {
-                    "firstName": this.firstName,
-                    "lastName": this.lastName,
-                    "gucId": this.gucId,
-                    "bio": this.bio,
-                    "email": this.email,
-                    "password": this.password,
-                    "confirmPassword": this.confirmPassword
-                }).then((res) => {
+                let data = new FormData();
+
+                data.append('firstName', this.firstName);
+                data.append('lastName', this.lastName);
+                data.append('gucId', this.gucId);
+                data.append('bio', this.bio);
+                data.append('email', this.email);
+                data.append('password', this.password);
+                data.append('confirmPassword', this.confirmPassword);
+                data.append('profilePic', this.profilePic);
+
+                console.log(this.profilePic);
+                axios.post('/api/v1/auth/signup', data).then((res) => {
                     this.signedUp = true;
                 }).catch((res) => {
                     res.response.data.message.forEach((err) => {

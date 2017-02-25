@@ -6,7 +6,9 @@ const User = require('../../../models/User');
 const InvalidToken = require('../../../models/InvalidToken');
 const authHelper = require('../../../middlewares/authMiddleware');
 const mailer = require('../../../utils/mailer');
-
+const multer = require('multer');
+const path = require('path');
+const crypto = require('crypto');
 const router = express.Router();
 const Strings = require('../../../utils/strings');
 
@@ -22,10 +24,28 @@ router.use(bodyParser.json());
 
 
 /**
+ * Multer Configuration
+ */
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './public/uploads/');
+    },
+    filename: function (req, file, cb) {
+        const buf = crypto.randomBytes(48);
+        cb(null, Date.now() + buf.toString('hex') + path.extname(file.originalname));
+    }
+});
+
+
+const upload = multer({
+    storage: storage
+});
+
+/**
  * User Signup Route.
  */
 
-router.post('/signup', function (req, res, next) {
+router.post('/signup', upload.single('profilePic'), function (req, res, next) {
     let email = req.body.email,
         password = req.body.password,
         confirmPassword = req.body.confirmPassword,
@@ -86,7 +106,8 @@ router.post('/signup', function (req, res, next) {
         gucId,
         email,
         password,
-        bio
+        bio,
+        profilePic: profilePic ? profilePic.filename : undefined
     });
 
     user.save(function (err) {
