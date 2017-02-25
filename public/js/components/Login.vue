@@ -12,14 +12,13 @@
             </div>
         </div>
 
-        <div class="message is-success" v-show="signedUp">
+        <div class="message is-success" v-show="loggedIn">
             <div class="message-body">
                 <h3>
                     <strong> Login Successful</strong>
                 </h3>
             </div>
         </div>
-
         <form method="post" @submit.prevent="onSubmit">
             <div class="control">
 
@@ -29,8 +28,8 @@
                            v-model="email">
                 </p>
 
-                <label class="label">Password*</label>
-                <p class="control has-icon has-icon-right">
+                <label class="label">Password</label>
+                <p class="control">
                     <input class="input" name="password" type="password" v-model="password">
                 </p>
 
@@ -43,43 +42,31 @@
 </template>
 
 <script>
-    import axios from 'axios';
+    import auth from '../helpers/vue-auth.js';
     export default{
         data() {
             return {
-                firstName: '',
-                lastName: '',
-                gucId: '',
-                bio: '',
                 email: '',
                 password: '',
-                confirmPassword: '',
-                profilePic: '',
-                hasErrors: false,
                 formErrors: [],
-                signedUp: false
+                loggedIn: false,
+                user: auth.user
             }
         },
         methods: {
             onSubmit(){
                 this.formErrors = [];
-                this.signedUp = false;
-                axios.post('/api/v1/auth/signup', {
-                    "firstName": this.firstName,
-                    "lastName": this.lastName,
-                    "gucId": this.gucId,
-                    "bio": this.bio,
-                    "email": this.email,
-                    "password": this.password,
-                    "confirmPassword": this.confirmPassword
-                }).then((res) => {
-                    this.signedUp = true;
-                }).catch((res) => {
-                    res.response.data.message.forEach((err) => {
-                        this.formErrors.push(err);
-                    });
-                })
+                this.loggedIn = false;
 
+                auth.login(this, {
+                    email: this.email,
+                    password: this.password
+                }, () => {
+                    this.loggedIn = true;
+                    setTimeout(() =>{
+                        this.$router.push('/')
+                    }, 500);
+                });
             },
             fileChanged(e){
                 const files = e.target.files || e.dataTransfer.files;

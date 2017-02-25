@@ -4,27 +4,40 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="css/bulma.min.css" />
-    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/bulma.min.css"/>
+    <link rel="stylesheet" href="css/styles.css"/>
 </head>
 
 <body>
-    <div class="container" id="root">
-        <navbar logo="assets/imgs/logo.png" width="109">
-            <li><a class="nav-item nav-link" href="#">Signup</a></li>
-            <li><a class="nav-item nav-link" href="#">Login</a></li>
-        </navbar>
-        <hr>
-        <signup-form></signup-form>
+<div class="container" id="root">
+    <navbar logo="assets/imgs/logo.png" width="109">
+        <li>
+            <router-link to="/signup" class="nav-item nav-link">
+                Signup
+            </router-link>
+        </li>
+
+        <li>
+            <router-link to="/login" class="nav-item nav-link">
+                Login
+            </router-link>
+        </li>
+
+    </navbar>
+    <hr>
+
+    <router-view></router-view>
+
+</div>
+
+
+<footer class="footer dark">
+    <div class="container">
+        <p class="has-text-centered"><br>The source code is licensed MIT.</p>
     </div>
+</footer>
 
-    <footer class="footer dark">
-        <div class="container">
-            <p class="has-text-centered"><br>The source code is licensed MIT.</p>
-        </div>
-    </footer>
-
-    <script src="dist/js/app.js"></script>
+<script src="dist/js/app.js"></script>
 </body>
 
 </html>
