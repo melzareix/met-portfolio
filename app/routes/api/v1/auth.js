@@ -31,10 +31,11 @@ router.post('/signup', function (req, res, next) {
         confirmPassword = req.body.confirmPassword,
         firstName = req.body.firstName,
         lastName = req.body.lastName,
-        gucId = req.body.gucId;
+        gucId = req.body.gucId,
+        bio = req.body.bio;
 
     // Check If any required field are missing
-    if (!email || !password || !password || !confirmPassword || !firstName || !lastName || !gucId) {
+    if (!email || !password || !password || !confirmPassword || !firstName || !lastName || !gucId || !bio) {
         return next(Strings.INCOMPLETE_INFORMATION);
     }
 
@@ -78,7 +79,8 @@ router.post('/signup', function (req, res, next) {
         lastName,
         gucId,
         email,
-        password
+        password,
+        bio
     });
 
     user.save(function (err) {

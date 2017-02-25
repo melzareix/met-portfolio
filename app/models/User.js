@@ -37,7 +37,7 @@ let userSchema = mongoose.Schema({
     },
     portfolio: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Portfolio'
+        ref: 'WorkItem'
     }],
     password: {
         type: String,
