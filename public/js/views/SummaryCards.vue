@@ -3,9 +3,9 @@
         <div class="is-full" v-show="noItems">
             <h1 class="title is-1">Fuck You</h1>
         </div>
-        <card v-for="item in items" :cover="item.cover">
+        <card v-for="item in items" :cover="item.profilePic">
             <p slot="title">{{item.title}}</p>
-            <p slot="desc" class="subtitle"> {{item.desc}} </p>
+            <p slot="desc" class="subtitle"> {{ item.desc }} </p>
             <div class="menu" slot="top-work">
                 <p class="menu-label">
                     Top Work
@@ -19,7 +19,7 @@
 </template>
 
 <script>
-    import Card from './Card.vue';
+    import Card from '../components/Card.vue';
     import axios from 'axios';
     export default{
         components: {Card},
@@ -37,10 +37,10 @@
                         const results = data.results;
                         results.forEach((item) => {
                             const newItem = {
-                                cover: item._creator.profilePic,
-                                title: item._creator.firstName + ' ' + item._creator.lastName,
-                                desc: item.description,
-                                works: item.works.map(function (i) {
+                                profilePic: 'uploads/' + item.profilePic,
+                                title: item.firstName + ' ' + item.lastName,
+                                desc: item.bio,
+                                works: item.portfolio.map(function (i) {
                                     return {title: i.title};
                                 })
                             };

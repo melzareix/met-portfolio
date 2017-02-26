@@ -5,7 +5,7 @@ const multer = require('multer');
 const Strings = require('../../../utils/strings');
 const path = require('path');
 const WorkItem = require('../../../models/WorkItem');
-const Portfolio = require('../../../models/Portfolio');
+const User = require('../../../models/User');
 const crypto = require('crypto');
 
 const router = express.Router();
@@ -41,102 +41,35 @@ const upload = multer({
  */
 router.get('/summary/:offset', function (req, res, next) {
     const offset = req.params.offset;
-    Portfolio.count((err, cnt) => {
-        if (err) {
-            return next(err);
+
+    User.count({
+        portfolio: {
+            $not: {
+                $size: 0
+            }
         }
-        Portfolio.find(null, null, {
-                skip: (offset - 1) * 10,
-                limit: 10
-            })
-            .populate('works', null, null, {
-                sort: {
-                    rating: -1
-                },
-                limit: 2,
-            })
-            .populate('_creator', ['firstName', 'lastName', 'profilePic'])
-            .exec((err, portfolios) => {
-                if (err) {
-                    return next(err);
+    }, (err, cnt) => {
+        User.find({
+            portfolio: {
+                $not: {
+                    $size: 0
                 }
-                return res.json({
-                    count: cnt,
-                    results: portfolios
-                });
-            });
-    });
-});
-
-/**
- * Create a new portfolio
- */
-
-router.post('/create', upload.single('cover'), authHelper.authMiddleware, function (req, res, next) {
-    const title = req.body.title,
-        workDescription = req.body.wdescription,
-        liveDemo = req.body.link,
-        githubRepo = req.body.repo,
-        coverImage = req.file,
-        portfolioDescription = req.body.pdescription;
-
-    // TODO: Use express-validator
-    let errors = [];
-
-    if (req.user.portfolio) {
-        return next(Strings.ACTIVE_PORTFOLIO);
-    }
-
-    if (!title) {
-        errors.push(Strings.EMPTY_TITLE);
-    }
-    if (!portfolioDescription) {
-        errors.push(Strings.EMPTY_PDESC);
-    }
-    if (!liveDemo && !githubRepo && !coverImage) { // User left all three fields empty
-        errors.push(Strings.EMPTY_WORK);
-    }
-
-    if (errors.length > 0) {
-        return next(errors);
-    }
-
-    // TODO: Create Portfolio with work Item
-    const firstItem = new WorkItem({
-        title,
-        description: workDescription,
-        coverImage: coverImage ? coverImage.path : undefined,
-        liveDemo,
-        githubRepo
-    });
-
-    // Save the item
-    firstItem.save((err, data) => {
-        if (err) {
-            return next(err);
-        }
-
-        const firstItemID = data._id;
-
-        const userPorfolio = new Portfolio({
-            _creator: req.user._id,
-            description: portfolioDescription,
-            works: [firstItemID]
-        });
-
-        userPorfolio.save((err, result) => {
+            }
+        }, ['-password', '-passwordChangeDate', '-passwordResetTokenDate'], {
+            skip: (offset - 1) * 10,
+            limit: 10
+        }).populate('portfolio', null, null, {
+            sort: {
+                rating: -1
+            },
+            limit: 2,
+        }).exec((err, portfolios) => {
             if (err) {
                 return next(err);
             }
-            req.user.portfolio = result._id;
-            req.user.save((err) => {
-                if (err) {
-                    return next(err);
-                }
-
-                return res.json({
-                    message: Strings.PORTFOLIO_CREATED
-                });
+            return res.json({
+                count: cnt,
+                results: portfolios
             });
         });
     });
@@ -167,13 +100,7 @@ router.post('/add', upload.single('cover'), authHelper.authMiddleware, function 
         return next(errors);
     }
 
-    let student = req.user;
-    // Student doesn't have a portfolio
-
-    if (!student.portfolio) {
-        return next(Strings.NO_PORTFOLIO);
-    }
-
+    const student = req.user;
     const portfolioItem = new WorkItem({
         title,
         description,
@@ -186,17 +113,14 @@ router.post('/add', upload.single('cover'), authHelper.authMiddleware, function 
         if (err) {
             return next(err);
         }
-        Portfolio.findOne({ // Add the item to the corresponding portfolio
-            _id: student.portfolio
-        }, (err, data) => {
-            data.works.push(newItem._id);
-            data.save((err) => {
-                if (err) {
-                    return next(err);
-                }
-                return res.json({
-                    message: Strings.WORK_ADDED
-                });
+        student.portfolio.push(newItem);
+        student.save((err) => {
+            if (err) {
+                return next(err);
+            }
+
+            res.json({
+                message: Strings.WORK_ADDED
             });
         });
     });
@@ -207,7 +131,6 @@ router.post('/add', upload.single('cover'), authHelper.authMiddleware, function 
  * Error Handling Middleware
  */
 router.use(function (err, req, res, next) {
-    console.log(err);
     return res.status(400).json({
         message: err
     });

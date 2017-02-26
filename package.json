@@ -28,7 +28,8 @@
     "chai": "^3.5.0",
     "laravel-mix": "^0.8.7",
     "mocha": "^3.2.0",
-    "nodemon": "^1.11.0"
+    "nodemon": "^1.11.0",
+    "vue-router": "^2.2.1"
   },
   "scripts": {
     "test": "mocha test/api",

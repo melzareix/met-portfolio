@@ -6,7 +6,9 @@ const User = require('../../../models/User');
 const InvalidToken = require('../../../models/InvalidToken');
 const authHelper = require('../../../middlewares/authMiddleware');
 const mailer = require('../../../utils/mailer');
-
+const multer = require('multer');
+const path = require('path');
+const crypto = require('crypto');
 const router = express.Router();
 const Strings = require('../../../utils/strings');
 
@@ -22,20 +24,41 @@ router.use(bodyParser.json());
 
 
 /**
+ * Multer Configuration
+ */
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './public/uploads/');
+    },
+    filename: function (req, file, cb) {
+        const buf = crypto.randomBytes(48);
+        cb(null, Date.now() + buf.toString('hex') + path.extname(file.originalname));
+    }
+});
+
+
+const upload = multer({
+    storage: storage
+});
+
+/**
  * User Signup Route.
  */
 
-router.post('/signup', function (req, res, next) {
+router.post('/signup', upload.single('profilePic'), function (req, res, next) {
     let email = req.body.email,
         password = req.body.password,
         confirmPassword = req.body.confirmPassword,
         firstName = req.body.firstName,
         lastName = req.body.lastName,
-        gucId = req.body.gucId;
+        gucId = req.body.gucId,
+        bio = req.body.bio,
+        profilePic = req.file;
 
+    let errors = [];
     // Check If any required field are missing
-    if (!email || !password || !password || !confirmPassword || !firstName || !lastName || !gucId) {
-        return next(Strings.INCOMPLETE_INFORMATION);
+    if (!email || !password || !confirmPassword || !firstName || !lastName || !gucId || !bio) {
+        errors.push(Strings.INCOMPLETE_INFORMATION);
     }
 
     // Check that it's GUC mail
@@ -43,13 +66,21 @@ router.post('/signup', function (req, res, next) {
 
     const mailRegex = /^[a-zA-Z0-9_.+-]+@(?:(?:[a-zA-Z0-9-]+\.)?[a-zA-Z]+\.)?(student)\.guc.edu.eg$/;
     if (!mailRegex.test(email)) {
-        return next(Strings.NON_GUC_MAIL);
+        errors.push(Strings.NON_GUC_MAIL);
     }
 
+    // Check for valid GUC ID
+    // http://stackoverflow.com/questions/9742074/
+    // TODO: Validate that HE IS MET/BI Final Year Student
+
+    const gucIdRegex = /^[0-9]{2}-[0-9]{4,6}$/
+    if (!gucIdRegex.test(gucId)) {
+        errors.push(Strings.INVALID_GUC_ID);
+    }
 
     // Check if password and confirmation mismatch
     if (password !== confirmPassword) {
-        return next(Strings.PASSWORD_MISMATCH);
+        errors.push(Strings.PASSWORD_MISMATCH);
     }
 
     // Check that password satisfies password conditions
@@ -59,17 +90,12 @@ router.post('/signup', function (req, res, next) {
 
     const passwordRegex = /(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
     if (!passwordRegex.test(password)) {
-        return next(Strings.INVALID_PASSWORD);
+        errors.push(Strings.INVALID_PASSWORD);
     }
 
-    // Check for valid GUC ID
-    // http://stackoverflow.com/questions/9742074/
-    // TODO: Validate that HE IS MET/BI Final Year Student
-    // TODO: Validate that no duplicate IDs
 
-    const gucIdRegex = /^[0-9]{2}-[0-9]{4,6}$/
-    if (!gucIdRegex.test(gucId)) {
-        return next(Strings.INVALID_GUC_ID);
+    if (errors.length > 0) {
+        return next(errors);
     }
 
     // Information is valid
@@ -78,7 +104,9 @@ router.post('/signup', function (req, res, next) {
         lastName,
         gucId,
         email,
-        password
+        password,
+        bio,
+        profilePic: profilePic ? profilePic.filename : undefined
     });
 
     user.save(function (err) {
@@ -91,7 +119,6 @@ router.post('/signup', function (req, res, next) {
         });
     });
 });
-
 
 
 /**
@@ -312,15 +339,19 @@ router.use(function (req, res) {
 /**
  * Returns a human readable error message.
  * @param {Error} err - The error recieved.
- * @returns {String} 
+ * @returns {String}
  */
 
 const handleError = err => {
+    if (err instanceof Array) {
+        return err;
+    }
+
     let msg = err.toString();
     if (err.code == 11000) {
         msg = Strings.USER_ALREADY_EXISTS;
     }
-    return msg;
+    return [msg];
 };
 
 module.exports = router;

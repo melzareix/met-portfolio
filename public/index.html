@@ -10,28 +10,19 @@
 
 <body>
 <div class="container" id="root">
-    <navbar logo="assets/imgs/logo.png" width="109">
-        <li><a class="nav-item nav-link" href="#">Signup</a></li>
-        <li><a class="nav-item nav-link" href="#">Login</a></li>
-    </navbar>
+    <navbar logo="assets/imgs/logo.png" width="109"></navbar>
     <hr>
 
-    <form class="control has-addons has-addons-centered" method="get">
-        <input type="text" class="input search-txt" placeholder="Search by keyword ...">
-        <a class="button is-outlined is-success">Search</a>
-    </form>
-
-    <hr>
-
-    <summary-cards></summary-cards>
-
+    <router-view></router-view>
 </div>
+
 
 <footer class="footer dark">
     <div class="container">
         <p class="has-text-centered"><br>The source code is licensed MIT.</p>
     </div>
 </footer>
+
 <script src="dist/js/app.js"></script>
 </body>
 

@@ -1,4 +1,3 @@
-
 html {
     position: relative;
     min-height: 100%;
@@ -7,7 +6,7 @@ html {
 body {
     /* Margin bottom by footer height */
     background: #fefefe;
-    margin-bottom: 70px;
+    margin-bottom: 80px;
 }
 
 .featured,
@@ -37,14 +36,6 @@ body {
     min-width: 50%;
 }
 
-.input:focus, .input.is-focused, .input:active, .input.is-active,
-.textarea:focus,
-.textarea.is-focused,
-.textarea:active,
-.textarea.is-active {
-    border-color: #7fc77f;
-}
-
 .menu {
     list-style: none;
 }
@@ -55,7 +46,16 @@ body {
     text-transform: uppercase;
 }
 
-.content ul{
+.content ul {
     list-style: none;
     margin: 0;
+}
+
+.padding-left-10 {
+    padding-left: 10px;
+}
+
+.center-img {
+    display: block;
+    margin: auto;
 }

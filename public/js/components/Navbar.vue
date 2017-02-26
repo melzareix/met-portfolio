@@ -4,17 +4,42 @@
         <div class="nav-left">
             <a class="nav-item" href="/"><img :src="logo" :width="width" alt="logo"></a>
         </div>
-        <ul class="nav-right nav-menu is-active">
-            <slot></slot>
+        <ul class="nav-right">
+            <li v-show="!user.authenticated">
+                <router-link to="/signup" class="nav-item nav-link">
+                    Signup
+                </router-link>
+            </li>
+
+            <li v-show="!user.authenticated">
+                <router-link to="/login" class="nav-item nav-link">
+                    Login
+                </router-link>
+            </li>
+
+            <li v-show="user.authenticated">
+                <router-link to="/logout" class="nav-item nav-link">
+                    Logout
+                </router-link>
+            </li>
         </ul>
 
     </nav>
 </template>
 
 <script>
-    export default{
+    import auth from '../helpers/vue-auth';
+    export default {
         name: 'navbar',
-        props: ['logo', 'width']
+        props: ['logo', 'width'],
+        data() {
+            return {
+                user: auth.user
+            }
+        },
+        mounted(){
+            auth.checkAuth();
+        }
     }
 </script>
 
@@ -26,7 +51,6 @@
     .nav a {
         font-weight: bold;
         font-size: 1.2em;
-        color: #5CB85C;
     }
 
     .nav a:hover {

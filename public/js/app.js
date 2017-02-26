@@ -1,12 +1,27 @@
 import Vue from 'vue';
-import Card from './components/Card.vue';
 import Navbar from './components/Navbar.vue';
-import summaryCard from './components/SummaryCards.vue';
+import Home from './views/Home.vue';
+import Signup from './views/Signup.vue';
+import Login from './views/Login.vue';
+import AddWork from './views/AddWork.vue';
+import router from './routes/routes';
+import VueRouter from 'vue-router';
+
+Vue.use(VueRouter);
 
 new Vue({
     el: '#root',
     data: {
         name: ''
     },
-    components: {Navbar, Card, 'summary-cards': summaryCard}
+    router
+    ,
+    components: {
+        Navbar,
+        Home,
+        'signup-form': Signup,
+        'login-form': Login,
+        'add-work': AddWork,
+    }
 });
+

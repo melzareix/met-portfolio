@@ -1,6 +1,6 @@
 <!--suppress HtmlUnknownTarget -->
 <template>
-    <div class="column is-one-quarter">
+    <div class="column is-3">
         <div class="card">
             <div class="card-image">
                 <figure class="image">
@@ -26,7 +26,7 @@
 
 <script>
     export default{
-        props: ['cover']
+        props: ['cover'],
     }
 </script>
 

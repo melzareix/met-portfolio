@@ -11,6 +11,10 @@ let userSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    bio: {
+        type: String,
+        required: true,
+    },
     gucId: {
         type: String,
         required: true,
@@ -18,7 +22,7 @@ let userSchema = mongoose.Schema({
     },
     profilePic: {
         type: String,
-        default: '/dist/assets/imgs/default-pic.png'
+        default: 'default-pic.png'
     },
     email: {
         type: String,
@@ -31,16 +35,17 @@ let userSchema = mongoose.Schema({
             message: '{VALUE} is an invalid email.'
         }
     },
-    portfolio: {
+    portfolio: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Portfolio'
-    },
+        ref: 'WorkItem'
+    }],
     password: {
         type: String,
         required: true
     },
     passwordResetTokenDate: {
-        type: Date
+        type: Date,
+        default: Date.now
     },
     passwordChangeDate: {
         type: Date,
