@@ -5,15 +5,21 @@
             <a class="nav-item" href="/"><img :src="logo" :width="width" alt="logo"></a>
         </div>
         <ul class="nav-right">
-            <li v-show="1 == 1">
+            <li v-show="!user.authenticated">
                 <router-link to="/signup" class="nav-item nav-link">
                     Signup
                 </router-link>
             </li>
 
-            <li>
+            <li v-show="!user.authenticated">
                 <router-link to="/login" class="nav-item nav-link">
                     Login
+                </router-link>
+            </li>
+
+            <li v-show="user.authenticated">
+                <router-link to="/logout" class="nav-item nav-link">
+                    Logout
                 </router-link>
             </li>
         </ul>
@@ -30,6 +36,9 @@
             return {
                 user: auth.user
             }
+        },
+        mounted(){
+            auth.checkAuth();
         }
     }
 </script>

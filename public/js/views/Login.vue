@@ -55,6 +55,13 @@
                 user: auth.user
             }
         },
+        mounted(){
+            auth.checkAuth();
+            if (this.user.authenticated) {
+                this.$router.push('/');
+            }
+        }
+        ,
         methods: {
             onSubmit(){
                 this.formErrors = [];

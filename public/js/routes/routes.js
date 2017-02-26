@@ -4,6 +4,7 @@ import Login from '../views/Login.vue';
 import Signup from '../views/Signup.vue';
 import AddWork from '../views/AddWork.vue';
 import NotFound from '../views/NotFound.vue';
+import Logout from '../views/Logout.vue';
 
 
 export default new VueRouter({
@@ -23,6 +24,10 @@ export default new VueRouter({
         {
             path: '/portfolio/add',
             component: AddWork
+        },
+        {
+            path: '/logout',
+            component: Logout
         },
         {
             path: '/*',

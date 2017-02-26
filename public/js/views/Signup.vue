@@ -91,7 +91,14 @@
                 profilePic: '',
                 hasErrors: false,
                 formErrors: [],
-                signedUp: false
+                signedUp: false,
+                user: auth.user
+            }
+        },
+        mounted(){
+            auth.checkAuth();
+            if (this.user.authenticated) {
+                this.$router.push('/');
             }
         },
         methods: {

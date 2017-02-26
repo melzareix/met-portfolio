@@ -46,5 +46,13 @@ export default {
 
     logout(){
         localStorage.removeItem('jwt_token');
+    },
+
+    checkAuth(){
+        this.user.authenticated = !!localStorage.getItem('jwt_token');
+    },
+
+    getAuthHeader(){
+        return 'JWT ' + localStorage.getItem('jwt_token');
     }
 }
