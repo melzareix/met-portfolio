@@ -1027,7 +1027,7 @@ var SIGNUP_ROUTE = BASE_API + '/signup';
             }
         }).catch(function (err) {
             if (cb) {
-                cb(err, null);
+                cb(err.response.data, null);
             }
         });
     },
@@ -4955,14 +4955,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.formErrors = [];
             this.loggedIn = false;
 
-            __WEBPACK_IMPORTED_MODULE_0__helpers_vue_auth_js__["a" /* default */].login(this, {
+            __WEBPACK_IMPORTED_MODULE_0__helpers_vue_auth_js__["a" /* default */].login({
                 email: this.email,
                 password: this.password
-            }, function () {
-                _this.loggedIn = true;
-                setTimeout(function () {
-                    _this.$router.push('/');
-                }, 500);
+            }, function (err, data) {
+                if (err) {
+                    _this.formErrors = err.message;
+                } else {
+                    _this.loggedIn = true;
+                    setTimeout(function () {
+                        _this.$router.push('/');
+                    }, 500);
+                }
             });
         },
         fileChanged: function fileChanged(e) {
@@ -4998,8 +5002,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__helpers_vue_auth__ = __webpack_require__(10);
 //
 //
 //
@@ -5103,8 +5106,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.formErrors = [];
             this.signedUp = false;
-            var data = new FormData();
 
+            var data = new FormData();
             data.append('firstName', this.firstName);
             data.append('lastName', this.lastName);
             data.append('gucId', this.gucId);
@@ -5114,15 +5117,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             data.append('confirmPassword', this.confirmPassword);
             data.append('profilePic', this.profilePic);
 
-            console.log(this.profilePic);
-            __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post('/api/v1/auth/signup', data).then(function (res) {
-                _this.signedUp = true;
-                window.scrollTo(0, 0);
-            }).catch(function (res) {
-                res.response.data.message.forEach(function (err) {
-                    _this.formErrors.push(err);
+            __WEBPACK_IMPORTED_MODULE_0__helpers_vue_auth__["a" /* default */].signup(data, function (err, data) {
+                if (err) {
+                    _this.formErrors = err.message;
                     window.scrollTo(0, 0);
-                });
+                } else {
+                    _this.signedUp = true;
+                    window.scrollTo(0, 0);
+                    setTimeout(function () {
+                        _this.$router.push('/login');
+                    }, 500);
+                }
             });
         },
         fileChanged: function fileChanged(e) {

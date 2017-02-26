@@ -77,7 +77,7 @@
 </template>
 
 <script>
-    import axios from 'axios';
+    import auth from '../helpers/vue-auth';
     export default{
         data() {
             return {
@@ -98,8 +98,8 @@
             onSubmit(){
                 this.formErrors = [];
                 this.signedUp = false;
-                let data = new FormData();
 
+                let data = new FormData();
                 data.append('firstName', this.firstName);
                 data.append('lastName', this.lastName);
                 data.append('gucId', this.gucId);
@@ -109,16 +109,18 @@
                 data.append('confirmPassword', this.confirmPassword);
                 data.append('profilePic', this.profilePic);
 
-                console.log(this.profilePic);
-                axios.post('/api/v1/auth/signup', data).then((res) => {
-                    this.signedUp = true;
-                    window.scrollTo(0, 0);
-                }).catch((res) => {
-                    res.response.data.message.forEach((err) => {
-                        this.formErrors.push(err);
+                auth.signup(data, (err, data) => {
+                    if (err) {
+                        this.formErrors = err.message;
                         window.scrollTo(0, 0);
-                    });
-                })
+                    } else {
+                        this.signedUp = true;
+                        window.scrollTo(0, 0);
+                        setTimeout(() => {
+                            this.$router.push('/login')
+                        }, 500);
+                    }
+                });
 
             },
             fileChanged(e){

@@ -60,14 +60,18 @@
                 this.formErrors = [];
                 this.loggedIn = false;
 
-                auth.login(this, {
+                auth.login({
                     email: this.email,
                     password: this.password
-                }, () => {
-                    this.loggedIn = true;
-                    setTimeout(() =>{
-                        this.$router.push('/')
-                    }, 500);
+                }, (err, data) => {
+                    if (err) {
+                        this.formErrors = err.message;
+                    } else {
+                        this.loggedIn = true;
+                        setTimeout(() => {
+                            this.$router.push('/')
+                        }, 500);
+                    }
                 });
             },
             fileChanged(e){

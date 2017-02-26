@@ -39,7 +39,7 @@ export default {
             })
             .catch((err) => {
                 if (cb) {
-                    cb(err, null);
+                    cb(err.response.data, null);
                 }
             });
     },
