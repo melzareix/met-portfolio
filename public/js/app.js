@@ -3,6 +3,7 @@ import Navbar from './components/Navbar.vue';
 import Home from './views/Home.vue';
 import Signup from './views/Signup.vue';
 import Login from './views/Login.vue';
+import AddWork from './views/AddWork.vue';
 import router from './routes/routes';
 import VueRouter from 'vue-router';
 
@@ -19,7 +20,8 @@ new Vue({
         Navbar,
         Home,
         'signup-form': Signup,
-        'login-form': Login
+        'login-form': Login,
+        'add-work': AddWork,
     }
 });
 

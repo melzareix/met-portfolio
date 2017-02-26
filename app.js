@@ -38,8 +38,8 @@ app.use('/api/v1/portfolio', portfolioAPIv1);
 
 app.use(express.static(path.join(__dirname, './public/')));
 
-app.get('/:q', function (req, res) {
-    res.redirect('/#/' + req.params.q);
+app.get('/*', function (req, res) {
+    res.redirect('/#' + req.path);
 });
 /**
  * Generic Error Handling Middlewares.
