@@ -12,7 +12,7 @@
 </template>
 
 <script>
-    import SummaryCards from '../components/SummaryCards.vue';
+    import SummaryCards from './SummaryCards.vue';
     export default {
         components: {
             SummaryCards

@@ -31,7 +31,9 @@
                 <label class="label">Password</label>
                 <p class="control">
                     <input class="input" name="password" type="password" v-model="password">
+                    <a href="#" class="help is-dark">Forgot password ?</a>
                 </p>
+
 
                 <p class="control">
                     <button type="submit" class="button is-primary">Submit</button>

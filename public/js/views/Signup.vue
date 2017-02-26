@@ -23,7 +23,7 @@
             </div>
         </div>
 
-        <form method="post" @submit.prevent="onSubmit"  enctype="multipart/form-data">
+        <form method="post" @submit.prevent="onSubmit" enctype="multipart/form-data">
             <div class="control">
                 <label class="label">First Name*</label>
                 <p class="control">
@@ -63,7 +63,9 @@
 
                 <label class="label">Bio*</label>
                 <p class="control">
-                    <textarea class="textarea" name="bio" v-model="bio"></textarea>
+                    <textarea class="textarea" maxlength="300" placeholder="Describe Yourself and your work ..."
+                              name="bio" v-model="bio"></textarea>
+                    <span class="help">{{ 300 - bio.length }} Characters left</span>
                 </p>
 
                 <p class="control">
@@ -110,9 +112,11 @@
                 console.log(this.profilePic);
                 axios.post('/api/v1/auth/signup', data).then((res) => {
                     this.signedUp = true;
+                    window.scrollTo(0, 0);
                 }).catch((res) => {
                     res.response.data.message.forEach((err) => {
                         this.formErrors.push(err);
+                        window.scrollTo(0, 0);
                     });
                 })
 
