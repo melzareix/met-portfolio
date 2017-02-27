@@ -30,8 +30,12 @@ export default new VueRouter({
             component: Logout
         },
         {
-            path: '/*',
+            path: '/404',
             component: NotFound
+        },
+        {
+            path: '/*',
+            redirect: '/404'
         }
     ],
     linkActiveClass: 'is-active'

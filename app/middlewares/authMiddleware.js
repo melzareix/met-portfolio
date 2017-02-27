@@ -81,9 +81,7 @@ var authMiddleware = function (req, res, next) {
             return next(err);
         }
         if (!user) {
-            return res.json({
-                message: info.toString()
-            });
+            return next(info);
         }
         req.user = user;
         return next();

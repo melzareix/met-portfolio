@@ -83,9 +83,10 @@ class Form {
      * Send a POST request to the given URL.
      * .
      * @param {string} url
+     * @param {object} headers
      */
-    post(url) {
-        return this.submit('post', url);
+    post(url, headers = null) {
+        return this.submit('post', url, headers);
     }
 
 
@@ -124,10 +125,11 @@ class Form {
      *
      * @param {string} requestType
      * @param {string} url
+     * @param {object} headers
      */
-    submit(requestType, url) {
+    submit(requestType, url, headers = null) {
         return new Promise((resolve, reject) => {
-            axios[requestType](url, this.data())
+            axios[requestType](url, this.data(), headers)
                 .then(response => {
                     this.onSuccess(response.data);
 
@@ -148,8 +150,6 @@ class Form {
      * @param {object} data
      */
     onSuccess(data) {
-        alert(data.message); // temporary
-
         this.reset();
     }
 

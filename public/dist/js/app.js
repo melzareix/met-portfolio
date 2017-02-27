@@ -4708,6 +4708,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = {
@@ -4731,6 +4738,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_vue_auth_js__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__helpers_vue_form_js__ = __webpack_require__(68);
 //
 //
 //
@@ -4792,39 +4801,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+
+
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = {
     data: function data() {
         return {
-            firstName: '',
-            lastName: '',
-            gucId: '',
-            bio: '',
-            email: '',
-            password: '',
-            confirmPassword: '',
-            profilePic: '',
-            hasErrors: false,
-            formErrors: [],
-            signedUp: false
+            form: new __WEBPACK_IMPORTED_MODULE_2__helpers_vue_form_js__["a" /* default */]({
+                title: '',
+                description: '',
+                link: '',
+                repo: '',
+                cover: ''
+            }),
+            workAdded: false
         };
     },
 
@@ -4832,28 +4824,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         onSubmit: function onSubmit() {
             var _this = this;
 
-            this.formErrors = [];
-            this.signedUp = false;
             var data = new FormData();
+            this.workAdded = false;
 
-            data.append('firstName', this.firstName);
-            data.append('lastName', this.lastName);
-            data.append('gucId', this.gucId);
-            data.append('bio', this.bio);
-            data.append('email', this.email);
-            data.append('password', this.password);
-            data.append('confirmPassword', this.confirmPassword);
-            data.append('profilePic', this.profilePic);
+            data.append('title', this.form.title);
+            data.append('description', this.form.description);
+            data.append('link', this.form.link);
+            data.append('repo', this.form.repo);
+            data.append('cover', this.form.cover);
 
-            console.log(this.profilePic);
-            __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post('/api/v1/auth/signup', data).then(function (res) {
-                _this.signedUp = true;
+            this.form.errors.clear();
+
+            __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post('http://localhost:3000/api/v1/portfolio/add', data, {
+                headers: {
+                    'Authorization': __WEBPACK_IMPORTED_MODULE_1__helpers_vue_auth_js__["a" /* default */].getAuthHeader()
+                }
+            }).then(function (res) {
+                _this.workAdded = true;
+            }).catch(function (err) {
+                _this.form.errors.record(err.response.data.message);
                 window.scrollTo(0, 0);
-            }).catch(function (res) {
-                res.response.data.message.forEach(function (err) {
-                    _this.formErrors.push(err);
-                    window.scrollTo(0, 0);
-                });
             });
         },
         fileChanged: function fileChanged(e) {
@@ -5318,8 +5308,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         path: '/logout',
         component: __WEBPACK_IMPORTED_MODULE_6__views_Logout_vue___default.a
     }, {
-        path: '/*',
+        path: '/404',
         component: __WEBPACK_IMPORTED_MODULE_5__views_NotFound_vue___default.a
+    }, {
+        path: '/*',
+        redirect: '/404'
     }],
     linkActiveClass: 'is-active'
 
@@ -5794,17 +5787,17 @@ if (false) {
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', [_c('h2', {
     staticClass: "title is-2"
-  }, [_vm._v("Signup")]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', {
+  }, [_vm._v("Add Work")]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', {
     directives: [{
       name: "show",
       rawName: "v-show",
-      value: (_vm.formErrors.length > 0),
-      expression: "formErrors.length > 0"
+      value: (_vm.form.getErrors().length > 0),
+      expression: "form.getErrors().length > 0"
     }],
     staticClass: "message is-danger"
   }, [_c('div', {
     staticClass: "message-body"
-  }, [_vm._m(0), _vm._v(" "), _c('ul', _vm._l((_vm.formErrors), function(err) {
+  }, [_vm._m(0), _vm._v(" "), _c('ul', _vm._l((_vm.form.getErrors()), function(err) {
     return _c('li', {
       staticClass: "padding-left-10",
       domProps: {
@@ -5815,8 +5808,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "show",
       rawName: "v-show",
-      value: (_vm.signedUp),
-      expression: "signedUp"
+      value: (_vm.workAdded),
+      expression: "workAdded"
     }],
     staticClass: "message is-success"
   }, [_vm._m(1)]), _vm._v(" "), _c('form', {
@@ -5834,64 +5827,90 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "control"
   }, [_c('label', {
     staticClass: "label"
-  }, [_vm._v("First Name*")]), _vm._v(" "), _c('p', {
+  }, [_vm._v("Title*")]), _vm._v(" "), _c('p', {
     staticClass: "control"
   }, [_c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.firstName),
-      expression: "firstName"
+      value: (_vm.form.title),
+      expression: "form.title"
     }],
     staticClass: "input",
     attrs: {
       "type": "text",
-      "name": "firstName",
-      "placeholder": "Slim"
+      "name": "title",
+      "placeholder": "I reinvented the wheel .."
     },
     domProps: {
-      "value": _vm._s(_vm.firstName)
+      "value": _vm._s(_vm.form.title)
     },
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.firstName = $event.target.value
+        _vm.form.title = $event.target.value
       }
     }
   })]), _vm._v(" "), _c('label', {
     staticClass: "label"
-  }, [_vm._v("Last Name*")]), _vm._v(" "), _c('p', {
-    staticClass: "control has-icon has-icon-right"
+  }, [_vm._v("Live Demo")]), _vm._v(" "), _c('p', {
+    staticClass: "control"
   }, [_c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.lastName),
-      expression: "lastName"
+      value: (_vm.form.link),
+      expression: "form.link"
     }],
     staticClass: "input",
     attrs: {
       "type": "text",
-      "name": "lastName",
-      "placeholder": "Abdelnader"
+      "name": "link",
+      "placeholder": "https://laracasts.com"
     },
     domProps: {
-      "value": _vm._s(_vm.lastName)
+      "value": _vm._s(_vm.form.link)
     },
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.lastName = $event.target.value
+        _vm.form.link = $event.target.value
       }
     }
   })]), _vm._v(" "), _c('label', {
     staticClass: "label"
-  }, [_vm._v("Profile Picture")]), _vm._v(" "), _c('p', {
+  }, [_vm._v("Repo Link")]), _vm._v(" "), _c('p', {
+    staticClass: "control"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.form.repo),
+      expression: "form.repo"
+    }],
+    staticClass: "input",
+    attrs: {
+      "type": "text",
+      "name": "repo",
+      "placeholder": "https://github.com/melzareix/met-portfolio"
+    },
+    domProps: {
+      "value": _vm._s(_vm.form.repo)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.form.repo = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('label', {
+    staticClass: "label"
+  }, [_vm._v("Cover Image")]), _vm._v(" "), _c('p', {
     staticClass: "control has-icon has-icon-right"
   }, [_c('input', {
     attrs: {
       "type": "file",
-      "name": "profilePic",
+      "name": "cover",
       "accept": "image/*"
     },
     on: {
@@ -5899,141 +5918,39 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   })]), _vm._v(" "), _c('label', {
     staticClass: "label"
-  }, [_vm._v("Email*")]), _vm._v(" "), _c('p', {
-    staticClass: "control has-icon has-icon-right"
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.email),
-      expression: "email"
-    }],
-    staticClass: "input",
-    attrs: {
-      "type": "text",
-      "name": "email",
-      "placeholder": "balabizo@student.guc.edu.eg"
-    },
-    domProps: {
-      "value": _vm._s(_vm.email)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.email = $event.target.value
-      }
-    }
-  })]), _vm._v(" "), _c('label', {
-    staticClass: "label"
-  }, [_vm._v("Password*")]), _vm._v(" "), _c('p', {
-    staticClass: "control has-icon has-icon-right"
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.password),
-      expression: "password"
-    }],
-    staticClass: "input",
-    attrs: {
-      "name": "password",
-      "type": "password"
-    },
-    domProps: {
-      "value": _vm._s(_vm.password)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.password = $event.target.value
-      }
-    }
-  })]), _vm._v(" "), _c('label', {
-    staticClass: "label"
-  }, [_vm._v("Confirm Password*")]), _vm._v(" "), _c('p', {
-    staticClass: "control has-icon has-icon-right"
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.confirmPassword),
-      expression: "confirmPassword"
-    }],
-    staticClass: "input",
-    attrs: {
-      "name": "confirmPassword",
-      "type": "password"
-    },
-    domProps: {
-      "value": _vm._s(_vm.confirmPassword)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.confirmPassword = $event.target.value
-      }
-    }
-  })]), _vm._v(" "), _c('label', {
-    staticClass: "label"
-  }, [_vm._v("GUC ID*")]), _vm._v(" "), _c('p', {
-    staticClass: "control has-icon has-icon-right"
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.gucId),
-      expression: "gucId"
-    }],
-    staticClass: "input",
-    attrs: {
-      "type": "text",
-      "placeholder": "XX-XXXX",
-      "name": "gucId"
-    },
-    domProps: {
-      "value": _vm._s(_vm.gucId)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.gucId = $event.target.value
-      }
-    }
-  })]), _vm._v(" "), _c('label', {
-    staticClass: "label"
-  }, [_vm._v("Bio*")]), _vm._v(" "), _c('p', {
+  }, [_vm._v("Description*")]), _vm._v(" "), _c('p', {
     staticClass: "control"
   }, [_c('textarea', {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.bio),
-      expression: "bio"
+      value: (_vm.form.description),
+      expression: "form.description"
     }],
     staticClass: "textarea",
     attrs: {
       "maxlength": "300",
-      "placeholder": "Describe Yourself and your work ...",
+      "placeholder": "I'm donna and I'm awesome ...",
       "name": "bio"
     },
     domProps: {
-      "value": _vm._s(_vm.bio)
+      "value": _vm._s(_vm.form.description)
     },
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.bio = $event.target.value
+        _vm.form.description = $event.target.value
       }
     }
   }), _vm._v(" "), _c('span', {
     staticClass: "help"
-  }, [_vm._v(_vm._s(300 - _vm.bio.length) + " Characters left")])]), _vm._v(" "), _vm._m(2)])])])
+  }, [_vm._v(_vm._s(300 - _vm.form.description.length) + " Characters left")])]), _vm._v(" "), _vm._m(2)])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('h3', [_c('strong', [_vm._v("Please Correct the following errors :-")])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "message-body"
-  }, [_c('h3', [_c('strong', [_vm._v(" Signup Successful")])])])
+  }, [_c('h3', [_c('strong', [_vm._v(" Work Added !")])])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('p', {
     staticClass: "control"
@@ -6099,6 +6016,18 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "to": "/login"
     }
   }, [_vm._v("\n                Login\n            ")])], 1), _vm._v(" "), _c('li', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.user.authenticated),
+      expression: "user.authenticated"
+    }]
+  }, [_c('router-link', {
+    staticClass: "nav-item nav-link",
+    attrs: {
+      "to": "/portfolio/add"
+    }
+  }, [_vm._v("\n                Add Work\n            ")])], 1), _vm._v(" "), _c('li', {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -15210,12 +15139,15 @@ var Form = function () {
          * Send a POST request to the given URL.
          * .
          * @param {string} url
+         * @param {object} headers
          */
 
     }, {
         key: 'post',
         value: function post(url) {
-            return this.submit('post', url);
+            var headers = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+            return this.submit('post', url, headers);
         }
 
         /**
@@ -15259,6 +15191,7 @@ var Form = function () {
          *
          * @param {string} requestType
          * @param {string} url
+         * @param {object} headers
          */
 
     }, {
@@ -15266,8 +15199,10 @@ var Form = function () {
         value: function submit(requestType, url) {
             var _this = this;
 
+            var headers = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+
             return new Promise(function (resolve, reject) {
-                __WEBPACK_IMPORTED_MODULE_0_axios___default.a[requestType](url, _this.data()).then(function (response) {
+                __WEBPACK_IMPORTED_MODULE_0_axios___default.a[requestType](url, _this.data(), headers).then(function (response) {
                     _this.onSuccess(response.data);
 
                     resolve(response.data);
@@ -15288,8 +15223,6 @@ var Form = function () {
     }, {
         key: 'onSuccess',
         value: function onSuccess(data) {
-            alert(data.message); // temporary
-
             this.reset();
         }
 

@@ -17,6 +17,13 @@
                 </router-link>
             </li>
 
+
+            <li v-show="user.authenticated">
+                <router-link to="/portfolio/add" class="nav-item nav-link">
+                    Add Work
+                </router-link>
+            </li>
+
             <li v-show="user.authenticated">
                 <router-link to="/logout" class="nav-item nav-link">
                     Logout

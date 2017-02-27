@@ -92,6 +92,11 @@ router.post('/add', upload.single('cover'), authHelper.authMiddleware, function 
     if (!title) {
         errors.push(Strings.EMPTY_TITLE);
     }
+
+    if (!description) {
+        errors.push(Strings.EMPTY_PDESC);
+    }
+
     if (!liveDemo && !githubRepo && !coverImage) { // User left all three fields empty
         errors.push(Strings.EMPTY_WORK);
     }
@@ -149,8 +154,15 @@ let validateUrl = function (url) {
  */
 router.use(function (err, req, res, next) {
     return res.status(400).json({
-        message: err
+        message: handleError(err)
     });
 });
+
+const handleError = err => {
+    if (err instanceof Array) {
+        return err;
+    }
+    return [err.toString()];
+};
 
 module.exports = router;
