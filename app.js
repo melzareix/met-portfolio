@@ -38,6 +38,7 @@ app.use('/api/v1/portfolio', portfolioAPIv1);
 
 app.use(express.static(path.join(__dirname, './public/')));
 
+
 app.get('/*', function (req, res) {
     res.redirect('/#' + req.path);
 });

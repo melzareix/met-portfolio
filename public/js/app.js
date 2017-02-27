@@ -6,8 +6,12 @@ import Login from './views/Login.vue';
 import AddWork from './views/AddWork.vue';
 import router from './routes/routes';
 import VueRouter from 'vue-router';
+import axios from 'axios';
 
 Vue.use(VueRouter);
+
+window.Event = new Vue();
+window.axios = axios;
 
 new Vue({
     el: '#root',

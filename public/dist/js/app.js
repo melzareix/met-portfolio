@@ -3773,6 +3773,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__routes_routes__ = __webpack_require__(45);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_vue_router__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_vue_router___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_vue_router__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_axios__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_axios__);
+
 
 
 
@@ -3783,6 +3786,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_7_vue_router___default.a);
+
+window.Event = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
+window.axios = __WEBPACK_IMPORTED_MODULE_8_axios___default.a;
 
 new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     el: '#root',
@@ -4890,11 +4896,64 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = {
+    data: function data() {
+        return {
+            items: [],
+            count: 0,
+            offset: 1
+        };
+    },
+
     components: {
         SummaryCards: __WEBPACK_IMPORTED_MODULE_0__SummaryCards_vue___default.a
+    },
+    mounted: function mounted() {
+        this.getSummary();
+    },
+
+    methods: {
+        getSummary: function getSummary() {
+            var _this = this;
+
+            axios.get('http://localhost:3000/api/v1/portfolio/summary/' + this.offset).then(function (res) {
+                _this.items = [];
+                var data = res.data;
+                if (data.results.length > 0) {
+                    var results = data.results;
+                    _this.count = data.count;
+                    results.forEach(function (item) {
+                        var newItem = {
+                            profilePic: 'uploads/' + item.profilePic,
+                            title: item.firstName + ' ' + item.lastName,
+                            desc: item.bio,
+                            works: item.portfolio.map(function (i) {
+                                return { title: i.title, id: i._id };
+                            })
+                        };
+                        _this.items.push(newItem);
+                        window.scrollTo(0, 0);
+                    });
+                }
+            }).catch(function (err) {
+                // Handle error
+            });
+        },
+        changePage: function changePage(e) {
+            this.offset = parseInt(e.target.innerHTML);
+            this.getSummary();
+        }
     }
 };
 
@@ -5248,40 +5307,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = {
-    components: { Card: __WEBPACK_IMPORTED_MODULE_0__components_Card_vue___default.a },
-    data: function data() {
-        return {
-            items: [],
-            noItems: false
-        };
-    },
-    mounted: function mounted() {
-        var _this = this;
-
-        __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get('http://localhost:3000/api/v1/portfolio/summary/1').then(function (res) {
-            var data = res.data;
-            if (data.results.length > 0) {
-                var results = data.results;
-                results.forEach(function (item) {
-                    var newItem = {
-                        profilePic: 'uploads/' + item.profilePic,
-                        title: item.firstName + ' ' + item.lastName,
-                        desc: item.bio,
-                        works: item.portfolio.map(function (i) {
-                            return { title: i.title };
-                        })
-                    };
-                    _this.items.push(newItem);
-                });
-            } else {
-                _this.noItems = true;
-            }
-        }).catch(function (err) {});
-    }
+    props: ['items'],
+    components: { Card: __WEBPACK_IMPORTED_MODULE_0__components_Card_vue___default.a }
 };
 
 /***/ }),
@@ -5562,7 +5596,25 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_vm._m(0), _vm._v(" "), _c('hr'), _vm._v(" "), _c('summary-cards')], 1)
+  return _c('div', [_vm._m(0), _vm._v(" "), _c('hr'), _vm._v(" "), _c('summary-cards', {
+    attrs: {
+      "items": _vm.items
+    }
+  }), _vm._v(" "), _c('nav', {
+    staticClass: "pagination is-centered"
+  }, [_c('ul', {
+    staticClass: "pagination-list"
+  }, _vm._l((Math.ceil(_vm.count / 10)), function(i) {
+    return _c('li', [_c('a', {
+      staticClass: "pagination-link is-warning",
+      class: {
+        'is-current': (i === _vm.offset)
+      },
+      on: {
+        "click": _vm.changePage
+      }
+    }, [_vm._v(_vm._s(i))])])
+  }))])], 1)
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('form', {
     staticClass: "control has-addons has-addons-centered",
@@ -5719,8 +5771,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "show",
       rawName: "v-show",
-      value: (_vm.noItems),
-      expression: "noItems"
+      value: (_vm.items.length == 0),
+      expression: "items.length == 0"
     }],
     staticClass: "is-full"
   }, [_c('img', {
@@ -5756,11 +5808,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_vm._v("\n                    Top Work\n                ")]), _vm._v(" "), _c('ul', {
       staticClass: "menu-list"
     }, _vm._l((item.works), function(work) {
-      return _c('li', [_c('a', {
+      return _c('li', [_c('router-link', {
         attrs: {
-          "href": "#"
+          "to": '/project/' + work.id
         }
-      }, [_vm._v(_vm._s(work.title))])])
+      }, [_vm._v(_vm._s(work.title))])], 1)
     }))])])
   }))])
 },staticRenderFns: []}
