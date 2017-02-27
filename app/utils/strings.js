@@ -34,6 +34,8 @@ const Strings = {
     EMPTY_TITLE: 'The title field is required.',
     EMPTY_WORK: 'You must upload an image of your work, add a demo or repo.',
     NO_PORTFOLIO: 'You need to create a portfolio first.',
+    BAD_REPO: 'The url provided for Repo is invalid.',
+    BAD_DEMO: 'The url provided for Demo is invalid.',
 
     // Add Work Success
     WORK_ADDED: 'Item Added!',
