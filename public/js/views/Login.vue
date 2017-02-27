@@ -3,10 +3,10 @@
         <h2 class="title is-2">Login</h2>
         <hr>
 
-        <div class="message is-danger" v-show="formErrors.length > 0">
+        <div class="message is-danger" v-show="form.getErrors().length > 0">
             <div class="message-body">
                 <ul>
-                    <li class="padding-left-10" v-for="err in formErrors" v-text="err"></li>
+                    <li class="padding-left-10" v-for="err in this.form.getErrors()" v-text="err"></li>
 
                 </ul>
             </div>
@@ -25,12 +25,12 @@
                 <label class="label">Email</label>
                 <p class="control has-icon has-icon-right">
                     <input class="input" type="text" name="email" placeholder="balabizo@student.guc.edu.eg"
-                           v-model="email">
+                           v-model="form.email">
                 </p>
 
                 <label class="label">Password</label>
                 <p class="control">
-                    <input class="input" name="password" type="password" v-model="password">
+                    <input class="input" name="password" type="password" v-model="form.password">
                     <a href="#" class="help is-dark">Forgot password ?</a>
                 </p>
 
@@ -45,13 +45,17 @@
 
 <script>
     import auth from '../helpers/vue-auth.js';
+    import Form from '../helpers/vue-form.js';
+
     export default{
         data() {
             return {
-                email: '',
-                password: '',
-                formErrors: [],
+                form: new Form({
+                    email: '',
+                    password: '',
+                }),
                 loggedIn: false,
+                formErrors: [],
                 user: auth.user
             }
         },
@@ -64,15 +68,13 @@
         ,
         methods: {
             onSubmit(){
-                this.formErrors = [];
                 this.loggedIn = false;
-
                 auth.login({
-                    email: this.email,
-                    password: this.password
+                    email: this.form.email,
+                    password: this.form.password
                 }, (err, data) => {
                     if (err) {
-                        this.formErrors = err.message;
+                        this.form.errors = err.message;
                     } else {
                         this.loggedIn = true;
                         setTimeout(() => {
