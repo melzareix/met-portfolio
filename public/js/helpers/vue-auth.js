@@ -31,8 +31,6 @@ export default {
         axios
             .post(SIGNUP_ROUTE, formData)
             .then((res) => {
-                localStorage.setItem('jwt_token', res.data.token);
-                this.user.authenticated = true;
                 if (cb) {
                     cb(null, res.data);
                 }

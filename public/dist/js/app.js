@@ -465,11 +465,7 @@ var SIGNUP_ROUTE = BASE_API + '/signup';
         });
     },
     signup: function signup(formData, cb) {
-        var _this2 = this;
-
         __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post(SIGNUP_ROUTE, formData).then(function (res) {
-            localStorage.setItem('jwt_token', res.data.token);
-            _this2.user.authenticated = true;
             if (cb) {
                 cb(null, res.data);
             }
@@ -4963,7 +4959,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 password: ''
             }),
             loggedIn: false,
-            formErrors: [],
             user: __WEBPACK_IMPORTED_MODULE_0__helpers_vue_auth_js__["a" /* default */].user
         };
     },
@@ -4979,14 +4974,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this = this;
 
             this.loggedIn = false;
+            this.form.errors.clear();
+
             __WEBPACK_IMPORTED_MODULE_0__helpers_vue_auth_js__["a" /* default */].login({
                 email: this.form.email,
                 password: this.form.password
             }, function (err, data) {
                 if (err) {
-                    _this.form.errors = err.message;
+                    _this.form.errors.record(err.message);
                 } else {
                     _this.loggedIn = true;
+                    _this.form.reset();
                     setTimeout(function () {
                         _this.$router.push('/');
                     }, 500);
@@ -5063,6 +5061,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__helpers_vue_auth__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_vue_form__ = __webpack_require__(68);
 //
 //
 //
@@ -5141,21 +5140,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = {
     data: function data() {
         return {
-            firstName: '',
-            lastName: '',
-            gucId: '',
-            bio: '',
-            email: '',
-            password: '',
-            confirmPassword: '',
-            profilePic: '',
-            hasErrors: false,
-            formErrors: [],
+            form: new __WEBPACK_IMPORTED_MODULE_1__helpers_vue_form__["a" /* default */]({
+                firstName: '',
+                lastName: '',
+                gucId: '',
+                bio: '',
+                email: '',
+                password: '',
+                confirmPassword: '',
+                profilePic: ''
+            }),
             signedUp: false,
             user: __WEBPACK_IMPORTED_MODULE_0__helpers_vue_auth__["a" /* default */].user
         };
@@ -5171,29 +5172,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         onSubmit: function onSubmit() {
             var _this = this;
 
-            this.formErrors = [];
             this.signedUp = false;
-
             var data = new FormData();
-            data.append('firstName', this.firstName);
-            data.append('lastName', this.lastName);
-            data.append('gucId', this.gucId);
-            data.append('bio', this.bio);
-            data.append('email', this.email);
-            data.append('password', this.password);
-            data.append('confirmPassword', this.confirmPassword);
-            data.append('profilePic', this.profilePic);
 
+            data.append('firstName', this.form.firstName);
+            data.append('lastName', this.form.lastName);
+            data.append('gucId', this.form.gucId);
+            data.append('bio', this.form.bio);
+            data.append('email', this.form.email);
+            data.append('password', this.form.password);
+            data.append('confirmPassword', this.form.confirmPassword);
+            data.append('profilePic', this.form.profilePic);
+
+            this.form.errors.clear();
             __WEBPACK_IMPORTED_MODULE_0__helpers_vue_auth__["a" /* default */].signup(data, function (err, data) {
                 if (err) {
-                    _this.formErrors = err.message;
+                    _this.form.errors.record(err.message);
                     window.scrollTo(0, 0);
                 } else {
                     _this.signedUp = true;
+                    _this.form.reset();
                     window.scrollTo(0, 0);
                     setTimeout(function () {
                         _this.$router.push('/login');
-                    }, 500);
+                    }, 1000);
                 }
             });
         },
@@ -5589,7 +5591,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "message is-danger"
   }, [_c('div', {
     staticClass: "message-body"
-  }, [_c('ul', _vm._l((this.form.getErrors()), function(err) {
+  }, [_c('ul', _vm._l((_vm.form.getErrors()), function(err) {
     return _c('li', {
       staticClass: "padding-left-10",
       domProps: {
@@ -6144,13 +6146,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "show",
       rawName: "v-show",
-      value: (_vm.formErrors.length > 0),
-      expression: "formErrors.length > 0"
+      value: (_vm.form.getErrors().length > 0),
+      expression: "form.getErrors().length > 0"
     }],
     staticClass: "message is-danger"
   }, [_c('div', {
     staticClass: "message-body"
-  }, [_vm._m(0), _vm._v(" "), _c('ul', _vm._l((_vm.formErrors), function(err) {
+  }, [_vm._m(0), _vm._v(" "), _c('ul', _vm._l((_vm.form.getErrors()), function(err) {
     return _c('li', {
       staticClass: "padding-left-10",
       domProps: {
@@ -6186,8 +6188,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.firstName),
-      expression: "firstName"
+      value: (_vm.form.firstName),
+      expression: "form.firstName"
     }],
     staticClass: "input",
     attrs: {
@@ -6196,12 +6198,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "placeholder": "Slim"
     },
     domProps: {
-      "value": _vm._s(_vm.firstName)
+      "value": _vm._s(_vm.form.firstName)
     },
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.firstName = $event.target.value
+        _vm.form.firstName = $event.target.value
       }
     }
   })]), _vm._v(" "), _c('label', {
@@ -6212,8 +6214,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.lastName),
-      expression: "lastName"
+      value: (_vm.form.lastName),
+      expression: "form.lastName"
     }],
     staticClass: "input",
     attrs: {
@@ -6222,12 +6224,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "placeholder": "Abdelnader"
     },
     domProps: {
-      "value": _vm._s(_vm.lastName)
+      "value": _vm._s(_vm.form.lastName)
     },
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.lastName = $event.target.value
+        _vm.form.lastName = $event.target.value
       }
     }
   })]), _vm._v(" "), _c('label', {
@@ -6251,8 +6253,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.email),
-      expression: "email"
+      value: (_vm.form.email),
+      expression: "form.email"
     }],
     staticClass: "input",
     attrs: {
@@ -6261,12 +6263,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "placeholder": "balabizo@student.guc.edu.eg"
     },
     domProps: {
-      "value": _vm._s(_vm.email)
+      "value": _vm._s(_vm.form.email)
     },
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.email = $event.target.value
+        _vm.form.email = $event.target.value
       }
     }
   })]), _vm._v(" "), _c('label', {
@@ -6277,8 +6279,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.password),
-      expression: "password"
+      value: (_vm.form.password),
+      expression: "form.password"
     }],
     staticClass: "input",
     attrs: {
@@ -6286,12 +6288,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "type": "password"
     },
     domProps: {
-      "value": _vm._s(_vm.password)
+      "value": _vm._s(_vm.form.password)
     },
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.password = $event.target.value
+        _vm.form.password = $event.target.value
       }
     }
   })]), _vm._v(" "), _c('label', {
@@ -6302,8 +6304,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.confirmPassword),
-      expression: "confirmPassword"
+      value: (_vm.form.confirmPassword),
+      expression: "form.confirmPassword"
     }],
     staticClass: "input",
     attrs: {
@@ -6311,12 +6313,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "type": "password"
     },
     domProps: {
-      "value": _vm._s(_vm.confirmPassword)
+      "value": _vm._s(_vm.form.confirmPassword)
     },
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.confirmPassword = $event.target.value
+        _vm.form.confirmPassword = $event.target.value
       }
     }
   })]), _vm._v(" "), _c('label', {
@@ -6327,8 +6329,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.gucId),
-      expression: "gucId"
+      value: (_vm.form.gucId),
+      expression: "form.gucId"
     }],
     staticClass: "input",
     attrs: {
@@ -6337,12 +6339,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "name": "gucId"
     },
     domProps: {
-      "value": _vm._s(_vm.gucId)
+      "value": _vm._s(_vm.form.gucId)
     },
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.gucId = $event.target.value
+        _vm.form.gucId = $event.target.value
       }
     }
   })]), _vm._v(" "), _c('label', {
@@ -6353,8 +6355,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.bio),
-      expression: "bio"
+      value: (_vm.form.bio),
+      expression: "form.bio"
     }],
     staticClass: "textarea",
     attrs: {
@@ -6363,17 +6365,17 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "name": "bio"
     },
     domProps: {
-      "value": _vm._s(_vm.bio)
+      "value": _vm._s(_vm.form.bio)
     },
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.bio = $event.target.value
+        _vm.form.bio = $event.target.value
       }
     }
   }), _vm._v(" "), _c('span', {
     staticClass: "help"
-  }, [_vm._v(_vm._s(300 - _vm.bio.length) + " Characters left")])]), _vm._v(" "), _vm._m(2)])])])
+  }, [_vm._v(_vm._s(300 - _vm.form.bio.length) + " Characters left")])]), _vm._v(" "), _vm._m(2)])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('h3', [_c('strong', [_vm._v("Please Correct the following errors :-")])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -15113,53 +15115,17 @@ var Errors = function () {
     function Errors() {
         _classCallCheck(this, Errors);
 
-        this.errors = {};
+        this.errors = [];
     }
 
     /**
-     * Determine if an errors exists for the given field.
+     * Record the new errors.
      *
-     * @param {string} field
+     * @param {object} errors
      */
 
 
     _createClass(Errors, [{
-        key: 'has',
-        value: function has(field) {
-            return this.errors.hasOwnProperty(field);
-        }
-
-        /**
-         * Determine if we have any errors.
-         */
-
-    }, {
-        key: 'any',
-        value: function any() {
-            return Object.keys(this.errors).length > 0;
-        }
-
-        /**
-         * Retrieve the error message for a field.
-         *
-         * @param {string} field
-         */
-
-    }, {
-        key: 'get',
-        value: function get(field) {
-            if (this.errors[field]) {
-                return this.errors[field][0];
-            }
-        }
-
-        /**
-         * Record the new errors.
-         *
-         * @param {object} errors
-         */
-
-    }, {
         key: 'record',
         value: function record(errors) {
             this.errors = errors;
@@ -15173,14 +15139,13 @@ var Errors = function () {
 
     }, {
         key: 'clear',
-        value: function clear(field) {
-            if (field) {
-                delete this.errors[field];
-
-                return;
-            }
-
+        value: function clear() {
             this.errors = {};
+        }
+    }, {
+        key: 'getErrors',
+        value: function getErrors() {
+            return this.errors;
         }
     }]);
 
@@ -15208,7 +15173,7 @@ var Form = function () {
     _createClass(Form, [{
         key: 'getErrors',
         value: function getErrors() {
-            return this.errors;
+            return this.errors.getErrors();
         }
 
         /**

@@ -6,7 +6,7 @@
         <div class="message is-danger" v-show="form.getErrors().length > 0">
             <div class="message-body">
                 <ul>
-                    <li class="padding-left-10" v-for="err in this.form.getErrors()" v-text="err"></li>
+                    <li class="padding-left-10" v-for="err in form.getErrors()" v-text="err"></li>
 
                 </ul>
             </div>
@@ -55,7 +55,6 @@
                     password: '',
                 }),
                 loggedIn: false,
-                formErrors: [],
                 user: auth.user
             }
         },
@@ -69,14 +68,17 @@
         methods: {
             onSubmit(){
                 this.loggedIn = false;
+                this.form.errors.clear();
+
                 auth.login({
                     email: this.form.email,
                     password: this.form.password
                 }, (err, data) => {
                     if (err) {
-                        this.form.errors = err.message;
+                        this.form.errors.record(err.message);
                     } else {
                         this.loggedIn = true;
+                        this.form.reset();
                         setTimeout(() => {
                             this.$router.push('/')
                         }, 500);
