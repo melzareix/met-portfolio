@@ -106,7 +106,7 @@ router.post('/signup', upload.single('profilePic'), function (req, res, next) {
         email,
         password,
         bio,
-        profilePic: profilePic ? profilePic.filename : undefined
+        profilePic: profilePic ? profilePic.filename : 'default-pic.png'
     });
 
     user.save(function (err) {

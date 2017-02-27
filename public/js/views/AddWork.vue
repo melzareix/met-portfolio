@@ -27,17 +27,20 @@
             <div class="control">
                 <label class="label">Title*</label>
                 <p class="control">
-                    <input class="input" type="text" name="title" placeholder="I reinvented the wheel .." v-model="form.title">
+                    <input class="input" type="text" name="title" placeholder="I reinvented the wheel .."
+                           v-model="form.title">
                 </p>
 
                 <label class="label">Live Demo</label>
                 <p class="control">
-                    <input class="input" type="text" name="link" placeholder="https://laracasts.com" v-model="form.link">
+                    <input class="input" type="text" name="link" placeholder="https://laracasts.com"
+                           v-model="form.link">
                 </p>
 
                 <label class="label">Repo Link</label>
                 <p class="control">
-                    <input class="input" type="text" name="repo" placeholder="https://github.com/melzareix/met-portfolio" v-model="form.repo">
+                    <input class="input" type="text" name="repo"
+                           placeholder="https://github.com/melzareix/met-portfolio" v-model="form.repo">
                 </p>
 
                 <label class="label">Cover Image</label>
@@ -47,7 +50,8 @@
 
                 <label class="label">Description*</label>
                 <p class="control">
-                    <textarea class="textarea" maxlength="300" placeholder="I'm donna and I'm awesome ..." name="bio" v-model="form.description"></textarea>
+                    <textarea class="textarea" maxlength="300" placeholder="I'm donna and I'm awesome ..." name="bio"
+                              v-model="form.description"></textarea>
                     <span class="help">{{ 300 - form.description.length }} Characters left</span>
                 </p>
 
@@ -74,7 +78,14 @@
                     repo: '',
                     cover: ''
                 }),
-                workAdded: false
+                workAdded: false,
+                user: auth.user
+            }
+        },
+        mounted(){
+            auth.checkAuth();
+            if (!this.user.authenticated) {
+                this.$router.push('/');
             }
         },
         methods: {
@@ -96,6 +107,9 @@
                     }
                 }).then((res) => {
                     this.workAdded = true;
+                    setTimeout(() => {
+                        this.$router.push('/'); // Change later
+                    }, 1000);
                 }).catch((err) => {
                     this.form.errors.record(err.response.data.message);
                     window.scrollTo(0, 0);
@@ -104,7 +118,7 @@
             fileChanged(e) {
                 const files = e.target.files || e.dataTransfer.files;
                 if (files.length > 0) {
-                    this.profilePic = files[0];
+                    this.form.cover = files[0];
                 }
 
             }

@@ -4801,6 +4801,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -4816,8 +4820,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 repo: '',
                 cover: ''
             }),
-            workAdded: false
+            workAdded: false,
+            user: __WEBPACK_IMPORTED_MODULE_1__helpers_vue_auth_js__["a" /* default */].user
         };
+    },
+    mounted: function mounted() {
+        __WEBPACK_IMPORTED_MODULE_1__helpers_vue_auth_js__["a" /* default */].checkAuth();
+        if (!this.user.authenticated) {
+            this.$router.push('/');
+        }
     },
 
     methods: {
@@ -4841,6 +4852,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }
             }).then(function (res) {
                 _this.workAdded = true;
+                setTimeout(function () {
+                    _this.$router.push('/'); // Change later
+                }, 1000);
             }).catch(function (err) {
                 _this.form.errors.record(err.response.data.message);
                 window.scrollTo(0, 0);
@@ -4849,7 +4863,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         fileChanged: function fileChanged(e) {
             var files = e.target.files || e.dataTransfer.files;
             if (files.length > 0) {
-                this.profilePic = files[0];
+                this.form.cover = files[0];
             }
         }
     }
@@ -5192,7 +5206,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         fileChanged: function fileChanged(e) {
             var files = e.target.files || e.dataTransfer.files;
             if (files.length > 0) {
-                this.profilePic = files[0];
+                this.form.profilePic = files[0];
             }
         }
     }
@@ -5208,6 +5222,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_Card_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_Card_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -5695,12 +5715,7 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "columns is-multiline",
-    staticStyle: {
-      "margin-bottom": "0"
-    }
-  }, [_c('div', {
+  return _c('div', [_c('div', {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -5708,9 +5723,22 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       expression: "noItems"
     }],
     staticClass: "is-full"
-  }, [_c('h1', {
-    staticClass: "title is-1"
-  }, [_vm._v("Fuck You")])]), _vm._v(" "), _vm._l((_vm.items), function(item) {
+  }, [_c('img', {
+    attrs: {
+      "src": ""
+    }
+  }), _vm._v(" "), _c('h1', {
+    staticClass: "smiley-face has-text-centered"
+  }, [_vm._v(":(")]), _c('br'), _vm._v(" "), _c('h2', {
+    staticClass: "title is-2 has-text-centered\t"
+  }, [_vm._v("We are sorry no portfolios are available at the moment.")]), _vm._v(" "), _c('h2', {
+    staticClass: "subtitle is-3 has-text-centered"
+  }, [_vm._v("Try again later.")])]), _vm._v(" "), _c('div', {
+    staticClass: "columns is-multiline",
+    staticStyle: {
+      "margin-bottom": "0"
+    }
+  }, _vm._l((_vm.items), function(item) {
     return _c('card', {
       attrs: {
         "cover": item.profilePic
@@ -5725,7 +5753,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       slot: "top-work"
     }, [_c('p', {
       staticClass: "menu-label"
-    }, [_vm._v("\n                Top Work\n            ")]), _vm._v(" "), _c('ul', {
+    }, [_vm._v("\n                    Top Work\n                ")]), _vm._v(" "), _c('ul', {
       staticClass: "menu-list"
     }, _vm._l((item.works), function(work) {
       return _c('li', [_c('a', {
@@ -5734,7 +5762,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       }, [_vm._v(_vm._s(work.title))])])
     }))])])
-  })], 2)
+  }))])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {

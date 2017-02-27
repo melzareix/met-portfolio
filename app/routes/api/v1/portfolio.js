@@ -105,7 +105,7 @@ router.post('/add', upload.single('cover'), authHelper.authMiddleware, function 
         errors.push(Strings.BAD_DEMO);
     }
 
-    if (githubRepo && !validateUrl(liveDemo)) {
+    if (githubRepo && !validateUrl(githubRepo)) {
         errors.push(Strings.BAD_REPO);
     }
 

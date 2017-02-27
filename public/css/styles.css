@@ -59,3 +59,8 @@ body {
     display: block;
     margin: auto;
 }
+
+.smiley-face{
+    color: #bebebe;
+    font-size: 10rem;
+}

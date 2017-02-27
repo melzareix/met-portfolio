@@ -135,7 +135,7 @@
             fileChanged(e){
                 const files = e.target.files || e.dataTransfer.files;
                 if (files.length > 0) {
-                    this.profilePic = files[0];
+                    this.form.profilePic = files[0];
                 }
 
             }
