@@ -78,6 +78,29 @@ router.get('/summary/:offset', function (req, res, next) {
 });
 
 /**
+ * Get List of Tags
+ */
+
+router.get('/tags', function (req, res, next) {
+    Tag.find({}, ['-_id'], (err, data) => {
+        if (err) {
+            return next(err);
+        }
+
+        if (!data) {
+            return next('No Data.');
+        }
+        const result = [];
+        data.forEach((tag) => {
+            result.push(tag.name);
+        });
+        return res.json({
+            results: result
+        });
+    });
+});
+
+/**
  * Add new portfolio item
  */
 
