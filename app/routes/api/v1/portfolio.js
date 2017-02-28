@@ -100,6 +100,21 @@ router.get('/tags', function (req, res, next) {
     });
 });
 
+router.get('/tag/:tag', function (req, res, next) {
+    User.find({}, ['portfolio'])
+        .populate({
+            path: 'portfolio',
+            populate: {
+                path: 'tags',
+                match: {
+                    name: req.params.tag
+                }
+            }
+        })
+        .exec((err, data) => {
+            return res.json(data);
+        });
+});
 /**
  * Add new portfolio item
  */
