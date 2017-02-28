@@ -11,7 +11,11 @@ let mix = require('laravel-mix');
  |
  */
 
-mix.js('./public/js/app.js', './public/dist/js');
+mix.js('./public/js/app.js', './public/dist/js')
+    .copy('./public/index.html', './public/dist/index.html')
+    .copy('./public/assets/*.png', './public/dist/assets/')
+    .minify('./public/css/styles.css')
+    .combine(['./public/css/bulma.min.css', './public/css/styles.css'], './public/dist/css/styles.css');
 
 // Full API
 // mix.js(src, output);

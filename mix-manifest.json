@@ -1,3 +1,5 @@
 {
-  "/public/dist/js/app.js": "/public/dist/js/app.js"
+  "/public/dist/js/app.js": "/public/dist/js/app.js",
+  "public/css/styles.min.css": "public/css/styles.min.css",
+  "public/dist/css/styles.css": "public/dist/css/styles.css"
 }

@@ -22,7 +22,7 @@ router.use(bodyParser.urlencoded({
  */
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, './public/uploads/');
+        cb(null, './public/dist/uploads/');
     },
     filename: function (req, file, cb) {
         const buf = crypto.randomBytes(48);
@@ -56,8 +56,8 @@ router.get('/summary/:offset', function (req, res, next) {
                 }
             }
         }, ['-password', '-passwordChangeDate', '-passwordResetTokenDate'], {
-            skip: (offset - 1) * 10,
-            limit: 10
+            skip: (offset - 1) * 8,
+            limit: 8
         }).populate('portfolio', null, null, {
             sort: {
                 rating: -1
