@@ -12,6 +12,7 @@ const router = express.Router();
 /**
  * DEV MODE DATABASE SEED
  */
+
 router.get('/', function (req, res) {
     if (!process.env.DEBUG_MODE) {
         return res.redirect('/');

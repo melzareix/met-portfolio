@@ -100,20 +100,23 @@ router.get('/tags', function (req, res, next) {
     });
 });
 
+/**
+ * Get Works With Particular Tag
+ */
 router.get('/tag/:tag', function (req, res, next) {
-    User.find({}, ['portfolio'])
+    WorkItem.find({})
         .populate({
-            path: 'portfolio',
-            populate: {
-                path: 'tags',
-                match: {
-                    name: req.params.tag
-                }
+            path: 'tags',
+            match: {
+                name: req.params.tag
             }
         })
         .exec((err, data) => {
-            return res.json(data);
+            return res.json(data.filter((itm) => {
+                return itm.tags.length > 0;
+            }));
         });
+
 });
 /**
  * Add new portfolio item
