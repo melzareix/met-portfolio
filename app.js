@@ -38,6 +38,33 @@ app.use('/api/v1/portfolio', portfolioAPIv1);
 
 app.use(express.static(path.join(__dirname, './public/')));
 
+/**
+ * DEV MODE DATABASE SEED
+ */
+app.get('/seed-database', function (req, res) {
+    if (!process.env.DEBUG_MODE) {
+        return res.redirect('/');
+    }
+
+    const studentData = require('./app/seed/students.json');
+    const workItemData = require('./app/seed/items.json');
+    const User = require('./app/models/User');
+    const WorkItem = require('./app/models/WorkItem');
+    let cnt = 0;
+
+    studentData.forEach((student) => {
+        let rand = Math.floor(Math.random() * (6));
+        new WorkItem(workItemData[rand]).save((err, data) => {
+            student.portfolio = [data];
+            new User(student).save((err, data) => {
+                cnt++;
+                if (cnt == 29) {
+                    return res.redirect('/');
+                }
+            });
+        });
+    });
+});
 
 app.get('/*', function (req, res) {
     res.redirect('/#' + req.path);
