@@ -6,6 +6,7 @@ const Strings = require('../../../utils/strings');
 const path = require('path');
 const WorkItem = require('../../../models/WorkItem');
 const User = require('../../../models/User');
+const Tag = require('../../../models/Tag');
 const crypto = require('crypto');
 
 const router = express.Router();
@@ -85,6 +86,7 @@ router.post('/add', upload.single('cover'), authHelper.authMiddleware, function 
         description = req.body.description,
         liveDemo = req.body.link,
         githubRepo = req.body.repo,
+        tags = req.body.tags,
         coverImage = req.file;
 
     let errors = [];
@@ -109,35 +111,66 @@ router.post('/add', upload.single('cover'), authHelper.authMiddleware, function 
         errors.push(Strings.BAD_REPO);
     }
 
+    if (!tags) {
+        errors.push('You must include at least one tag.');
+    }
+
     if (errors.length > 0) {
         return next(errors);
     }
 
-    const student = req.user;
-    const portfolioItem = new WorkItem({
-        title,
-        description,
-        coverImage: coverImage ? coverImage.path : undefined,
-        liveDemo,
-        githubRepo
-    });
 
-    portfolioItem.save((err, newItem) => { // Save the created Item
-        if (err) {
-            return next(err);
-        }
-        student.portfolio.push(newItem);
-        student.save((err) => {
+    createTags(tags, (newTags) => {
+        const student = req.user;
+        const portfolioItem = new WorkItem({
+            title,
+            description,
+            coverImage: coverImage ? coverImage.path : undefined,
+            liveDemo,
+            githubRepo,
+            tags: newTags
+        });
+
+        portfolioItem.save((err, newItem) => { // Save the created Item
             if (err) {
                 return next(err);
             }
+            student.portfolio.push(newItem);
+            student.save((err) => {
+                if (err) {
+                    return next(err);
+                }
 
-            res.json({
-                message: Strings.WORK_ADDED
+                res.json({
+                    message: Strings.WORK_ADDED
+                });
             });
         });
     });
+
+
 });
+
+
+/**
+ * Seperate Tags by Comma
+ */
+let createTags = (tags, cb) => {
+    const tagsSeperated = tags.split(',');
+    let callBacksLeft = tagsSeperated.length;
+    const newTags = [];
+    tagsSeperated.forEach((tag) => {
+        Tag.findOrCreate({
+            name: tag
+        }, (err, newTag, created) => {
+            callBacksLeft--;
+            newTags.push(newTag);
+            if (callBacksLeft === 0) {
+                cb(newTags);
+            }
+        });
+    });
+};
 
 /*
     Regex for URL validation
