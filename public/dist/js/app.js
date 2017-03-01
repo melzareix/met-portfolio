@@ -5383,8 +5383,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = {
     props: ['cover']
@@ -6666,19 +6664,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       attrs: {
         "cover": item.cover
       }
-    }, [_c('p', {
+    }, [_c('h2', {
+      staticClass: "is-1",
       slot: "title"
     }, [_vm._v(_vm._s(item.title))]), _vm._v(" "), _c('div', {
       slot: "desc"
     }, [_c('p', {
-      staticClass: "subtitle"
-    }, [_vm._v(_vm._s(item.desc))]), _vm._v(" "), _c('p', {
-      directives: [{
-        name: "show",
-        rawName: "v-show",
-        value: (item.liveDemo),
-        expression: "item.liveDemo"
-      }],
+      staticClass: "item-desc"
+    }, [_vm._v(_vm._s(item.desc))]), _vm._v(" "), (item.liveDemo) ? _c('p', {
       staticClass: "work-item-detail"
     }, [_c('i', {
       staticClass: "fa fa-eye",
@@ -6690,13 +6683,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       attrs: {
         "href": item.liveDemo
       }
-    }, [_vm._v("VISIT PROJECT")])]), _vm._v(" "), _c('p', {
-      directives: [{
-        name: "show",
-        rawName: "v-show",
-        value: (item.githubRepo),
-        expression: "item.githubRepo"
-      }],
+    }, [_vm._v("VISIT PROJECT")])]) : _vm._e(), _vm._v(" "), (item.githubRepo) ? _c('p', {
       staticClass: "work-item-detail"
     }, [_c('i', {
       staticClass: "fa fa-github",
@@ -6708,13 +6695,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       attrs: {
         "href": item.githubRepo
       }
-    }, [_vm._v("GITHUB REPO")])])]), _vm._v(" "), _c('div', {
-      directives: [{
-        name: "show",
-        rawName: "v-show",
-        value: (item.isSummary),
-        expression: "item.isSummary"
-      }],
+    }, [_vm._v("GITHUB REPO")])]) : _vm._e()]), _vm._v(" "), (item.isSummary) ? _c('div', {
       staticClass: "menu",
       slot: "top-work"
     }, [_c('p', {
@@ -6727,7 +6708,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           "to": '/project/' + work.id
         }
       }, [_vm._v(_vm._s(work.title))])], 1)
-    }))]), _vm._v(" "), _c('div', {
+    }))]) : _vm._e(), _vm._v(" "), _c('div', {
       directives: [{
         name: "show",
         rawName: "v-show",
@@ -6782,9 +6763,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "card-content"
   }, [_c('div', {
     staticClass: "content"
-  }, [_c('p', {
-    staticClass: "title"
-  }, [_vm._t("title")], 2), _vm._v(" "), _vm._t("desc"), _vm._v(" "), _vm._t("top-work")], 2), _vm._v(" "), _c('div', {
+  }, [_vm._t("title"), _vm._v(" "), _vm._t("desc"), _vm._v(" "), _vm._t("top-work")], 2), _vm._v(" "), _c('div', {
     staticClass: "card-footer"
   }, [_vm._t("footer")], 2)])])])
 },staticRenderFns: []}
@@ -26347,7 +26326,7 @@ module.exports = __webpack_require__(21);
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(7)();
-exports.push([module.i, "\n.tag:hover {\n    background: #0a0a0a;\n}\n.fa-github {\n    font-size: 1.5rem;\n}\n.fa-eye {\n    font-size: 1.5rem;\n}\n.work-link {\n    font-size: 1rem;\n}\n.work-item-detail:not(:last-child) {\n    border-bottom: 1px solid #eee;\n    padding-bottom: 5px;\n}\n", ""]);
+exports.push([module.i, "\n.tag:hover {\n    background: #0a0a0a;\n}\n.fa-github {\n    font-size: 1.5rem;\n}\n.fa-eye {\n    font-size: 1.5rem;\n}\n.work-link {\n    font-size: 1rem;\n}\n.work-item-detail:not(:last-child) {\n    border-bottom: 1px solid #eee;\n    padding-bottom: 5px;\n}\n.item-desc {\n    margin-bottom: 10px;\n}\n", ""]);
 
 /***/ }),
 /* 77 */

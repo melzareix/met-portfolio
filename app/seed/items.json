@@ -6,6 +6,7 @@
 }, {
     "title": "Blood Donation",
     "liveDemo": "https://dribbble.com/shots/3325769-Blood-Donation-App-Concept/",
+    "githubRepo": "https://github.com/melzareix/met-portfolio",
     "coverImage": "dummy/projects/blood.png",
     "description": "Exploration Blood Donation App Concept."
 }, {
@@ -21,6 +22,7 @@
 }, {
     "title": "Version Compare",
     "liveDemo": "https://dribbble.com/shots/3324068-Version-compare-screen",
+    "githubRepo": "https://github.com/melzareix/met-portfolio",
     "coverImage": "dummy/projects/version_compare.png",
     "description": "This is the Version compare screen where users can compare the latest version of a file or an image to its previous ones and restore the previous version if necessary. The bigger screen is attached."
 }, {

@@ -1,12 +1,11 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const User = require('../../../models/User');
 const WorkItem = require('../../../models/WorkItem');
+const studentData = require('../../../seed/students.json');
+const workItemData = require('../../../seed/items.json');
+const Tags = require('../../../seed/tags.json');
+
 require('dotenv').config();
-
-const JWT_KEY = process.env.JWT_KEY;
-const DB_URL = process.env.DB_URL;
-
 const router = express.Router();
 
 /**
@@ -17,32 +16,19 @@ router.get('/', function (req, res) {
     if (!process.env.DEBUG_MODE) {
         return res.redirect('/');
     }
-
-    const studentData = require('../../../seed/students.json');
-    const workItemData = require('../../../seed/items.json');
-    const User = require('../../../models/User');
-    const Tags = require('../../../seed/tags.json');
     let cnt = 0;
 
-    createTags(Tags.tags, (tags) => {
-        createWorkItems(workItemData, (workItems) => {
-            studentData.forEach((student) => {
-                let rand = Math.floor(Math.random() * (workItems.length));
-                let tagRand = Math.floor(Math.random() * (tags.length));
-
-                workItems[rand].tags = [tags[tagRand]];
-                workItems[rand].save((err) => {
-                    student.portfolio = [workItems[rand]];
-                    new User(student).save((err, data) => {
-                        cnt++;
-                        if (cnt == 29) {
-                            return res.redirect('/');
-                        }
-                    });
-                });
+    createWorkItems(workItemData, (workItems) => {
+        studentData.forEach((student) => {
+            let rand = Math.floor(Math.random() * (workItems.length));
+            student.portfolio = [workItems[rand]];
+            new User(student).save((err, data) => {
+                cnt++;
+                if (cnt == 29) {
+                    return res.redirect('/');
+                }
             });
         });
-
     });
 });
 
@@ -66,19 +52,28 @@ let createTags = (tagsSeperated, cb) => {
     });
 };
 
-let createWorkItems = (Items, cb) => {
-    let callBacksLeft = Items.length;
+let createWorkItems = (items, cb) => {
+    let callBacksLeft = items.length;
     const newItems = [];
-    Items.forEach((itm) => {
-        new WorkItem(itm).save((err, data) => {
-            if (err) {
-                throw err;
+    createTags(Tags.tags, (tags) => {
+        items.forEach((itm) => {
+            const randNum = Math.floor((Math.random() * 4) + 1);
+            const randTag = Math.floor((Math.random() * (tags.length - randNum)));
+            const itemTags = [];
+            for (let x = 0; x < randNum; x++) {
+                itemTags.push(tags[randTag + x]);
             }
-            callBacksLeft--;
-            newItems.push(data);
-            if (callBacksLeft == 0) {
-                return cb(newItems);
-            }
+            itm.tags = itemTags;
+            new WorkItem(itm).save((err, data) => {
+                if (err) {
+                    throw err;
+                }
+                callBacksLeft--;
+                newItems.push(data);
+                if (callBacksLeft == 0) {
+                    return cb(newItems);
+                }
+            });
         });
     });
 };

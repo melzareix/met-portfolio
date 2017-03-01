@@ -10,22 +10,22 @@
 
         <div class="columns is-multiline" style="margin-bottom: 0">
             <card v-for="item in items" :cover="item.cover">
-                <p slot="title">{{item.title}}</p>
+                <h2 slot="title" class="is-1">{{item.title}}</h2>
                 <div slot="desc">
-                    <p class="subtitle">{{ item.desc }}</p>
+                    <p class="item-desc">{{ item.desc }}</p>
 
-                    <p class="work-item-detail" v-show="item.liveDemo">
+                    <p class="work-item-detail" v-if="item.liveDemo">
                         <i class="fa fa-eye" aria-hidden="true"></i>
                         <a class="subtitle work-link" :href="item.liveDemo">VISIT PROJECT</a>
                     </p>
 
-                    <p class="work-item-detail" v-show="item.githubRepo">
+                    <p class="work-item-detail" v-if="item.githubRepo">
                         <i class="fa fa-github" aria-hidden="true"></i>
                         <a class="subtitle work-link" :href="item.githubRepo">GITHUB REPO</a>
                     </p>
                 </div>
 
-                <div class="menu" slot="top-work" v-show="item.isSummary">
+                <div class="menu" slot="top-work" v-if="item.isSummary">
                     <p class="menu-label">
                         Top Work
                     </p>
@@ -78,5 +78,9 @@
     .work-item-detail:not(:last-child) {
         border-bottom: 1px solid #eee;
         padding-bottom: 5px;
+    }
+    
+    .item-desc {
+        margin-bottom: 10px;
     }
 </style>

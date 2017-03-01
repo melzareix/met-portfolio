@@ -9,9 +9,7 @@
             </div>
             <div class="card-content">
                 <div class="content">
-                    <p class="title">
-                        <slot name="title"></slot>
-                    </p>
+                    <slot name="title"></slot>
                     <slot name="desc"></slot>
                     <slot name="top-work"></slot>
                 </div>
@@ -25,7 +23,7 @@
 </template>
 
 <script>
-    export default{
+    export default {
         props: ['cover'],
     }
 </script>
