@@ -1,4 +1,3 @@
-<script src="../app.js"></script>
 <template>
     <div>
         <form class="control has-addons has-addons-centered" method="get" @submit.prevent="searchSubmitted">

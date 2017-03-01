@@ -1,4 +1,3 @@
-<script src="../app.js"></script>
 <template>
     <div class="columns is-multiline">
         <div class="column is-6 ">
@@ -42,7 +41,7 @@
             axios.get(MET_BASE_URI() + 'portfolio/view/' + this.$route.params.id)
                 .then((res) => {
                     this.item = res.data;
-                    this.item.coverImage = '/uploads/' + this.item.coverImage;
+                    this.item.coverImage = '/uploads/' + (this.item.coverImage || 'upload_image.svg');
                 }).catch((err) => {
                     this.$router.push('/404');
                 });

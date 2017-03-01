@@ -1,7 +1,6 @@
 <template>
     <div>
         <div class="is-full" v-show="items.length == 0">
-            <img src="" />
             <h1 class="smiley-face has-text-centered">:(</h1><br>
 
             <h2 class="title is-2 has-text-centered	">We are sorry no Items are available at the moment.</h2>
