@@ -33,8 +33,12 @@ body {
 
 .search-txt {
     font-style: italic;
+    width: 100% !important;
+    min-width: 100% !important;
+}
+
+.awesomplete {
     width: 50%;
-    min-width: 50%;
 }
 
 .menu {
@@ -61,7 +65,20 @@ body {
     margin: auto;
 }
 
-.smiley-face{
+.smiley-face {
     color: #bebebe;
     font-size: 10rem;
+}
+
+.awesomplete>ul:before {
+    display: none;
+}
+
+.awesomplete>ul>li[aria-selected="true"] {
+    background: #008d78 !important;
+}
+
+.awesomplete>ul>li:hover {
+    background: rgba(0, 209, 178, 1.0) !important;
+    color: white !important;
 }

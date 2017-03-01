@@ -101,8 +101,9 @@ router.get('/tags', function (req, res, next) {
 });
 
 /**
- * Get Works With Particular Tag
+ * Get Work Items With a Particular Tag
  */
+
 router.get('/tag/:tag', function (req, res, next) {
     WorkItem.find({})
         .populate({
@@ -112,9 +113,11 @@ router.get('/tag/:tag', function (req, res, next) {
             }
         })
         .exec((err, data) => {
-            return res.json(data.filter((itm) => {
-                return itm.tags.length > 0;
-            }));
+            return res.json({
+                results: data.filter((itm) => {
+                    return itm.tags.length > 0;
+                })
+            });
         });
 
 });

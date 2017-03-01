@@ -27,20 +27,17 @@
             <div class="control">
                 <label class="label">Title*</label>
                 <p class="control">
-                    <input class="input" type="text" name="title" placeholder="I reinvented the wheel .."
-                           v-model="form.title">
+                    <input class="input" type="text" name="title" placeholder="I reinvented the wheel .." v-model="form.title">
                 </p>
 
                 <label class="label">Live Demo</label>
                 <p class="control">
-                    <input class="input" type="text" name="link" placeholder="https://laracasts.com"
-                           v-model="form.link">
+                    <input class="input" type="text" name="link" placeholder="https://laracasts.com" v-model="form.link">
                 </p>
 
                 <label class="label">Repo Link</label>
                 <p class="control">
-                    <input class="input" type="text" name="repo"
-                           placeholder="https://github.com/melzareix/met-portfolio" v-model="form.repo">
+                    <input class="input" type="text" name="repo" placeholder="https://github.com/melzareix/met-portfolio" v-model="form.repo">
                 </p>
 
                 <label class="label">Cover Image</label>
@@ -48,10 +45,15 @@
                     <input type="file" name="cover" accept="image/*" @change="fileChanged">
                 </p>
 
+                <label class="label">Tags</label>
+                <span class="help">Comma seperated</span>
+                <p class="control">
+                    <input class="input" type="text" name="tags" placeholder="Javascript, Python, CSS" v-model="form.tags">
+                </p>
+
                 <label class="label">Description*</label>
                 <p class="control">
-                    <textarea class="textarea" maxlength="300" placeholder="I'm donna and I'm awesome ..." name="bio"
-                              v-model="form.description"></textarea>
+                    <textarea class="textarea" maxlength="300" placeholder="I'm donna and I'm awesome ..." name="bio" v-model="form.description"></textarea>
                     <span class="help">{{ 300 - form.description.length }} Characters left</span>
                 </p>
 
@@ -76,13 +78,14 @@
                     description: '',
                     link: '',
                     repo: '',
-                    cover: ''
+                    cover: '',
+                    tags: ''
                 }),
                 workAdded: false,
                 user: auth.user
             }
         },
-        mounted(){
+        mounted() {
             auth.checkAuth();
             if (!this.user.authenticated) {
                 this.$router.push('/');
@@ -97,6 +100,7 @@
                 data.append('description', this.form.description);
                 data.append('link', this.form.link);
                 data.append('repo', this.form.repo);
+                data.append('tags', this.form.tags);
                 data.append('cover', this.form.cover);
 
                 this.form.errors.clear();

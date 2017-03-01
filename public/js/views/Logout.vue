@@ -4,8 +4,9 @@
 <script>
     import auth from '../helpers/vue-auth';
     import axios from 'axios';
-    export default{
-        mounted(){
+    export default {
+        mounted() {
+            auth.logout();
             auth.checkAuth();
             if (!auth.user.authenticated) {
                 this.$router.push('/login');
@@ -15,7 +16,6 @@
                         'Authorization': auth.getAuthHeader()
                     }
                 }).then((data) => {
-                    auth.logout();
                     auth.checkAuth();
                     this.$router.push('/');
                 }).catch((err) => {

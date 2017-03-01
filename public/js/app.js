@@ -10,6 +10,7 @@ import axios from 'axios';
 
 Vue.use(VueRouter);
 
+window.Vue = Vue;
 window.Event = new Vue();
 window.axios = axios;
 
@@ -18,8 +19,7 @@ new Vue({
     data: {
         name: ''
     },
-    router
-    ,
+    router,
     components: {
         Navbar,
         Home,
@@ -28,4 +28,3 @@ new Vue({
         'add-work': AddWork,
     }
 });
-
