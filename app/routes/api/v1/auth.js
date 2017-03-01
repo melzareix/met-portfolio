@@ -28,7 +28,7 @@ router.use(bodyParser.json());
  */
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, './public/uploads/');
+        cb(null, './public/dist/uploads/');
     },
     filename: function (req, file, cb) {
         const buf = crypto.randomBytes(48);

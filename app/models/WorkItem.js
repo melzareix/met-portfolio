@@ -16,6 +16,10 @@ let workItemSchema = mongoose.Schema({
     description: {
         type: String
     },
+    tags: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'tag'
+    }],
     rating: {
         type: Number,
         default: 0

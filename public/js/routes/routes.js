@@ -5,11 +5,12 @@ import Signup from '../views/Signup.vue';
 import AddWork from '../views/AddWork.vue';
 import NotFound from '../views/NotFound.vue';
 import Logout from '../views/Logout.vue';
+import Search from '../views/Search.vue';
+import Project from '../views/Project.vue';
 
 
 export default new VueRouter({
-    routes: [
-        {
+    routes: [{
             path: '/',
             component: Home
         },
@@ -24,6 +25,14 @@ export default new VueRouter({
         {
             path: '/portfolio/add',
             component: AddWork
+        },
+        {
+            path: '/search/:tag',
+            component: Search
+        },
+        {
+            path: '/project/:id',
+            component: Project
         },
         {
             path: '/logout',

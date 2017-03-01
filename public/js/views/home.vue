@@ -1,17 +1,17 @@
+<script src="../app.js"></script>
 <template>
     <div>
-        <form class="control has-addons has-addons-centered" method="get">
-            <input type="text" class="input search-txt" placeholder="Search by keyword ...">
-            <a class="button is-outlined is-success">Search</a>
+        <form class="control has-addons has-addons-centered" method="get" @submit.prevent="searchSubmitted">
+            <input type="text" class="input search-txt" placeholder="Search by keyword ..." v-model="query" @awesomplete-select="suggestionChanged">
+            <button class="button is-outlined is-success" type="submit">Search</button>
         </form>
-
         <hr>
 
         <summary-cards :items="items"></summary-cards>
 
         <nav class="pagination is-centered">
             <ul class="pagination-list">
-                <li v-for="i in Math.ceil(count/10)">
+                <li v-for="i in Math.ceil(count/8)">
                     <a class="pagination-link is-warning" :class="{ 'is-current': (i === offset) }" @click="changePage">{{
                         i }}</a>
                 </li>
@@ -22,23 +22,33 @@
 
 <script>
     import SummaryCards from './SummaryCards.vue';
+    import Awesomplete from 'awesomplete';
     export default {
         data() {
             return {
                 items: [],
                 count: 0,
-                offset: 1
+                offset: 1,
+                search: undefined,
+                query: '',
             }
         },
         components: {
             SummaryCards
         },
-        mounted(){
+        mounted() {
             this.getSummary();
+            this.getTags();
         },
         methods: {
-            getSummary(){
-                axios.get('http://localhost:3000/api/v1/portfolio/summary/' + this.offset)
+            suggestionChanged(e) {
+                this.query = e.text.value;
+            },
+            searchSubmitted() {
+                this.$router.push('/search/' + this.query);
+            },
+            getSummary() {
+                axios.get(MET_BASE_URI() + 'portfolio/summary/' + this.offset)
                     .then((res) => {
                         this.items = [];
                         const data = res.data;
@@ -47,26 +57,43 @@
                             this.count = data.count;
                             results.forEach((item) => {
                                 const newItem = {
-                                    profilePic: 'uploads/' + item.profilePic,
+                                    cover: 'uploads/' + item.profilePic,
                                     title: item.firstName + ' ' + item.lastName,
                                     desc: item.bio,
+                                    isSummary: true,
                                     works: item.portfolio.map(function (i) {
-                                        return {title: i.title, id: i._id};
+                                        return {
+                                            title: i.title,
+                                            id: i._id
+                                        };
                                     })
                                 };
                                 this.items.push(newItem);
-                                window.scrollTo(0, 0);
-                            })
+                            });
+                            window.scrollTo(0, 0);
                         }
                     })
                     .catch((err) => {
                         // Handle error
                     });
             },
-            changePage(e){
+            getTags() {
+                axios.get(MET_BASE_URI() + 'portfolio/tags').then((res) => {
+                    this.search = new Awesomplete(document.querySelector('.search-txt'), {
+                        list: res.data.results,
+                        minChars: 1
+                    });
+                    this.search.evaluate();
+                }).catch((err) => {
+                    // TODO: Handle Errors
+                });
+            },
+            changePage(e) {
                 this.offset = parseInt(e.target.innerHTML);
                 this.getSummary();
             }
         }
     }
 </script>
+
+<style src="awesomplete/awesomplete.css"></style>

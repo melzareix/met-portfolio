@@ -6,6 +6,7 @@ const Strings = require('../../../utils/strings');
 const path = require('path');
 const WorkItem = require('../../../models/WorkItem');
 const User = require('../../../models/User');
+const Tag = require('../../../models/Tag');
 const crypto = require('crypto');
 
 const router = express.Router();
@@ -77,6 +78,54 @@ router.get('/summary/:offset', function (req, res, next) {
 });
 
 /**
+ * Get List of Tags
+ */
+
+router.get('/tags', function (req, res, next) {
+    Tag.find({}, ['-_id'], (err, data) => {
+        if (err) {
+            return next(err);
+        }
+
+        if (!data) {
+            return next('No Data.');
+        }
+        const result = [];
+        data.forEach((tag) => {
+            result.push(tag.name);
+        });
+        return res.json({
+            results: result
+        });
+    });
+});
+
+/**
+ * Get Work Items With a Particular Tag
+ */
+
+router.get('/tag/:tag', function (req, res, next) {
+    WorkItem.find({})
+        .populate({
+            path: 'tags',
+            select: 'name -_id'
+        })
+        .exec((err, data) => {
+            return res.json({
+                results: data.filter((itm) => {
+                    let hasIt = false;
+                    itm.tags.forEach((tg) => {
+                        if (tg.name === req.params.tag) {
+                            hasIt = true;
+                        }
+                    });
+                    return hasIt;
+                })
+            });
+        });
+
+});
+/**
  * Add new portfolio item
  */
 
@@ -85,6 +134,7 @@ router.post('/add', upload.single('cover'), authHelper.authMiddleware, function 
         description = req.body.description,
         liveDemo = req.body.link,
         githubRepo = req.body.repo,
+        tags = req.body.tags,
         coverImage = req.file;
 
     let errors = [];
@@ -109,35 +159,66 @@ router.post('/add', upload.single('cover'), authHelper.authMiddleware, function 
         errors.push(Strings.BAD_REPO);
     }
 
+    if (!tags) {
+        errors.push('You must include at least one tag.');
+    }
+
     if (errors.length > 0) {
         return next(errors);
     }
 
-    const student = req.user;
-    const portfolioItem = new WorkItem({
-        title,
-        description,
-        coverImage: coverImage ? coverImage.path : undefined,
-        liveDemo,
-        githubRepo
-    });
 
-    portfolioItem.save((err, newItem) => { // Save the created Item
-        if (err) {
-            return next(err);
-        }
-        student.portfolio.push(newItem);
-        student.save((err) => {
+    createTags(tags, (newTags) => {
+        const student = req.user;
+        const portfolioItem = new WorkItem({
+            title,
+            description,
+            coverImage: coverImage ? coverImage.filename : undefined,
+            liveDemo,
+            githubRepo,
+            tags: newTags
+        });
+
+        portfolioItem.save((err, newItem) => { // Save the created Item
             if (err) {
                 return next(err);
             }
+            student.portfolio.push(newItem);
+            student.save((err) => {
+                if (err) {
+                    return next(err);
+                }
 
-            res.json({
-                message: Strings.WORK_ADDED
+                res.json({
+                    message: Strings.WORK_ADDED
+                });
             });
         });
     });
+
+
 });
+
+
+/**
+ * Seperate Tags by Comma
+ */
+let createTags = (tags, cb) => {
+    const tagsSeperated = tags.split(',').map((item) => item.trim());
+    let callBacksLeft = tagsSeperated.length;
+    const newTags = [];
+    tagsSeperated.forEach((tag) => {
+        Tag.findOrCreate({
+            name: tag
+        }, (err, newTag, created) => {
+            callBacksLeft--;
+            newTags.push(newTag);
+            if (callBacksLeft === 0) {
+                cb(newTags);
+            }
+        });
+    });
+};
 
 /*
     Regex for URL validation

@@ -10,16 +10,19 @@ import axios from 'axios';
 
 Vue.use(VueRouter);
 
+window.Vue = Vue;
 window.Event = new Vue();
 window.axios = axios;
+window.MET_BASE_URI = function () {
+    return 'http://localhost:3000/api/v1/';
+};
 
 new Vue({
     el: '#root',
     data: {
         name: ''
     },
-    router
-    ,
+    router,
     components: {
         Navbar,
         Home,
@@ -28,4 +31,3 @@ new Vue({
         'add-work': AddWork,
     }
 });
-
