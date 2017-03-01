@@ -5667,6 +5667,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                             cover: 'uploads/' + item.profilePic,
                             title: item.firstName + ' ' + item.lastName,
                             desc: item.bio,
+                            type: 'profile',
+                            id: item.email.split("@")[0].toLowerCase(),
                             isSummary: true,
                             works: item.portfolio.map(function (i) {
                                 return {
@@ -5969,6 +5971,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     results.forEach(function (item) {
                         var newItem = {
                             cover: '/uploads/' + (item.coverImage || 'upload_image.svg'),
+                            id: item._id,
+                            type: 'project',
                             title: item.title,
                             desc: item.description,
                             liveDemo: item.liveDemo,
@@ -6152,6 +6156,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_Card_vue__ = __webpack_require__(55);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_Card_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_Card_vue__);
+//
+//
 //
 //
 //
@@ -6774,7 +6780,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_c('h2', {
       staticClass: "is-1",
       slot: "title"
-    }, [_vm._v(_vm._s(item.title))]), _vm._v(" "), _c('div', {
+    }, [_c('router-link', {
+      staticClass: "no-link is-1",
+      attrs: {
+        "to": '/' + item.type + '/' + item.id
+      },
+      slot: "title"
+    }, [_vm._v(_vm._s(item.title))])], 1), _vm._v(" "), _c('div', {
       slot: "desc"
     }, [_c('p', {
       staticClass: "item-desc"

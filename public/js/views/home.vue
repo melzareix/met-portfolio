@@ -60,6 +60,8 @@
                                     cover: 'uploads/' + item.profilePic,
                                     title: item.firstName + ' ' + item.lastName,
                                     desc: item.bio,
+                                    type: 'profile',
+                                    id: item.email.split("@")[0].toLowerCase(),
                                     isSummary: true,
                                     works: item.portfolio.map(function (i) {
                                         return {

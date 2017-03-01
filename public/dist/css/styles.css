@@ -86,3 +86,7 @@ body {
 .tag {
     margin: 2px;
 }
+
+.no-link {
+    color: #0a0a0a;
+}
