@@ -11,7 +11,20 @@
         <div class="columns is-multiline" style="margin-bottom: 0">
             <card v-for="item in items" :cover="item.cover">
                 <p slot="title">{{item.title}}</p>
-                <p slot="desc" class="subtitle"> {{ item.desc }} </p>
+                <div slot="desc">
+                    <p class="subtitle">{{ item.desc }}</p>
+
+                    <p class="work-item-detail" v-show="item.liveDemo">
+                        <i class="fa fa-eye" aria-hidden="true"></i>
+                        <a class="subtitle work-link" :href="item.liveDemo">VISIT PROJECT</a>
+                    </p>
+
+                    <p class="work-item-detail" v-show="item.githubRepo">
+                        <i class="fa fa-github" aria-hidden="true"></i>
+                        <a class="subtitle work-link" :href="item.githubRepo">GITHUB REPO</a>
+                    </p>
+                </div>
+
                 <div class="menu" slot="top-work" v-show="item.isSummary">
                     <p class="menu-label">
                         Top Work
@@ -21,6 +34,14 @@
                             <router-link :to="'/project/'  + work.id">{{ work.title }}</router-link>
                         </li>
                     </ul>
+                </div>
+
+                <div slot="footer" v-show="item.isSearch">
+                    <span class="card-footer-item" style="border:none"></span>
+                    <div class="tags has-text-centered">
+                        <a v-for="tag in item.tags" class="tag is-dark" :href="'/search/' + tag.name">{{tag.name}}</a>
+                    </div>
+
                 </div>
             </card>
         </div>
@@ -36,3 +57,26 @@
         }
     }
 </script>
+
+<style>
+    .tag:hover {
+        background: #0a0a0a;
+    }
+    
+    .fa-github {
+        font-size: 1.5rem;
+    }
+    
+    .fa-eye {
+        font-size: 1.5rem;
+    }
+    
+    .work-link {
+        font-size: 1rem;
+    }
+    
+    .work-item-detail:not(:last-child) {
+        border-bottom: 1px solid #eee;
+        padding-bottom: 5px;
+    }
+</style>

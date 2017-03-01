@@ -14,17 +14,17 @@
     export default {
         data() {
             return {
-                items: []
+                items: [],
             }
         },
         components: {
             SummaryCards
         },
         mounted() {
-            this.getSummary();
+            this.getTags();
         },
         methods: {
-            getSummary() {
+            getTags() {
                 axios.get('http://localhost:3000/api/v1/portfolio/tag/' + this.$route.params.tag)
                     .then((res) => {
                         this.items = [];
@@ -33,9 +33,13 @@
                             const results = res.data.results;
                             results.forEach((item) => {
                                 const newItem = {
-                                    cover: 'uploads/' + (item.cover || 'default-pic.png'),
+                                    cover: '/uploads/' + (item.coverImage || 'upload_image.svg'),
                                     title: item.title,
-                                    desc: item.description
+                                    desc: item.description,
+                                    liveDemo: item.liveDemo,
+                                    githubRepo: item.githubRepo,
+                                    tags: item.tags,
+                                    isSearch: true
                                 };
                                 this.items.push(newItem);
                             });

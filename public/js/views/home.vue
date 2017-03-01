@@ -1,11 +1,9 @@
 <script src="../app.js"></script>
 <template>
     <div>
-        <form class="control has-addons has-addons-centered" method="get">
+        <form class="control has-addons has-addons-centered" method="get" @submit.prevent="searchSubmitted">
             <input type="text" class="input search-txt" placeholder="Search by keyword ..." v-model="query" @awesomplete-select="suggestionChanged">
-            <router-link :to="'/search/' + query" class="button is-outlined is-success">
-                Search
-            </router-link>
+            <button class="button is-outlined is-success" type="submit">Search</button>
         </form>
         <hr>
 
@@ -45,6 +43,9 @@
         methods: {
             suggestionChanged(e) {
                 this.query = e.text.value;
+            },
+            searchSubmitted() {
+                this.$router.push('/search/' + this.query);
             },
             getSummary() {
                 axios.get('http://localhost:3000/api/v1/portfolio/summary/' + this.offset)

@@ -108,14 +108,18 @@ router.get('/tag/:tag', function (req, res, next) {
     WorkItem.find({})
         .populate({
             path: 'tags',
-            match: {
-                name: req.params.tag
-            }
+            select: 'name -_id'
         })
         .exec((err, data) => {
             return res.json({
                 results: data.filter((itm) => {
-                    return itm.tags.length > 0;
+                    let hasIt = false;
+                    itm.tags.forEach((tg) => {
+                        if (tg.name === req.params.tag) {
+                            hasIt = true;
+                        }
+                    });
+                    return hasIt;
                 })
             });
         });
@@ -169,7 +173,7 @@ router.post('/add', upload.single('cover'), authHelper.authMiddleware, function 
         const portfolioItem = new WorkItem({
             title,
             description,
-            coverImage: coverImage ? coverImage.path : undefined,
+            coverImage: coverImage ? coverImage.filename : undefined,
             liveDemo,
             githubRepo,
             tags: newTags
@@ -200,7 +204,7 @@ router.post('/add', upload.single('cover'), authHelper.authMiddleware, function 
  * Seperate Tags by Comma
  */
 let createTags = (tags, cb) => {
-    const tagsSeperated = tags.split(',');
+    const tagsSeperated = tags.split(',').map((item) => item.trim());
     let callBacksLeft = tagsSeperated.length;
     const newTags = [];
     tagsSeperated.forEach((tag) => {
