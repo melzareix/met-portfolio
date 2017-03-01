@@ -25,7 +25,7 @@
         },
         methods: {
             getTags() {
-                axios.get('http://localhost:3000/api/v1/portfolio/tag/' + this.$route.params.tag)
+                axios.get(MET_BASE_URI() + 'portfolio/tag/' + this.$route.params.tag)
                     .then((res) => {
                         this.items = [];
                         console.log(res);

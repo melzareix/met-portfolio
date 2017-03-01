@@ -6,6 +6,7 @@ import AddWork from '../views/AddWork.vue';
 import NotFound from '../views/NotFound.vue';
 import Logout from '../views/Logout.vue';
 import Search from '../views/Search.vue';
+import Project from '../views/Project.vue';
 
 
 export default new VueRouter({
@@ -28,6 +29,10 @@ export default new VueRouter({
         {
             path: '/search/:tag',
             component: Search
+        },
+        {
+            path: '/project/:id',
+            component: Project
         },
         {
             path: '/logout',

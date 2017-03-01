@@ -105,7 +105,7 @@
 
                 this.form.errors.clear();
 
-                axios.post('http://localhost:3000/api/v1/portfolio/add', data, {
+                axios.post(MET_BASE_URI() + 'portfolio/add', data, {
                     headers: {
                         'Authorization': auth.getAuthHeader()
                     }

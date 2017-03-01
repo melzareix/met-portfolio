@@ -48,7 +48,7 @@
                 this.$router.push('/search/' + this.query);
             },
             getSummary() {
-                axios.get('http://localhost:3000/api/v1/portfolio/summary/' + this.offset)
+                axios.get(MET_BASE_URI() + 'portfolio/summary/' + this.offset)
                     .then((res) => {
                         this.items = [];
                         const data = res.data;
@@ -78,7 +78,7 @@
                     });
             },
             getTags() {
-                axios.get('http://localhost:3000/api/v1/portfolio/tags').then((res) => {
+                axios.get(MET_BASE_URI() + 'portfolio/tags').then((res) => {
                     this.search = new Awesomplete(document.querySelector('.search-txt'), {
                         list: res.data.results,
                         minChars: 1
