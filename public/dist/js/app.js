@@ -5667,6 +5667,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                             cover: 'uploads/' + item.profilePic,
                             title: item.firstName + ' ' + item.lastName,
                             desc: item.bio,
+                            type: 'profile',
+                            id: item.email.split("@")[0].toLowerCase(),
                             isSummary: true,
                             works: item.portfolio.map(function (i) {
                                 return {
@@ -5900,15 +5902,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = {
     data: function data() {
         return {
-            item: undefined
+            item: ''
         };
     },
     mounted: function mounted() {
-        // axios.get('http://localhost')
+        var _this = this;
+
+        axios.get(MET_BASE_URI() + 'portfolio/view/' + this.$route.params.id).then(function (res) {
+            _this.item = res.data;
+            _this.item.coverImage = '/uploads/' + _this.item.coverImage;
+        }).catch(function (err) {
+            _this.$router.push('/404');
+        });
     }
 };
 
@@ -5961,6 +5971,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     results.forEach(function (item) {
                         var newItem = {
                             cover: '/uploads/' + (item.coverImage || 'upload_image.svg'),
+                            id: item._id,
+                            type: 'project',
                             title: item.title,
                             desc: item.description,
                             liveDemo: item.liveDemo,
@@ -6144,6 +6156,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_Card_vue__ = __webpack_require__(55);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_Card_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_Card_vue__);
+//
+//
 //
 //
 //
@@ -6766,7 +6780,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_c('h2', {
       staticClass: "is-1",
       slot: "title"
-    }, [_vm._v(_vm._s(item.title))]), _vm._v(" "), _c('div', {
+    }, [_c('router-link', {
+      staticClass: "no-link is-1",
+      attrs: {
+        "to": '/' + item.type + '/' + item.id
+      },
+      slot: "title"
+    }, [_vm._v(_vm._s(item.title))])], 1), _vm._v(" "), _c('div', {
       slot: "desc"
     }, [_c('p', {
       staticClass: "item-desc"
@@ -6879,22 +6899,20 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _vm._m(0)
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "columns is-multiline"
   }, [_c('div', {
     staticClass: "column is-6 "
   }, [_c('img', {
     attrs: {
-      "src": "/uploads/dummy/projects/z.png",
+      "src": _vm.item.coverImage,
       "alt": "Cover"
     }
   }), _vm._v(" "), _c('br')]), _vm._v(" "), _c('div', {
     staticClass: "column is-6 content"
-  }, [_c('h1', [_vm._v("Bulma")]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('p', {
+  }, [_c('h1', [_vm._v(_vm._s(_vm.item.title))]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('p', {
     staticClass: "subtitle"
-  }, [_vm._v("Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur maxime distinctio officia cumque, dolorem\n            eum, quam nihil quod magnam eligendi numquam deleniti odit exercitationem minus amet veritatis. Nisi, eius!\n            Ipsum?\n        ")]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', [_c('p', [_c('i', {
+  }, [_vm._v(_vm._s(_vm.item.description))]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', [_c('p', [_c('i', {
     staticClass: "fa fa-eye",
     attrs: {
       "aria-hidden": "true"
@@ -6902,7 +6920,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }), _vm._v(" "), _c('a', {
     staticClass: "subtitle work-link",
     attrs: {
-      "href": "#"
+      "href": _vm.item.liveDemo
     }
   }, [_vm._v("VISIT PROJECT")])]), _vm._v(" "), _c('p', [_c('i', {
     staticClass: "fa fa-github",
@@ -6912,10 +6930,19 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }), _vm._v(" "), _c('a', {
     staticClass: "subtitle work-link",
     attrs: {
-      "href": "#"
+      "href": _vm.item.githubRepo
     }
-  }, [_vm._v("GITHUB REPO")])])])])])
-}]}
+  }, [_vm._v("GITHUB REPO")])]), _vm._v(" "), _c('div', {
+    staticClass: "tags"
+  }, _vm._l((_vm.item.tags), function(tag) {
+    return _c('router-link', {
+      staticClass: "tag is-dark",
+      attrs: {
+        "to": '/search/' + tag.name
+      }
+    }, [_vm._v(_vm._s(tag.name))])
+  }))])])])
+},staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()

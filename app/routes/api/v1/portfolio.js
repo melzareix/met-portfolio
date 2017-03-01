@@ -125,6 +125,24 @@ router.get('/tag/:tag', function (req, res, next) {
         });
 
 });
+
+/**
+ * Get Work Item Details
+ */
+router.get('/view/:id', function (req, res, next) {
+    WorkItem.findOne({
+        _id: req.params.id
+    }).populate('tags').exec((err, result) => {
+        if (err) {
+            return next(err);
+        }
+        if (!result) {
+            return next('Project Not Found.');
+        }
+        return res.json(result);
+    });
+});
+
 /**
  * Add new portfolio item
  */

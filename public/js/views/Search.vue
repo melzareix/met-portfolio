@@ -34,6 +34,8 @@
                             results.forEach((item) => {
                                 const newItem = {
                                     cover: '/uploads/' + (item.coverImage || 'upload_image.svg'),
+                                    id: item._id,
+                                    type: 'project',
                                     title: item.title,
                                     desc: item.description,
                                     liveDemo: item.liveDemo,

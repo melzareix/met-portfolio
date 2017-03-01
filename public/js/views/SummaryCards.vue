@@ -10,7 +10,9 @@
 
         <div class="columns is-multiline" style="margin-bottom: 0">
             <card v-for="item in items" :cover="item.cover">
-                <h2 slot="title" class="is-1">{{item.title}}</h2>
+                <h2 slot="title" class="is-1">
+                    <router-link :to="'/' + item.type +'/' + item.id" class="no-link is-1" slot="title">{{ item.title }}</router-link>
+                </h2>
                 <div slot="desc">
                     <p class="item-desc">{{ item.desc }}</p>
 
