@@ -7,6 +7,7 @@ import NotFound from '../views/NotFound.vue';
 import Logout from '../views/Logout.vue';
 import Search from '../views/Search.vue';
 import Project from '../views/Project.vue';
+import Profile from '../views/Profile.vue';
 
 
 export default new VueRouter({
@@ -33,6 +34,10 @@ export default new VueRouter({
         {
             path: '/project/:id',
             component: Project
+        },
+        {
+            path: '/profile/:id',
+            component: Profile
         },
         {
             path: '/logout',

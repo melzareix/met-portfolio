@@ -1,4 +1,3 @@
-<script src="../app.js"></script>
 <template>
     <div class="columns is-multiline">
         <div class="column is-6 ">
@@ -12,12 +11,12 @@
 
             <hr>
             <div>
-                <p>
+                <p v-if="item.liveDemo">
                     <i class="fa fa-eye" aria-hidden="true"></i>
                     <a class="subtitle work-link" :href="item.liveDemo">VISIT PROJECT</a>
                 </p>
 
-                <p>
+                <p v-if="item.githubRepo">
                     <i class="fa fa-github" aria-hidden="true"></i>
                     <a class="subtitle work-link" :href="item.githubRepo">GITHUB REPO</a>
                 </p>
@@ -42,7 +41,7 @@
             axios.get(MET_BASE_URI() + 'portfolio/view/' + this.$route.params.id)
                 .then((res) => {
                     this.item = res.data;
-                    this.item.coverImage = '/uploads/' + this.item.coverImage;
+                    this.item.coverImage = '/uploads/' + (this.item.coverImage || 'upload_image.svg');
                 }).catch((err) => {
                     this.$router.push('/404');
                 });

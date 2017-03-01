@@ -144,6 +144,30 @@ router.get('/view/:id', function (req, res, next) {
 });
 
 /**
+ * Get User Portfolio
+ */
+router.get('/profile/:displayname', function (req, res, next) {
+    User.findOne({
+        email: req.params.displayname + '@student.guc.edu.eg'
+    }, ['-_id', '-password', '-email', '-passwordChangeDate', '-passwordResetTokenDate']).populate({
+        path: 'portfolio',
+        populate: {
+            path: 'tags'
+        }
+    }).exec((err, data) => {
+        if (err) {
+            return next(err);
+        }
+
+        if (!data || data.portfolio.length == 0) {
+            return next('User Not found.');
+        }
+
+        return res.json(data);
+    });
+});
+
+/**
  * Add new portfolio item
  */
 

@@ -1,4 +1,3 @@
-<script src="../app.js"></script>
 <template>
     <div>
         <h2 class="title is-2">Search results for: <strong><i>{{ $route.params.tag}}</i></strong></h2>
