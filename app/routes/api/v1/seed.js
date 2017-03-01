@@ -20,6 +20,7 @@ router.get('/', function (req, res) {
 
     createWorkItems(workItemData, (workItems) => {
         studentData.forEach((student) => {
+            student.email = student.email.toLowerCase();
             let rand = Math.floor(Math.random() * (workItems.length));
             student.portfolio = [workItems[rand]];
             new User(student).save((err, data) => {

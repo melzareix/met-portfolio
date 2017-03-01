@@ -12,12 +12,12 @@
 
             <hr>
             <div>
-                <p>
+                <p v-if="item.liveDemo">
                     <i class="fa fa-eye" aria-hidden="true"></i>
                     <a class="subtitle work-link" :href="item.liveDemo">VISIT PROJECT</a>
                 </p>
 
-                <p>
+                <p v-if="item.githubRepo">
                     <i class="fa fa-github" aria-hidden="true"></i>
                     <a class="subtitle work-link" :href="item.githubRepo">GITHUB REPO</a>
                 </p>

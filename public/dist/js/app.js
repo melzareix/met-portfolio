@@ -6912,7 +6912,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "column is-6 content"
   }, [_c('h1', [_vm._v(_vm._s(_vm.item.title))]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('p', {
     staticClass: "subtitle"
-  }, [_vm._v(_vm._s(_vm.item.description))]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', [_c('p', [_c('i', {
+  }, [_vm._v(_vm._s(_vm.item.description))]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', [(_vm.item.liveDemo) ? _c('p', [_c('i', {
     staticClass: "fa fa-eye",
     attrs: {
       "aria-hidden": "true"
@@ -6922,7 +6922,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "href": _vm.item.liveDemo
     }
-  }, [_vm._v("VISIT PROJECT")])]), _vm._v(" "), _c('p', [_c('i', {
+  }, [_vm._v("VISIT PROJECT")])]) : _vm._e(), _vm._v(" "), (_vm.item.githubRepo) ? _c('p', [_c('i', {
     staticClass: "fa fa-github",
     attrs: {
       "aria-hidden": "true"
@@ -6932,7 +6932,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "href": _vm.item.githubRepo
     }
-  }, [_vm._v("GITHUB REPO")])]), _vm._v(" "), _c('div', {
+  }, [_vm._v("GITHUB REPO")])]) : _vm._e(), _vm._v(" "), _c('div', {
     staticClass: "tags"
   }, _vm._l((_vm.item.tags), function(tag) {
     return _c('router-link', {

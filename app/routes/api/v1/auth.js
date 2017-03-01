@@ -98,6 +98,9 @@ router.post('/signup', upload.single('profilePic'), function (req, res, next) {
         return next(errors);
     }
 
+    // Save Email in Lower Case
+    email = email.toLowerCase();
+
     // Information is valid
     let user = new User({
         firstName,
@@ -131,6 +134,8 @@ router.post('/login', function (req, res, next) {
 
     if (!email || !password)
         return next(Strings.MISSING_CREDIENTIALS);
+
+    email = email.toLowerCase();
 
     User.findOne({
         email
