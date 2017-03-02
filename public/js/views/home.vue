@@ -1,7 +1,8 @@
 <template>
     <div>
         <form class="control has-addons has-addons-centered" method="get" @submit.prevent="searchSubmitted">
-            <input type="text" class="input search-txt" placeholder="Search by keyword ..." v-model="query" @awesomplete-select="suggestionChanged">
+            <input type="text" class="input search-txt" placeholder="Search by keyword ..." v-model="query"
+                   @awesomplete-select="suggestionChanged">
             <button class="button is-outlined is-success" type="submit">Search</button>
         </form>
         <hr>
@@ -97,4 +98,92 @@
     }
 </script>
 
-<style src="awesomplete/awesomplete.css"></style>
+<style>
+    [hidden] {
+        display: none;
+    }
+
+    .visually-hidden {
+        position: absolute;
+        clip: rect(0, 0, 0, 0);
+    }
+
+    div.awesomplete {
+        display: inline-block;
+        position: relative;
+    }
+
+    div.awesomplete > input {
+        display: block;
+    }
+
+    div.awesomplete > ul {
+        position: absolute;
+        left: 0;
+        z-index: 1;
+        min-width: 100%;
+        box-sizing: border-box;
+        list-style: none;
+        padding: 0;
+        border-radius: .3em;
+        margin: .2em 0 0;
+        background: hsla(0, 0%, 100%, .9);
+        background: linear-gradient(to bottom right, white, hsla(0, 0%, 100%, .8));
+        border: 1px solid rgba(0, 0, 0, .3);
+        box-shadow: .05em .2em .6em rgba(0, 0, 0, .2);
+        text-shadow: none;
+    }
+
+    div.awesomplete > ul[hidden],
+    div.awesomplete > ul:empty {
+        display: none;
+    }
+
+    @supports (transform: scale(0)) {
+        div.awesomplete > ul {
+            transition: .3s cubic-bezier(.4, .2, .5, 1.4);
+            transform-origin: 1.43em -.43em;
+        }
+
+        div.awesomplete > ul[hidden],
+        div.awesomplete > ul:empty {
+            opacity: 0;
+            transform: scale(0);
+            display: block;
+            transition-timing-function: ease;
+        }
+    }
+
+    div.awesomplete > ul > li {
+        position: relative;
+        padding: .2em .5em;
+        cursor: pointer;
+    }
+
+    div.awesomplete mark {
+        background: hsl(65, 100%, 50%);
+    }
+
+    div.awesomplete li:hover mark {
+        background: hsl(68, 100%, 41%);
+    }
+
+    div.awesomplete li[aria-selected="true"] mark {
+        background: hsl(86, 100%, 21%);
+        color: inherit;
+    }
+
+    .awesomplete > ul:before {
+        display: none;
+    }
+
+    .awesomplete > ul > li[aria-selected="true"] {
+        background: #00f3cf;
+        color: white;
+    }
+
+    .awesomplete > ul > li:hover {
+        background: rgba(0, 209, 178, 1.0);
+        color: white;
+    }
+</style>

@@ -42,3 +42,5 @@ jspm_packages
 .idea
 
 uploads
+
+.eslintrc.js
