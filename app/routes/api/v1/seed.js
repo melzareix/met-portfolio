@@ -27,7 +27,7 @@ router.get('/', function (req, res) {
             student.portfolio = [workItems[rand]];
             new User(student).save((err, data) => {
                 cnt++;
-                if (cnt == 29) {
+                if (cnt === 29) {
                     return res.redirect('/');
                 }
             });
@@ -57,8 +57,8 @@ let createTags = (tagsSeperated, cb) => {
 
 
 /*
-* Generate Work Items from JSON
-*/
+ * Generate Work Items from JSON
+ */
 
 let createWorkItems = (items, cb) => {
     let callBacksLeft = items.length;
@@ -78,7 +78,7 @@ let createWorkItems = (items, cb) => {
                 }
                 callBacksLeft--;
                 newItems.push(data);
-                if (callBacksLeft == 0) {
+                if (callBacksLeft === 0) {
                     return cb(newItems);
                 }
             });
