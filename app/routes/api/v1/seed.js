@@ -1,15 +1,17 @@
 const express = require('express');
 const User = require('../../../models/User');
+const Tag = require('../../../models/Tag');
 const WorkItem = require('../../../models/WorkItem');
 const studentData = require('../../../seed/students.json');
 const workItemData = require('../../../seed/items.json');
-const Tags = require('../../../seed/tags.json');
+const tagsData = require('../../../seed/tags.json');
 
 require('dotenv').config();
 const router = express.Router();
 
 /**
- * DEV MODE DATABASE SEED
+ * Seed database with data
+ * DEBUG MODE ONLY
  */
 
 router.get('/', function (req, res) {
@@ -34,10 +36,10 @@ router.get('/', function (req, res) {
 });
 
 /**
- * Seperate Tags by Comma
+ * Generate Tags from JSON
  */
+
 let createTags = (tagsSeperated, cb) => {
-    const Tag = require('../../../models/Tag');
     let callBacksLeft = tagsSeperated.length;
     const newTags = [];
     tagsSeperated.forEach((tag) => {
@@ -53,10 +55,15 @@ let createTags = (tagsSeperated, cb) => {
     });
 };
 
+
+/*
+* Generate Work Items from JSON
+*/
+
 let createWorkItems = (items, cb) => {
     let callBacksLeft = items.length;
     const newItems = [];
-    createTags(Tags.tags, (tags) => {
+    createTags(tagsData.tags, (tags) => {
         items.forEach((itm) => {
             const randNum = Math.floor((Math.random() * 4) + 1);
             const randTag = Math.floor((Math.random() * (tags.length - randNum)));
