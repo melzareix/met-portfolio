@@ -12,6 +12,11 @@ const crypto = require('crypto');
 const router = express.Router();
 require('dotenv').config();
 
+
+/*
+ * Body Parsing Config
+ * */
+
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({
     extended: false
@@ -21,6 +26,7 @@ router.use(bodyParser.urlencoded({
 /**
  * Multer Configuration
  */
+
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, './public/dist/uploads/');
@@ -31,15 +37,19 @@ const storage = multer.diskStorage({
     }
 });
 
-
 const upload = multer({
     storage: storage
 });
 
 
+/*
+ *  Unauthenticated Routes
+ * */
+
 /**
  * Get Portfolio Summary
  */
+
 router.get('/summary/:offset', function (req, res, next) {
     const offset = req.params.offset;
 
@@ -129,6 +139,7 @@ router.get('/tag/:tag', function (req, res, next) {
 /**
  * Get Work Item Details
  */
+
 router.get('/view/:id', function (req, res, next) {
     WorkItem.findOne({
         _id: req.params.id
@@ -146,6 +157,7 @@ router.get('/view/:id', function (req, res, next) {
 /**
  * Get User Portfolio
  */
+
 router.get('/profile/:displayname', function (req, res, next) {
     User.findOne({
         email: req.params.displayname + '@student.guc.edu.eg'
@@ -166,6 +178,11 @@ router.get('/profile/:displayname', function (req, res, next) {
         return res.json(data);
     });
 });
+
+
+/*
+ * Authenticated Student Routes
+ * */
 
 /**
  * Add new portfolio item
@@ -241,10 +258,31 @@ router.post('/add', upload.single('cover'), authHelper.authMiddleware, function 
 
 });
 
+/**
+ * Error Handling Middleware
+ */
+
+router.use(function (err, req, res, next) {
+    return res.status(400).json({
+        message: handleError(err)
+    });
+});
+
+const handleError = err => {
+    if (err instanceof Array) {
+        return err;
+    }
+    return [err.toString()];
+};
+
+/*
+* Helper Functions
+* */
 
 /**
- * Seperate Tags by Comma
+ * Returns List of Tags
  */
+
 let createTags = (tags, cb) => {
     const tagsSeperated = tags.split(',').map((item) => item.trim());
     let callBacksLeft = tagsSeperated.length;
@@ -263,29 +301,13 @@ let createTags = (tags, cb) => {
 };
 
 /*
-    Regex for URL validation
-    https://gist.github.com/dperini/729294
-*/
+ Regex for URL validation
+ https://gist.github.com/dperini/729294
+ */
 
 let validateUrl = function (url) {
     var regex = /^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,}))\.?)(?::\d{2,5})?(?:[/?#]\S*)?$/i;
     return regex.test(url);
-};
-
-/**
- * Error Handling Middleware
- */
-router.use(function (err, req, res, next) {
-    return res.status(400).json({
-        message: handleError(err)
-    });
-});
-
-const handleError = err => {
-    if (err instanceof Array) {
-        return err;
-    }
-    return [err.toString()];
 };
 
 module.exports = router;
