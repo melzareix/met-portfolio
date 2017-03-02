@@ -26,6 +26,7 @@ router.use(bodyParser.json());
 /**
  * Multer Configuration
  */
+
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, './public/dist/uploads/');
@@ -35,7 +36,6 @@ const storage = multer.diskStorage({
         cb(null, Date.now() + buf.toString('hex') + path.extname(file.originalname));
     }
 });
-
 
 const upload = multer({
     storage: storage
@@ -123,7 +123,6 @@ router.post('/signup', upload.single('profilePic'), function (req, res, next) {
     });
 });
 
-
 /**
  * User Login Route.
  */
@@ -170,7 +169,6 @@ router.post('/login', function (req, res, next) {
 
     });
 });
-
 
 /**
  * User Forgot Password Route.
@@ -249,7 +247,6 @@ router.post('/reset/', function (req, res, next) {
         return next(Strings.PASSWORD_MISMATCH);
     }
 
-
     // Check that password satisfies password conditions
     // The password must be at least 8 characters and includes at least a digit
     //  and a special character.
@@ -323,7 +320,6 @@ router.post('/logout', authHelper.authMiddleware, function (req, res, next) {
     });
 });
 
-
 /**
  * Error Handling Middlewares.
  */
@@ -340,11 +336,14 @@ router.use(function (req, res) {
     });
 });
 
+/*
+*  Helper Functions
+* */
 
 /**
  * Returns a human readable error message.
- * @param {Error} err - The error recieved.
- * @returns {String}
+ * @param {Error} err - The error received.
+ * @returns [String]
  */
 
 const handleError = err => {
