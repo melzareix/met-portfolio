@@ -48,7 +48,8 @@ describe('Auth Signup API', function () {
             gucId: '28-14613',
             email: 'cersi.lannister@student.guc.edu.eg',
             password: 'burnth#town1',
-            confirmPassword: 'burnth#town1'
+            confirmPassword: 'burnth#town1',
+            bio: 'Bad Person'
         };
 
         req
@@ -83,14 +84,15 @@ describe('Auth Signup API', function () {
             gucId: '28-14613',
             email: 'cersi.lannister@student.guc.edu.eg',
             password: 'burnth#town1',
-            confirmPassword: 'burnth#town1'
+            confirmPassword: 'burnth#town1',
+            bio: 'Bad Person'
         };
 
         req
             .send(kingslayer)
             .expect('Content-Type', /json/)
             .expect(400, {
-                message: Strings.USER_ALREADY_EXISTS
+                message: [Strings.USER_ALREADY_EXISTS]
             }, done);
     });
 
@@ -101,7 +103,8 @@ describe('Auth Signup API', function () {
             gucId: '28-14613',
             email: 'balabizo@gmail.com',
             password: 'burnth#town1',
-            confirmPassword: 'burnth#town1'
+            confirmPassword: 'burnth#town1',
+            bio: 'Bad Person'
         };
 
         req
@@ -109,7 +112,7 @@ describe('Auth Signup API', function () {
             .expect('Content-Type', /json/)
             .expect(400, {
 
-                message: Strings.NON_GUC_MAIL
+                message: [Strings.NON_GUC_MAIL]
             }, done);
     });
     it('should not allow registration with invalid GUC ID.', function (done) {
@@ -119,14 +122,15 @@ describe('Auth Signup API', function () {
             gucId: '28-12',
             email: 'cersi.lannister@student.guc.edu.eg',
             password: 'burnth#town1',
-            confirmPassword: 'burnth#town1'
+            confirmPassword: 'burnth#town1',
+            bio: 'Bad Person'
         };
 
         req
             .send(kingslayer)
             .expect('Content-Type', /json/)
             .expect(400, {
-                message: Strings.INVALID_GUC_ID
+                message: [Strings.INVALID_GUC_ID]
             }, done);
     });
 
@@ -137,7 +141,8 @@ describe('Auth Signup API', function () {
             gucId: '28-14613',
             email: 'cersi.lannister@student.guc.edu.eg',
             password: 'easyOne',
-            confirmPassword: 'easyOne'
+            confirmPassword: 'easyOne',
+            bio: 'Bad Person'
         };
 
         req
@@ -145,7 +150,7 @@ describe('Auth Signup API', function () {
             .expect('Content-Type', /json/)
             .expect(400, {
 
-                message: Strings.INVALID_PASSWORD
+                message: [Strings.INVALID_PASSWORD]
             }, done);
     });
 
@@ -156,7 +161,8 @@ describe('Auth Signup API', function () {
             gucId: '28-14613',
             email: 'cersi.lannister@student.guc.edu.eg',
             password: 'hello$world1',
-            confirmPassword: 'hell$oworld2'
+            confirmPassword: 'hell$oworld2',
+            bio: 'Bad Person'
         };
 
         req
@@ -164,7 +170,7 @@ describe('Auth Signup API', function () {
             .expect('Content-Type', /json/)
             .expect(400, {
 
-                message: Strings.PASSWORD_MISMATCH
+                message: [Strings.PASSWORD_MISMATCH]
             }, done);
     });
 
@@ -175,7 +181,8 @@ describe('Auth Signup API', function () {
             gucId: '28-1234',
             email: 'john.snow@student.guc.edu.eg',
             password: 'The$tarks0',
-            confirmPassword: 'The$tarks0'
+            confirmPassword: 'The$tarks0',
+            bio: 'Good Person'
         };
 
         req
@@ -238,7 +245,7 @@ describe('Auth Login API', function () {
             .expect('Content-Type', /json/)
             .expect(400, {
 
-                message: Strings.INVALID_CREDIENTIALS
+                message: [Strings.INVALID_CREDIENTIALS]
             }, done);
     });
 
@@ -251,7 +258,7 @@ describe('Auth Login API', function () {
             .expect('Content-Type', /json/)
             .expect(400, {
 
-                message: Strings.INVALID_CREDIENTIALS
+                message: [Strings.INVALID_CREDIENTIALS]
             }, done);
     });
 
@@ -264,7 +271,7 @@ describe('Auth Login API', function () {
             .expect('Content-Type', /json/)
             .expect(400, {
 
-                message: Strings.INVALID_CREDIENTIALS
+                message: [Strings.INVALID_CREDIENTIALS]
             }, done);
     });
 
@@ -276,7 +283,7 @@ describe('Auth Login API', function () {
             .expect('Content-Type', /json/)
             .expect(400, {
 
-                message: Strings.MISSING_CREDIENTIALS
+                message: [Strings.MISSING_CREDIENTIALS]
             }, done);
     });
 
@@ -288,7 +295,7 @@ describe('Auth Login API', function () {
             .expect('Content-Type', /json/)
             .expect(400, {
 
-                message: Strings.MISSING_CREDIENTIALS
+                message: [Strings.MISSING_CREDIENTIALS]
             }, done);
     });
 });
@@ -313,7 +320,6 @@ describe('Auth Logout API', function () {
             .expect('Content-Type', /json/)
             .expect(200)
             .end(function (err, res) {
-
                 if (err) {
                     return done(err);
                 }

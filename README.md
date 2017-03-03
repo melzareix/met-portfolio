@@ -10,10 +10,6 @@ MET Profolio MiniProject
 
 ---
 
-## Features
-
----
-
 ## Setup
 1. Clone this repo to your desktop `git clone https://github.com/melzareix/met-portfolio.git`
 2. Run `npm install` to install all the dependencies.
@@ -39,6 +35,9 @@ API **V1** Documentation
 
 ---
 
+## TODO
+
+---
 ## License
 >You can check out the full license [here](https://github.com/melzareix/met-portfolio/blob/master/LICENSE)
 
