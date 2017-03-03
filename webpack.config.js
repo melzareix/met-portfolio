@@ -81,8 +81,7 @@ if (Mix.options.extractVueStyles) {
 
 
 module.exports.module = {
-    rules: [
-        {
+    rules: [{
             test: /\.vue$/,
             loader: 'vue-loader',
             options: {
@@ -104,7 +103,7 @@ module.exports.module = {
                         use: 'css-loader',
                         fallback: 'vue-style-loader'
                     })
-                }: {
+                } : {
                     js: 'babel-loader' + Mix.babelConfig(),
                     scss: 'vue-style-loader!css-loader!sass-loader',
                     sass: 'vue-style-loader!css-loader!sass-loader?indentedSyntax',
@@ -218,7 +217,9 @@ module.exports.stats = {
 
 process.noDeprecation = true;
 
-module.exports.performance = { hints: false };
+module.exports.performance = {
+    hints: false
+};
 
 
 
@@ -288,7 +289,9 @@ module.exports.plugins = (module.exports.plugins || []).concat([
         options: {
             postcss: Mix.options.postCss,
             context: __dirname,
-            output: { path: './' }
+            output: {
+                path: './'
+            }
         }
     })
 ]);
@@ -307,8 +310,7 @@ if (Mix.browserSync) {
                     'public/js/**/*.js',
                     'public/css/**/*.css'
                 ]
-            }, Mix.browserSync),
-            {
+            }, Mix.browserSync), {
                 reload: false
             }
         )
