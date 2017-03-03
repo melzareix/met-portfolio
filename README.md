@@ -22,6 +22,8 @@ MET Profolio MiniProject
     - `SEND_GRID`, Your Send Grid API Key used to set reset password link.
 5. Edit API Base URL in `/public/js/app.js` and `/public/app/helpers/vue-auth.js`.
 6. When in Debug Mode, Visit `http://URL_DEPLOYMENT/api/v1/seed` to seed the database.
+
+
 ---
 
 ## Usage
