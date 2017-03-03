@@ -48,7 +48,7 @@
                     <img :src="'/uploads/' + form.prevCover">
                     <p class="control">
                         <a href="#" class="button is-danger" @click.prevent="form.removeImage = true"> Remove Image</a>
-                        <br />
+                        <br/>
                     </p>
                 </div>
 
