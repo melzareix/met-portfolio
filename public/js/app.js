@@ -7,8 +7,10 @@ import AddWork from './views/AddWork.vue';
 import router from './routes/routes';
 import VueRouter from 'vue-router';
 import axios from 'axios';
+import VueSweetAlert from 'vue-sweetalert';
 
 Vue.use(VueRouter);
+Vue.use(VueSweetAlert);
 
 window.Vue = Vue;
 window.Event = new Vue();

@@ -8,7 +8,13 @@ const SIGNUP_ROUTE = BASE_API + '/signup';
 
 export default {
     user: {
-        authenticated: false
+        authenticated: false,
+        displayName: function () {
+            return localStorage.getItem('user_email').split('@')[0];
+        },
+        userID: function () {
+            return localStorage.getItem('user_id');
+        }
     },
     forgot(formData, cb) {
         axios
@@ -43,6 +49,8 @@ export default {
             .post(LOGIN_ROUTE, formData)
             .then((res) => {
                 localStorage.setItem('jwt_token', res.data.token);
+                localStorage.setItem('user_id', res.data.id);
+                localStorage.setItem('user_email', res.data.email);
                 this.user.authenticated = true;
                 if (cb) {
                     cb(null, res.data);
@@ -73,13 +81,14 @@ export default {
 
     logout() {
         localStorage.removeItem('jwt_token');
+        localStorage.removeItem('user_id');
+        localStorage.removeItem('user_email');
     },
 
     checkAuth() {
         this.user.authenticated = !!localStorage.getItem('jwt_token');
     },
-
     getAuthHeader() {
         return 'JWT ' + localStorage.getItem('jwt_token');
     }
-}
+};
