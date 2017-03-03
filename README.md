@@ -21,6 +21,7 @@ MET Profolio MiniProject
     - `DEBUG_MODE`, SET to 1 to enable debugging middlewares.
     - `SEND_GRID`, Your Send Grid API Key used to set reset password link.
 5. Edit API Base URL in `/public/js/app.js` and `/public/app/helpers/vue-auth.js`.
+
 ---
 
 ## Usage
