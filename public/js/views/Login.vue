@@ -31,7 +31,7 @@
                 <label class="label">Password</label>
                 <p class="control">
                     <input class="input" name="password" type="password" v-model="form.password">
-                    <a href="#" class="help is-dark">Forgot password ?</a>
+                    <router-link to="/forgot" class="help is-dark"> Forgot password ? </router-link>
                 </p>
 
 
