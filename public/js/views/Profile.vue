@@ -48,10 +48,10 @@
 
         mounted() {
             axios.get(MET_BASE_URI() + 'portfolio/profile/' + this.$route.params.id)
-                .then((res) = > {
+                .then((res) => {
                 console.log(res);
             this.user = res.data;
-            res.data.portfolio.forEach((item) = > {
+            res.data.portfolio.forEach((item) => {
                 this.items.push({
                 cover: '/uploads/' + (item.coverImage || 'upload_image.svg'),
                 id: item._id,
@@ -65,7 +65,7 @@
             });
         })
         }).
-            catch((err) = > {
+            catch((err) => {
                 if (err.response.data.message[0] === 'Portfolio must contain at least 1 Work Item to be displayed.'
         )
             {

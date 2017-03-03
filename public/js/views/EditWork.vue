@@ -127,7 +127,7 @@
                 this.form.description = this.item.description;
                 this.form.link = this.item.liveDemo;
                 this.form.repo = this.item.githubRepo;
-                this.form.prevCover = this.item.coverImage;
+                this.form.prevCover = this.item.coverImage || 'upload_img.svg';
 
                 const tagsArr = [];
                 this.item.tags.forEach((tag) => {
