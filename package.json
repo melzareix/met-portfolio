@@ -23,7 +23,8 @@
     "passport-jwt": "^2.2.1",
     "supertest": "^3.0.0",
     "underscore": "^1.8.3",
-    "vue": "^2.1.10"
+    "vue": "^2.1.10",
+    "vue-sweetalert": "^0.1.16"
   },
   "devDependencies": {
     "chai": "^3.5.0",

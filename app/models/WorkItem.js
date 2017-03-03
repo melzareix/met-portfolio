@@ -4,6 +4,10 @@ let workItemSchema = mongoose.Schema({
     title: {
         type: String
     },
+    _creator: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    },
     coverImage: {
         type: String
     },

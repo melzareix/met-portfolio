@@ -5,26 +5,32 @@
             <a class="nav-item" href="/"><img :src="logo" :width="width" alt="logo"></a>
         </div>
         <ul class="nav-right">
-            <li v-show="!user.authenticated">
+            <li v-if="!user.authenticated">
                 <router-link to="/signup" class="nav-item nav-link">
                     Signup
                 </router-link>
             </li>
 
-            <li v-show="!user.authenticated">
+            <li v-if="!user.authenticated">
                 <router-link to="/login" class="nav-item nav-link">
                     Login
                 </router-link>
             </li>
 
 
-            <li v-show="user.authenticated">
-                <router-link to="/portfolio/add" class="nav-item nav-link">
+            <li v-if="user.authenticated">
+                <router-link :to="'/profile/' + user.displayName()" class="nav-item nav-link">
+                    My Profile
+                </router-link>
+            </li>
+
+            <li v-if="user.authenticated">
+             <router-link to="/portfolio/add" class="nav-item nav-link">
                     Add Work
                 </router-link>
             </li>
 
-            <li v-show="user.authenticated">
+            <li v-if="user.authenticated">
                 <router-link to="/logout" class="nav-item nav-link">
                     Logout
                 </router-link>
