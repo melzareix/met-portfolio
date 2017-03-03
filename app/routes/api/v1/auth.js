@@ -88,7 +88,7 @@ router.post('/signup', upload.single('profilePic'), function (req, res, next) {
     //  and a special character.
     // http://stackoverflow.com/questions/19605150/
 
-    const passwordRegex = /(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
+    const passwordRegex = /(?=.*\d)(?=.*[$@$!%*#?.&])[A-Za-z\d$@$!%*#?.&]{8,}$/;
     if (!passwordRegex.test(password)) {
         errors.push(Strings.INVALID_PASSWORD);
     }
@@ -253,7 +253,7 @@ router.post('/reset', function (req, res, next) {
     //  and a special character.
     // http://stackoverflow.com/questions/19605150/
 
-    const passwordRegex = /(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
+    const passwordRegex = /(?=.*\d)(?=.*[$@$!%*#?.&])[A-Za-z\d$@$!%*#?.&]{8,}$/;
     if (!passwordRegex.test(password)) {
         return next(Strings.INVALID_PASSWORD);
     }
