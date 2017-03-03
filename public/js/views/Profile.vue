@@ -4,7 +4,7 @@
         <hr>
         <div class="bio columns">
             <div class="column is-3">
-                <img :src="'/uploads/' + user.profilePic" alt="Profile Picture" />
+                <img :src="'/uploads/' + user.profilePic" alt="Profile Picture"/>
             </div>
             <div class="column is-6 content is-medium">
                 <h2>{{ user.firstName + ' ' + user.lastName }}</h2>
@@ -56,8 +56,8 @@
                         });
                     })
                 }).catch((err) => {
-                    this.$router.push('/404');
-                });
+                this.$router.push('/404');
+            });
         }
     }
 </script>

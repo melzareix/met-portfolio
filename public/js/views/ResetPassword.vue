@@ -14,11 +14,10 @@
             <div class="message-body">
                 <ul>
                     <li class="padding-left-10" v-for="err in form.getErrors()" v-text="err"></li>
-
                 </ul>
             </div>
         </div>
-        
+
         <form method="post" @submit.prevent="onSubmit">
             <div class="control">
 
@@ -27,10 +26,10 @@
                     <input class="input" type="password" name="password" v-model="form.password">
                     <span class="icon is-small"><i class="fa fa-key"></i></span>
                 </p>
-                
+
                 <label class="label">Confirm Password</label>
                 <p class="control has-icon has-icon-left">
-                    <input class="input" type="password" name="confirmPassword" v-model="form.confirmPassword"> 
+                    <input class="input" type="password" name="confirmPassword" v-model="form.confirmPassword">
                     <span class="icon is-small"><i class="fa fa-key"></i></span>
                 </p>
 

@@ -10,7 +10,9 @@
         <div class="columns is-multiline" style="margin-bottom: 0">
             <card v-for="item in items" :cover="item.cover">
                 <h2 slot="title" class="is-1">
-                    <router-link :to="'/' + item.type +'/' + item.id" class="no-link is-1" slot="title">{{ item.title }}</router-link>
+                    <router-link :to="'/' + item.type +'/' + item.id" class="no-link is-1" slot="title">{{ item.title
+                        }}
+                    </router-link>
                 </h2>
                 <div slot="desc">
                     <p class="item-desc">{{ item.desc }}</p>
@@ -63,24 +65,24 @@
     .tag:hover {
         background: #0a0a0a;
     }
-    
+
     .fa-github {
         font-size: 1.5rem;
     }
-    
+
     .fa-eye {
         font-size: 1.5rem;
     }
-    
+
     .work-link {
         font-size: 1rem;
     }
-    
+
     .work-item-detail:not(:last-child) {
         border-bottom: 1px solid #eee;
         padding-bottom: 5px;
     }
-    
+
     .item-desc {
         margin-bottom: 10px;
     }

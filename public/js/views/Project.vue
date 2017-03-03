@@ -22,7 +22,8 @@
                 </p>
 
                 <div class="tags">
-                    <router-link v-for="tag in item.tags" class="tag is-dark" :to="'/search/' + tag.name">{{tag.name}}</router-link>
+                    <router-link v-for="tag in item.tags" class="tag is-dark" :to="'/search/' + tag.name">{{tag.name}}
+                    </router-link>
                 </div>
             </div>
         </div>
@@ -43,8 +44,8 @@
                     this.item = res.data;
                     this.item.coverImage = '/uploads/' + (this.item.coverImage || 'upload_image.svg');
                 }).catch((err) => {
-                    this.$router.push('/404');
-                });
+                this.$router.push('/404');
+            });
         }
     }
 </script>

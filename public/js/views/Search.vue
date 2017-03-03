@@ -27,7 +27,6 @@
                 axios.get(MET_BASE_URI() + 'portfolio/tag/' + this.$route.params.tag)
                     .then((res) => {
                         this.items = [];
-                        console.log(res);
                         if (res.data.results.length > 0) {
                             const results = res.data.results;
                             results.forEach((item) => {

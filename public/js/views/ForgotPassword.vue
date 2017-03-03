@@ -10,7 +10,7 @@
             </div>
         </div>
 
-           <div class="message is-danger" v-show="form.getErrors().length > 0">
+        <div class="message is-danger" v-show="form.getErrors().length > 0">
             <div class="message-body">
                 <ul>
                     <li class="padding-left-10" v-for="err in form.getErrors()" v-text="err"></li>
@@ -18,7 +18,7 @@
                 </ul>
             </div>
         </div>
-        
+
         <form method="post" @submit.prevent="onSubmit">
             <div class="control">
 
@@ -26,7 +26,7 @@
                 <p class="control has-icon has-icon-left">
                     <input class="input" type="text" name="email" placeholder="balabizo@student.guc.edu.eg"
                            v-model="form.email">
-                                               <span class="icon is-small"><i class="fa fa-envelope"></i></span>
+                    <span class="icon is-small"><i class="fa fa-envelope"></i></span>
                 </p>
 
                 <p class="control">
