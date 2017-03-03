@@ -3,6 +3,7 @@ MET Profolio MiniProject
 
 
 ## Demo
+![Demo](preview.gif)
 
 ###### Live Demo
 [https://met-portfolio.herokuapp.com/](https://met-portfolio.herokuapp.com/)
