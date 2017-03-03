@@ -185,7 +185,7 @@ router.get('/profile/:displayname', function (req, res, next) {
  * */
 
 /**
- * Add new portfolio item
+ * Create Portfolio Item
  */
 
 router.post('/add', upload.single('cover'), authHelper.authMiddleware, function (req, res, next) {
@@ -254,7 +254,19 @@ router.post('/add', upload.single('cover'), authHelper.authMiddleware, function 
             });
         });
     });
+});
 
+/**
+ * Update Portfolio Item
+ */
+
+router.put('/edit/:id', authHelper.authMiddleware, function (req, res, next) {
+    const title = req.body.title,
+        description = req.body.description,
+        liveDemo = req.body.link,
+        githubRepo = req.body.repo,
+        tags = req.body.tags,
+        coverImage = req.file;
 
 });
 
@@ -276,8 +288,8 @@ const handleError = err => {
 };
 
 /*
-* Helper Functions
-* */
+ * Helper Functions
+ * */
 
 /**
  * Returns List of Tags

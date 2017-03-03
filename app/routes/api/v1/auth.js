@@ -230,8 +230,7 @@ router.post('/forgot', function (req, res, next) {
  * User Reset Password Route.
  */
 
-router.post('/reset/', function (req, res, next) {
-
+router.post('/reset', function (req, res, next) {
     const resetToken = req.body.token;
     const password = req.body.password;
     const confirmPassword = req.body.confirmPassword;
@@ -239,7 +238,7 @@ router.post('/reset/', function (req, res, next) {
 
     // Check If any required field are missing
     if (!(password && confirmPassword && resetToken)) {
-        return next(Strings.INVALID_RESET_TOKEN);
+        return next(Strings.INCOMPLETE_INFORMATION);
     }
 
     // Check if password and confirmation mismatch
@@ -276,6 +275,7 @@ router.post('/reset/', function (req, res, next) {
             }
 
             if (!user) {
+                console.log(1);
                 return next(Strings.INVALID_RESET_TOKEN);
             }
 
@@ -337,8 +337,8 @@ router.use(function (req, res) {
 });
 
 /*
-*  Helper Functions
-* */
+ *  Helper Functions
+ * */
 
 /**
  * Returns a human readable error message.
