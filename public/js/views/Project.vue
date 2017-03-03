@@ -59,6 +59,7 @@
         },
         methods: {
             delItem(){
+                var self = this;
                 this.$swal({
                     title: "Are you sure?",
                     text: "You will not be able to recover this Work Item!",
@@ -66,8 +67,20 @@
                     confirmButtonText: 'Delete',
                     type: "warning",
                     html: false
-                }).then(() =>{
-
+                }).then(() => {
+                    axios
+                        .post(MET_BASE_URI() + 'portfolio/delete/', {
+                            id: this.$route.params.id
+                        }, {
+                            headers: {
+                                'Authorization': auth.getAuthHeader()
+                            }
+                        }).then((res) => {
+                        self.$swal('Item Deleted', '', 'success')
+                            .then(() => {
+                                this.$router.push('/');
+                            });
+                    });
                 });
             }
         }
