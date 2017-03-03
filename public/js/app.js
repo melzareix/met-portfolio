@@ -16,7 +16,7 @@ window.Vue = Vue;
 window.Event = new Vue();
 window.axios = axios;
 window.MET_BASE_URI = function () {
-    return 'http://localhost:3000/api/v1/';
+    return 'https://met-portfolio.herokuapp.com/api/v1/';
 };
 
 new Vue({
