@@ -231,6 +231,7 @@ router.post('/add', upload.single('cover'), authHelper.authMiddleware, function 
         const student = req.user;
         const portfolioItem = new WorkItem({
             title,
+            _creator: req.user._id,
             description,
             coverImage: coverImage ? coverImage.filename : undefined,
             liveDemo,
@@ -257,16 +258,102 @@ router.post('/add', upload.single('cover'), authHelper.authMiddleware, function 
 });
 
 /**
+ * Get Item and Check for editing permission
+ */
+
+router.get('/edit/:id', authHelper.authMiddleware, function (req, res, next) {
+    WorkItem.findOne({
+        _creator: req.user._id,
+        _id: req.params.id
+    }).populate('tags').exec((err, data) => {
+        if (err) {
+            return next(err);
+        }
+        if (!data) {
+            return next('You don\'t have permission to edit this Item.');
+        }
+
+        return res.json(data);
+    });
+});
+
+/**
  * Update Portfolio Item
  */
 
-router.put('/edit/:id', authHelper.authMiddleware, function (req, res, next) {
+router.post('/edit', upload.single('cover'), authHelper.authMiddleware, function (req, res, next) {
     const title = req.body.title,
+        id = req.body.id,
         description = req.body.description,
         liveDemo = req.body.link,
         githubRepo = req.body.repo,
         tags = req.body.tags,
+        removeImage = req.body.removeImage,
         coverImage = req.file;
+
+    let errors = [];
+
+    if (!title) {
+        errors.push(Strings.EMPTY_TITLE);
+    }
+
+    if (!description) {
+        errors.push(Strings.EMPTY_PDESC);
+    }
+
+    if (!liveDemo && !githubRepo && !coverImage && (removeImage === 'true')) { // User left all three fields empty
+        errors.push(Strings.EMPTY_WORK);
+    }
+
+    if (liveDemo && !validateUrl(liveDemo)) {
+        errors.push(Strings.BAD_DEMO);
+    }
+
+    if (githubRepo && !validateUrl(githubRepo)) {
+        errors.push(Strings.BAD_REPO);
+    }
+
+    if (!tags) {
+        errors.push('You must include at least one tag.');
+    }
+
+    if (errors.length > 0) {
+        return next(errors);
+    }
+
+    createTags(tags, (newTags) => {
+        WorkItem.findOne({
+            _id: id,
+            _creator: req.user._id
+        }, (err, data) => {
+            if (err) {
+                return next(err);
+            }
+
+            if (!data) {
+                return next('You don\'t have permission to edit this Item.');
+            }
+
+            data.title = title;
+            data.description = description;
+            data.liveDemo = liveDemo;
+            data.githubRepo = githubRepo;
+            data.tags = newTags;
+
+            if (removeImage === 'true') {
+                data.coverImage = coverImage ? coverImage.filename : 'upload_image.svg';
+            }
+
+            data.save((err) => {
+                if (err) {
+                    return next(err);
+                }
+                return res.json('Work Item Updated!');
+            });
+
+        });
+    });
+
 
 });
 

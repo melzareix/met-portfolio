@@ -164,7 +164,8 @@ router.post('/login', function (req, res, next) {
             return res.json({
                 message: Strings.LOGIN_SUCCESS,
                 token: token,
-                id: result.id
+                id: result.id,
+                email: result.email
             });
         });
 
