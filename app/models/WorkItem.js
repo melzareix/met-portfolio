@@ -30,5 +30,4 @@ let workItemSchema = mongoose.Schema({
     }
 });
 
-
 module.exports = mongoose.model('WorkItem', workItemSchema);

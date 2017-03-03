@@ -171,8 +171,12 @@ router.get('/profile/:displayname', function (req, res, next) {
             return next(err);
         }
 
-        if (!data || data.portfolio.length == 0) {
+        if (!data) {
             return next('User Not found.');
+        }
+
+        if (data.portfolio.length == 0) {
+            return next('Portfolio must contain at least 1 Work Item to be displayed.');
         }
 
         return res.json(data);
@@ -355,6 +359,32 @@ router.post('/edit', upload.single('cover'), authHelper.authMiddleware, function
     });
 
 
+});
+
+/**
+ * Delete Portfolio Item
+ */
+
+router.post('/delete', authHelper.authMiddleware, function (req, res, next) {
+    const id = req.body.id;
+    WorkItem.remove({
+        _id: id,
+        _creator: req.user._id
+    }, (err, item) => {
+        if (err) {
+            return next(err);
+        }
+        if (!item) {
+            return next('Unauthorized to delete this item.');
+        }
+        req.user.portfolio.remove(id);
+        req.user.save((err) => {
+            if (err) {
+                return next(err);
+            }
+            return res.json('Item Deleted.');
+        });
+    });
 });
 
 /**
